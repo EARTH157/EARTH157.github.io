@@ -6,7 +6,7 @@ const Projects = () => {
             <h2 className="section-title reveal">Projects</h2>
             <div className="projects-grid">
                 <div className="project-card glass-panel reveal">
-                    <div className="project-img">
+                    <div className="project-video">
                         <img src="/assets/turtlebot_slam.png" alt="Turtlebot3 Navigation" />
                     </div>
                     <div className="project-info">
@@ -15,13 +15,13 @@ const Projects = () => {
                         <p>Deployed Lidar-based SLAM and Nav2 stack for autonomous environment mapping and path planning. Visualized transform trees (TF) and laser scan data via Rviz2 and Gazebo.</p>
                         <div className="project-links">
                             <a href="#" className="btn-small"><i className="fab fa-github"></i> Code</a>
-                            <a href="#" className="btn-small btn-primary"><i className="fas fa-play"></i> Demo</a>
+                            <a href="#" className="btn-small btn-primary"><i className="fas fa-play"></i> Link</a>
                         </div>
                     </div>
                 </div>
 
                 <div className="project-card glass-panel reveal">
-                    <div className="project-img">
+                    <div className="project-video">
                         <img src="/assets/orange_robot.png" alt="Orange Robot Platform" />
                     </div>
                     <div className="project-info">
@@ -30,13 +30,13 @@ const Projects = () => {
                         <p>Developed a mobile robot platform integrated with a 5-DOF robotic arm for a Teleoperation system. Simulated kinematics in Gazebo using ROS2. Performed precise orange box pick-up tasks.</p>
                         <div className="project-links">
                             <a href="#" className="btn-small"><i className="fab fa-github"></i> Code</a>
-                            <a href="#" className="btn-small btn-primary"><i className="fas fa-play"></i> Demo</a>
+                            <a href="#" className="btn-small btn-primary"><i className="fas fa-play"></i> Link</a>
                         </div>
                     </div>
                 </div>
 
                 <div className="project-card glass-panel reveal">
-                    <div className="project-img">
+                    <div className="project-video">
                         <img src="/assets/dental_robot.png" alt="Service Robot for Dental Clinic" />
                     </div>
                     <div className="project-info">
@@ -45,13 +45,14 @@ const Projects = () => {
                         <p>Designed a Service Robot prototype for dental clinics, integrated with a 5-DOF robotic arm. Built to transport dental trays from sterilization rooms to treatment rooms.</p>
                         <div className="project-links">
                             <a href="#" className="btn-small"><i className="fab fa-github"></i> Code</a>
-                            <a href="#" className="btn-small btn-primary"><i className="fas fa-play"></i> Demo</a>
+                            <a href="#" className="btn-small btn-primary"><i className="fas fa-play"></i> Link</a>
                         </div>
                     </div>
                 </div>
 
+                {/* You can copy the structure above to add the fourth project if you want 3 per row on top, and 1 centered below. */}
                 <div className="project-card glass-panel reveal">
-                    <div className="project-img">
+                    <div className="project-video">
                         <img src="/assets/white_post_robot.png" alt="White Post Delivery Robot" />
                     </div>
                     <div className="project-info">
@@ -60,7 +61,7 @@ const Projects = () => {
                         <p>Implemented an automated delivery system with a multi-terrain tracked base. Features full Inverse/Forward Kinematics control for the 5-DOF arm, and a custom YOLOv8 model (OpenCV) to identify and track elevator buttons.</p>
                         <div className="project-links">
                             <a href="#" className="btn-small"><i className="fab fa-github"></i> Code</a>
-                            <a href="#" className="btn-small btn-primary"><i className="fas fa-play"></i> Demo</a>
+                            <a href="#" className="btn-small btn-primary"><i className="fas fa-play"></i> Link</a>
                         </div>
                     </div>
                 </div>
