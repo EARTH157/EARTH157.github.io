@@ -1,0 +1,49 @@
+Robotics Engineering student with a strong passion for ROS2, Computer Vision, and Autonomous Systems. Proven logical problem-solving
+skills through the development of a 5-DOF robotic arm (WhitePost). Experienced in Python/C++SUMMARY
+EDUCATION
+Bachelor of Engineering (B.Eng.) in Robotics Engineering and AI
+Relevant Coursework :  Robot Design Essential, Computer Vision, Robotic Engineering, System Analysis and
+Control, Embedded Systems, ROS2 , AI for RoboticsJun 2022 -   Mar 2026
+Chiang Mai University
+EXPERIENCE & INTERNSHIP
+Jinpao Automation Contest 2023
+IEEE Region 10 Robotics Competition 2024Designed the robot's mechanical chassis and structural components for optimal stability.
+SKILLS
+Programming Language : Python, C++, C, Lua
+Robotics Technical Skills  : 
+Hardware: TurtleBot3 Burger/Waffle, 2D LiDAR, OpenCR Controller, Raspberry Pi 5/Zero 2W, ESP32, Arduino Uno
+Navigation & SLAM: SLAM (Lidar-based), Nav2, Path Planning (RRT, RRT*, A*)
+Frameworks & Tools: ROS2 (Foxy, Humble), Rviz2, Gazebo Classic
+Computer V ision & AI: OpenCV , YOLOv8, Image Processing, Roboflow , Large Language Models (ChatGPT/Gemini API Integration),
+Language: Thai (Native) , English (Basic)
+Tools & Development: Git/GitHub, Linux/Ubuntu, V isual Studio Code, SolidW orks, EasyEDA, Arduino IDENov 2022 - Feb 2023
+Mar 2024 - May 2024
+TESR Co.,Ltd. Internship Apr 2025 -   May 2025
+PROJECT
+Turtlebot3 : SLAM Navigation Jan 2024 - Feb 2024
+Orange Robot : a customized mobile robot platformFeb 2024 - Mar 2024
+Service Robot for Dental Clinic CMUJun 2024 - Oct 2024
+White Post : a robot document delivery Jun 2025 - Mar 2026Collaborated with a multidisciplinary team to implement an automated system for researcher tasks.
+Qualified as Stage 2 Finalist in a international robotics competition.
+Developed an autonomous Floating Robot (ASV) for collect environmental water quality sampling.
+Developed a high-payload Autonomous Mobile Robot (AMR) capable of transporting up to 300 kg.
+Collaborated on hardware-software integration by interfacing ROS2 with ESP32 via   Serial communication to control Hub Servo Motor
+drivers.
+Deployed SLAM (Lidar-based) and Nav2 stack for autonomous environment mapping and path planning
+Visualized and debugged transform trees (TF) and laser scan data via Rviz2 and Gazebo.
+Developed a mobile robot platform integrated with a 5-DOF robotic arm for a Teleoperation system.
+Simulated robot kinematics and navigation in Gazebo using ROS2 .
+Designed and developed a Service Robot prototype for dental clinic environments, integrated with a 5-DOF robotic arm.
+Developed a prototype mobile robot with an arm to manually transport dental trays from the sterilization room to treatment rooms.
+Designed the custom robot chassis to support a 5-DOF arm and integrated a tracked and wheel drive system for multi-terrain mobility.
+Developed full control software for a 5-DOF robotic arm, implementing Inverse Kinematics (IK) and Forward Kinematics (FK) for precise
+button lift handling.
+081-513-7835
+earthzz.jirapat@outlook.com /   earthzz.jirapat@gmail.comJirapat Chaumaungphan
+GitHub: EARTH157Linked : Jirapat Chaumaungphan
+YouTube : Jirapat Chaumaungphan
+Manually navigated the robot to target locations and operated the robotic arm to complete precise orange box pick-up and drop-off
+tasks.
+Soft Skills: Logical Problem Solving , Technical Communication, Team Collaboration, Rapid Self-LearningDeveloped and deployed a custom YOLOv8 model integrated with OpenCV to identify and track elevator buttons and monitor elevator
+door status (Open/Closed).GPAX : 3.05
+Industrial Automation: Siemens PLC , HMI Design, TIA Portal v16, Ladder Logic  
