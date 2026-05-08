@@ -319,7 +319,7 @@ nav {
     overflow: hidden;
 }
 
-.project-img img, .project-img iframe {
+.project-img img, .project-img iframe, .project-img video {
     width: 100%;
     height: 100%;
     object-fit: cover;
