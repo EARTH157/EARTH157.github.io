@@ -38,6 +38,33 @@ document.addEventListener("DOMContentLoaded", () => {
     if (whitepostViewerContainer) {
         init3DViewer(whitepostViewerContainer, 'assets/models/WhitePost.STL', 'whitepost-loading', 0xD27D60);
     }
+
+    // Mobile Touch Support for Hover Elements
+    const hoverElements = document.querySelectorAll('.project-card, .timeline-item, .zoom-img');
+    
+    hoverElements.forEach(el => {
+        el.addEventListener('click', function(e) {
+            // Ignore if clicking a link or a video
+            if (e.target.tagName.toLowerCase() === 'a' || e.target.tagName.toLowerCase() === 'iframe') return;
+            
+            const isActive = this.classList.contains('touch-active');
+            
+            // Remove active class from all elements
+            hoverElements.forEach(sibling => sibling.classList.remove('touch-active'));
+            
+            // Toggle active class
+            if (!isActive) {
+                this.classList.add('touch-active');
+            }
+        });
+    });
+
+    // Remove active class when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.project-card, .timeline-item, .zoom-img')) {
+            hoverElements.forEach(el => el.classList.remove('touch-active'));
+        }
+    });
 });
 
 function init3DViewer(container, modelPath, loadingElementId, modelColor = 0xD27D60) {

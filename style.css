@@ -268,7 +268,7 @@ nav {
     z-index: 1;
 }
 
-.timeline-item:hover {
+.timeline-item:hover, .timeline-item.touch-active {
     z-index: 1000;
 }
 
@@ -356,7 +356,7 @@ nav {
     border: 1px solid var(--glass-border);
 }
 
-.event-gallery .zoom-img:hover {
+.event-gallery .zoom-img:hover, .event-gallery .zoom-img.touch-active {
     transform: scale(2.5);
     z-index: 100;
     position: relative;
@@ -396,7 +396,7 @@ nav {
     transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.project-card:hover {
+.project-card:hover, .project-card.touch-active {
     height: 600px;
     transform: translateY(-10px);
     z-index: 10;
@@ -411,7 +411,7 @@ nav {
     transition: height 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.project-card:hover .project-img {
+.project-card:hover .project-img, .project-card.touch-active .project-img {
     height: 200px;
 }
 
@@ -423,7 +423,7 @@ nav {
     transition: transform 0.5s ease;
 }
 
-.project-card:hover .project-img img {
+.project-card:hover .project-img img, .project-card.touch-active .project-img img {
     transform: scale(1.1);
 }
 
@@ -435,7 +435,7 @@ nav {
     overflow: hidden;
 }
 
-.project-card:hover .project-info {
+.project-card:hover .project-info, .project-card.touch-active .project-info {
     overflow-y: auto;
 }
 
@@ -451,7 +451,7 @@ nav {
     to { opacity: 1; transform: translateY(0); }
 }
 
-.project-card:hover .hover-media {
+.project-card:hover .hover-media, .project-card.touch-active .hover-media {
     display: block;
 }
 
@@ -526,7 +526,7 @@ nav {
     animation: fadeIn 0.5s ease;
 }
 
-.timeline-item:hover .intern-media {
+.timeline-item:hover .intern-media, .timeline-item.touch-active .intern-media {
     display: flex;
 }
 
