@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const whitepostViewerContainer = document.getElementById('whitepost-viewer');
     if (whitepostViewerContainer) {
-        init3DViewer(whitepostViewerContainer, 'assets/models/WhitePost.STL', 'whitepost-loading', 0xEEEEEE);
+        init3DViewer(whitepostViewerContainer, 'assets/models/WhitePost.STL', 'whitepost-loading', 0xD27D60);
     }
 });
 
