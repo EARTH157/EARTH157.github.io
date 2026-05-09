@@ -50,8 +50,12 @@ nav {
     font-family: 'Outfit', sans-serif;
     font-weight: 800;
     font-size: 1.5rem;
-    color: var(--accent-color);
+    color: var(--text-main);
     letter-spacing: 2px;
+}
+
+.logo .dot {
+    color: var(--accent-color);
 }
 
 .nav-links {
@@ -261,6 +265,11 @@ nav {
     position: relative;
     padding-left: 50px;
     margin-bottom: 2rem;
+    z-index: 1;
+}
+
+.timeline-item:hover {
+    z-index: 1000;
 }
 
 .timeline-dot {
@@ -332,27 +341,27 @@ nav {
     display: flex;
     gap: 1rem;
     margin-top: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .event-gallery .zoom-img {
-    flex: 1;
     height: 100px;
+    width: auto;
+    max-width: 100%;
     object-fit: cover;
     border-radius: 10px;
     cursor: pointer;
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     border: 1px solid var(--glass-border);
 }
 
 .event-gallery .zoom-img:hover {
-    transform: scale(3.5);
-    object-fit: contain;
-    background: transparent;
-    border-color: transparent;
-    box-shadow: none;
-    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+    transform: scale(2.5);
     z-index: 100;
     position: relative;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    border-color: var(--accent-color);
 }
 
 /* Projects Grid */

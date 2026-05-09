@@ -44,12 +44,14 @@ function init3DViewer(container, modelPath, loadingElementId, modelColor = 0xD27
     const scene = new THREE.Scene();
     
     // Camera setup
-    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+    const initialWidth = container.clientWidth || 300;
+    const initialHeight = container.clientHeight || 200;
+    const camera = new THREE.PerspectiveCamera(45, initialWidth / initialHeight, 0.1, 1000);
     camera.position.set(0, 150, 300); // Adjust based on model scale
 
     // Renderer setup
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setSize(initialWidth, initialHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(renderer.domElement);
 
@@ -70,12 +72,15 @@ function init3DViewer(container, modelPath, loadingElementId, modelColor = 0xD27
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
 
-    // Handle Window Resize
-    window.addEventListener('resize', () => {
-        camera.aspect = container.clientWidth / container.clientHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(container.clientWidth, container.clientHeight);
+    // Handle Container Resize (Crucial for display:none to block transitions)
+    const resizeObserver = new ResizeObserver(() => {
+        if (container.clientWidth > 0 && container.clientHeight > 0) {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        }
     });
+    resizeObserver.observe(container);
 
     // Load STL Model
     const loader = new THREE.STLLoader();
@@ -127,8 +132,11 @@ function init3DViewer(container, modelPath, loadingElementId, modelColor = 0xD27
     // Animation Loop
     function animate() {
         requestAnimationFrame(animate);
-        controls.update();
-        renderer.render(scene, camera);
+        // Optimize: Only render if container is visible
+        if (container.offsetParent !== null) {
+            controls.update();
+            renderer.render(scene, camera);
+        }
     }
     animate();
 }
