@@ -1,4 +1,62 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // ========== Dark / Light Mode Toggle ==========
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const html = document.documentElement;
+
+    // Check for saved preference, or default to system preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        html.setAttribute('data-theme', savedTheme);
+        updateIcon(savedTheme);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        html.setAttribute('data-theme', 'dark');
+        updateIcon('dark');
+    }
+
+    function updateIcon(theme) {
+        if (theme === 'dark') {
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        } else {
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+        }
+    }
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            // Add rotation animation
+            themeToggle.classList.add('rotating');
+            setTimeout(() => themeToggle.classList.remove('rotating'), 500);
+
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            if (newTheme === 'light') {
+                html.removeAttribute('data-theme');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+            }
+
+            localStorage.setItem('theme', newTheme);
+            updateIcon(newTheme);
+        });
+    }
+
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem('theme')) {
+            if (e.matches) {
+                html.setAttribute('data-theme', 'dark');
+                updateIcon('dark');
+            } else {
+                html.removeAttribute('data-theme');
+                updateIcon('light');
+            }
+        }
+    });
+
     // Scroll reveal animation
     const reveals = document.querySelectorAll(".reveal");
 
@@ -40,19 +98,35 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Mobile Touch Support for Hover Elements
-    const hoverElements = document.querySelectorAll('.project-card, .timeline-item, .zoom-img');
+    const cardElements = document.querySelectorAll('.project-card, .timeline-item');
+    const zoomImages = document.querySelectorAll('.zoom-img');
     
-    hoverElements.forEach(el => {
+    // Handle zoom images separately (they live inside timeline-items)
+    zoomImages.forEach(img => {
+        img.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent bubbling to parent timeline-item
+            const isActive = this.classList.contains('touch-active');
+            // Remove active from all zoom images
+            zoomImages.forEach(z => z.classList.remove('touch-active'));
+            if (!isActive) {
+                this.classList.add('touch-active');
+            }
+        });
+    });
+
+    // Handle cards and timeline items
+    cardElements.forEach(el => {
         el.addEventListener('click', function(e) {
-            // Ignore if clicking a link or a video
-            if (e.target.tagName.toLowerCase() === 'a' || e.target.tagName.toLowerCase() === 'iframe') return;
+            // Ignore if clicking a link, video, or zoom image
+            const tag = e.target.tagName.toLowerCase();
+            if (tag === 'a' || tag === 'iframe' || e.target.closest('.zoom-img')) return;
             
             const isActive = this.classList.contains('touch-active');
             
-            // Remove active class from all elements
-            hoverElements.forEach(sibling => sibling.classList.remove('touch-active'));
+            // Remove active class from all card/timeline elements
+            cardElements.forEach(sibling => sibling.classList.remove('touch-active'));
             
-            // Toggle active class
+            // Toggle: if was active, stay collapsed; if not, expand
             if (!isActive) {
                 this.classList.add('touch-active');
             }
@@ -62,7 +136,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Remove active class when clicking outside
     document.addEventListener('click', function(e) {
         if (!e.target.closest('.project-card, .timeline-item, .zoom-img')) {
-            hoverElements.forEach(el => el.classList.remove('touch-active'));
+            cardElements.forEach(el => el.classList.remove('touch-active'));
+            zoomImages.forEach(img => img.classList.remove('touch-active'));
         }
     });
 
