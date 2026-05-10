@@ -19,6 +19,13 @@
 <body>
     <nav>
         <div class="logo">Portfolio<span class="dot">.</span></div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#experience">Experience & Activities</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+        </ul>
         <div class="nav-right">
             <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">
                 <i class="fas fa-moon" id="theme-icon"></i>
@@ -27,13 +34,6 @@
                 <i class="fas fa-bars"></i>
             </div>
         </div>
-        <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#education">Education</a></li>
-            <li><a href="#experience">Experience & Activities</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#skills">Skills</a></li>
-        </ul>
     </nav>
 
     <header id="about" class="hero">
@@ -114,6 +114,37 @@
                         <p>Developed a high-payload Autonomous Mobile Robot (AMR) capable of transporting up to 300
                             kg. Collaborated on hardware-software integration by interfacing ROS2 with ESP32 via
                             Serial communication to control Hub Servo Motor drivers.</p>
+
+                        <div class="intern-details">
+                            <div class="detail-block">
+                                <h5><i class="fas fa-trophy"></i> Key Contributions</h5>
+                                <ul>
+                                    <li>Designed and developed the drive system collaboratively with the engineering team</li>
+                                    <li>Tested and validated 300 kg payload capacity under real-world conditions</li>
+                                    <li>Integrated ROS2 navigation stack with low-level motor controllers</li>
+                                </ul>
+                            </div>
+                            <div class="detail-block">
+                                <h5><i class="fas fa-layer-group"></i> Tech Stack</h5>
+                                <div class="tags">
+                                    <span>ROS2 Humble</span>
+                                    <span>Intel NUC</span>
+                                    <span>ESP32</span>
+                                    <span>CAN BUS Protocal</span>
+                                    <span>Hub Servo Motor</span>
+                                    <span>Python</span>
+                                    <span>C++</span>
+                                </div>
+                            </div>
+                            <div class="detail-block">
+                                <h5><i class="fas fa-users"></i> Soft Skills Learned</h5>
+                                <ul>
+                                    <li>Cross-functional teamwork with hardware and software engineers</li>
+                                    <li>Debugging and troubleshooting in a real production environment</li>
+                                    <li>Technical documentation and progress reporting</li>
+                                </ul>
+                            </div>
+                        </div>
 
                         <div class="intern-media">
                             <div class="video-container">
@@ -362,7 +393,7 @@
     </section>
 
     <section id="skills" class="section">
-        <h2 class="section-title reveal">Technical Skills</h2>
+        <h2 class="section-title reveal">Skills</h2>
         <div class="skills-container">
             <div class="skill-category glass-panel reveal">
                 <h3><i class="fas fa-code"></i> Programming</h3>
@@ -397,6 +428,11 @@
                     <span><img class="skill-icon" src="assets/images/logo/hero-removebg-preview.png" alt="ROS2">ROS2 (Foxy, Humble)</span>
                     <span><img class="skill-icon" src="assets/images/logo/splash.png" alt="Rviz2">Rviz2</span>
                     <span><img class="skill-icon" src="assets/images/logo/gazebo_icon_pos-76b768ca51b0c24a5e5ddeb5a844baf3a3efc83e42affae355ed6ce9326707e4.svg" alt="Gazebo">Gazebo Classic</span>
+                    <span><img class="skill-icon" src="assets/images/logo/Visual_Studio_Code_1.35_icon.svg.png" alt="Visual Studio Code">Visual Studio Code</span>
+                    <span><img class="skill-icon" src="assets/images/logo/25231.png" alt="GitHub">GitHub</span>
+                    <span><img class="skill-icon" src="assets/images/logo/2221476.webp" alt="Solidwork">Solidwork</span>
+                    <span><img class="skill-icon" src="assets/images/logo/easyeda-icon-filled-256.png" alt="EasyEDA">EasyEDA</span>
+                    <span><img class="skill-icon" src="assets/images/logo/Arduino_IDE_logo.svg.png" alt="Arduino IDE">Arduino IDE</span>
                 </div>
             </div>
             <div class="skill-category glass-panel reveal">
@@ -416,6 +452,35 @@
                     <span>HMI Design</span>
                     <span><img class="skill-icon" src="assets/images/logo/images.jpg" alt="TIA Portal">TIA Portal v16</span>
                     <span>Ladder Logic</span>
+                </div>
+            </div>
+            <div class="skill-category glass-panel reveal">
+                <h3><i class="fas fa-handshake"></i> Soft Skills & Work Style</h3>
+                <div class="tags">
+                    <span><i class="fas fa-users" style="color:#42A5F5"></i> Collaboration & Teamwork</span>
+                    <span><i class="fas fa-brain" style="color:#AB47BC"></i> Problem-Solving under Pressure</span>
+                    <span><i class="fas fa-tasks" style="color:#66BB6A"></i> Project Management</span>
+                    <span><i class="fab fa-git-alt" style="color:#F4511E"></i> Git Version Control</span>
+                    <span><i class="fas fa-comments" style="color:#26C6DA"></i> Technical Communication</span>
+                </div>
+            </div>
+            <div class="skill-category glass-panel reveal">
+                <h3><i class="fas fa-language"></i> Languages</h3>
+                <div class="language-list">
+                    <div class="language-item">
+                        <div class="lang-header">
+                            <span class="lang-name">Thai</span>
+                            <span class="lang-level">Native</span>
+                        </div>
+                        <div class="lang-bar"><div class="lang-fill" style="width: 100%"></div></div>
+                    </div>
+                    <div class="language-item">
+                        <div class="lang-header">
+                            <span class="lang-name">English</span>
+                            <span class="lang-level">EF SET 45/100 (Reading & Listening)</span>
+                        </div>
+                        <div class="lang-bar"><div class="lang-fill" style="width: 45%"></div></div>
+                    </div>
                 </div>
             </div>
         </div>
