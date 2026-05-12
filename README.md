@@ -1,3 +1,3 @@
 # EARTH157.github.io
 
-hello everyone here is my first portfolio
+hello everyone here this is my first portfolio
