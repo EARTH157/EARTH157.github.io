@@ -86,27 +86,17 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Initialize 3D Model Viewer if container exists
-    const viewerContainer = document.getElementById('amr-viewer');
-    if (viewerContainer) {
-        init3DViewer(viewerContainer, 'assets/models/AMR300.STL', 'amr-loading', 0xD27D60);
-    }
+    // 3D viewers sit in collapsed "Watch demo" panels (display: none), so they only
+    // intersect the viewport once opened. Defer the heavy STL download until then.
+    lazyInit3DViewer('amr-viewer', 'assets/models/AMR300.STL', 'amr-loading');
+    lazyInit3DViewer('whitepost-viewer', 'assets/models/WhitePost.STL', 'whitepost-loading');
 
-    const whitepostViewerContainer = document.getElementById('whitepost-viewer');
-    if (whitepostViewerContainer) {
-        init3DViewer(whitepostViewerContainer, 'assets/models/WhitePost.STL', 'whitepost-loading', 0xD27D60);
-    }
-
-    // Mobile Touch Support for Hover Elements
-    const cardElements = document.querySelectorAll('.project-card, .timeline-item');
+    // Tap-to-zoom for gallery photos (hover zoom is handled in CSS)
     const zoomImages = document.querySelectorAll('.zoom-img');
-    
-    // Handle zoom images separately (they live inside timeline-items)
+
     zoomImages.forEach(img => {
-        img.addEventListener('click', function(e) {
-            e.stopPropagation(); // Prevent bubbling to parent timeline-item
+        img.addEventListener('click', function () {
             const isActive = this.classList.contains('touch-active');
-            // Remove active from all zoom images
             zoomImages.forEach(z => z.classList.remove('touch-active'));
             if (!isActive) {
                 this.classList.add('touch-active');
@@ -114,31 +104,24 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Handle cards and timeline items
-    cardElements.forEach(el => {
-        el.addEventListener('click', function(e) {
-            // Ignore if clicking a link, video, or zoom image
-            const tag = e.target.tagName.toLowerCase();
-            if (tag === 'a' || tag === 'iframe' || e.target.closest('.zoom-img')) return;
-            
-            const isActive = this.classList.contains('touch-active');
-            
-            // Remove active class from all card/timeline elements
-            cardElements.forEach(sibling => sibling.classList.remove('touch-active'));
-            
-            // Toggle: if was active, stay collapsed; if not, expand
-            if (!isActive) {
-                this.classList.add('touch-active');
-            }
-        });
-    });
-
-    // Remove active class when clicking outside
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.project-card, .timeline-item, .zoom-img')) {
-            cardElements.forEach(el => el.classList.remove('touch-active'));
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.zoom-img')) {
             zoomImages.forEach(img => img.classList.remove('touch-active'));
         }
+    });
+
+    // "Watch demo" buttons expand/collapse the video + 3D media of a card
+    document.querySelectorAll('.expand-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const card = btn.closest('.project-card, .timeline-item');
+            const open = card.classList.toggle('is-open');
+            btn.setAttribute('aria-expanded', String(open));
+            btn.querySelector('span').textContent = open ? 'Hide demo' : 'Watch demo';
+            btn.querySelector('i').className = open ? 'fas fa-circle-xmark' : 'fas fa-circle-play';
+            if (open) {
+                requestAnimationFrame(() => card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }));
+            }
+        });
     });
 
     // Hamburger Menu Toggle
@@ -148,6 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (mobileMenu && navLinks) {
         mobileMenu.addEventListener('click', () => {
             navLinks.classList.toggle('active');
+            mobileMenu.setAttribute('aria-expanded', String(navLinks.classList.contains('active')));
             const icon = mobileMenu.querySelector('i');
             if (navLinks.classList.contains('active')) {
                 icon.classList.remove('fa-bars');
@@ -162,6 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
+                mobileMenu.setAttribute('aria-expanded', 'false');
                 const icon = mobileMenu.querySelector('i');
                 if (icon) {
                     icon.classList.remove('fa-times');
@@ -172,7 +157,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+function lazyInit3DViewer(containerId, modelPath, loadingElementId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const start = () => init3DViewer(container, modelPath, loadingElementId, 0xD27D60);
+    if (!('IntersectionObserver' in window)) {
+        start();
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        if (entries.some(entry => entry.isIntersecting)) {
+            observer.disconnect();
+            start();
+        }
+    });
+    observer.observe(container);
+}
+
 function init3DViewer(container, modelPath, loadingElementId, modelColor = 0xD27D60) {
+    if (typeof THREE === 'undefined' || !THREE.STLLoader || !THREE.OrbitControls) {
+        const message = document.getElementById(loadingElementId);
+        if (message) message.innerText = '3D viewer unavailable.';
+        return;
+    }
+
     const scene = new THREE.Scene();
     
     // Camera setup

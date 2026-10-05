@@ -4,11 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jirapat Chaumaungphan | Robotics Engineer</title>
+    <title>Jirapat Chaumaungphan | Robotics &amp; AI Engineer</title>
     <!-- Favicon (Browser Tab Logo) -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23D27D60'/></svg>" type="image/svg+xml">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23A94F36'/><text x='50' y='69' font-size='56' font-weight='bold' font-family='Arial,sans-serif' text-anchor='middle' fill='white'>J</text></svg>" type="image/svg+xml">
     <meta name="description"
-        content="Portfolio of Jirapat Chaumaungphan, a Robotics Engineering student passionate about ROS2, Computer Vision, and Autonomous Systems.">
+        content="Portfolio of Jirapat Chaumaungphan, a Robotics Engineering and AI graduate from Chiang Mai University, passionate about ROS2, Computer Vision, and Autonomous Systems.">
+    <meta name="theme-color" content="#F4F0EB">
+    <!-- Social preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Jirapat Chaumaungphan | Robotics &amp; AI Engineer">
+    <meta property="og:description"
+        content="Robotics Engineering and AI graduate from Chiang Mai University, passionate about ROS2, Computer Vision, and Autonomous Systems.">
+    <meta property="og:url" content="https://earth157.github.io/">
+    <meta property="og:image" content="https://earth157.github.io/assets/images/profile/og-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="stylesheet" href="style.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;600&display=swap"
@@ -18,8 +27,8 @@
 
 <body>
     <nav>
-        <div class="logo">Portfolio<span class="dot">.</span></div>
-        <ul class="nav-links">
+        <div class="logo">Jirapat<span class="dot">.</span></div>
+        <ul class="nav-links" id="nav-links">
             <li><a href="#about">About</a></li>
             <li><a href="#education">Education</a></li>
             <li><a href="#experience">Experience & Activities</a></li>
@@ -30,33 +39,38 @@
             <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">
                 <i class="fas fa-moon" id="theme-icon"></i>
             </button>
-            <div class="menu-toggle" id="mobile-menu">
+            <button type="button" class="menu-toggle" id="mobile-menu" aria-label="Toggle navigation menu"
+                aria-expanded="false" aria-controls="nav-links">
                 <i class="fas fa-bars"></i>
-            </div>
+            </button>
         </div>
     </nav>
 
     <header id="about" class="hero">
         <div class="hero-content-wrapper">
             <div class="hero-text reveal">
-                <h1 class="glitch" data-text="Jirapat Chaumaungphan">Jirapat Chaumaungphan</h1>
-                <h2 class="subtitle">Bachelor of Robotics Engineering and Artificial Intelligence</h2>
-                <p class="summary">Robotics Engineering and Artificial Intelligence graduate from Chiang Mai University with a strong passion for ROS2, Computer Vision, and Autonomous Systems. Proven logical problem-solving skills through the development of a 5-DOF robotic arm (WhitePost). Experienced in Python/C++</p>
+                <h1>Jirapat Chaumaungphan</h1>
+                <h2 class="subtitle">Technical Engineer &middot; Robotics &amp; AI</h2>
+                <p class="summary">Robotics Engineering and Artificial Intelligence graduate from Chiang Mai University with a strong passion for ROS2, Computer Vision, and Autonomous Systems. Proven logical problem-solving skills through the development of a 5-DOF robotic arm (WhitePost). Experienced in Python/C++.</p>
                 <div class="social-links">
-                    <a href="https://github.com/EARTH157" target="_blank" class="btn"><i class="fab fa-github"></i>
+                    <a href="RESUME%20-%20%E0%B8%88%E0%B8%B4%E0%B8%A3%E0%B8%A0%E0%B8%B1%E0%B8%97%E0%B8%A3%20%20%E0%B9%80%E0%B8%8A%E0%B8%B7%E0%B9%89%E0%B8%AD%E0%B9%80%E0%B8%A1%E0%B8%B7%E0%B8%AD%E0%B8%87%E0%B8%9E%E0%B8%B2%E0%B8%99.pdf"
+                        target="_blank" rel="noopener" class="btn btn-primary"><i class="fas fa-file-arrow-down"></i>
+                        Resume</a>
+                    <a href="https://github.com/EARTH157" target="_blank" rel="noopener" class="btn"><i class="fab fa-github"></i>
                         GitHub</a>
-                    <a href="https://www.linkedin.com/in/jirapat-chaumaungphan-9a0a66326/" target="_blank"
+                    <a href="https://www.linkedin.com/in/jirapat-chaumaungphan-9a0a66326/" target="_blank" rel="noopener"
                         class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                    <a href="https://www.youtube.com/@jirapatchaumaungphan6870" target="_blank" class="btn"><i
+                    <a href="https://www.youtube.com/@jirapatchaumaungphan6870" target="_blank" rel="noopener" class="btn"><i
                             class="fab fa-youtube"></i> YouTube</a>
                 </div>
                 <div class="contact-info">
-                    <span><i class="fas fa-envelope"></i> earthzz.jirapat@outlook.com</span>
-                    <span><i class="fas fa-phone"></i> 081-513-7835</span>
+                    <a href="mailto:earthzz.jirapat@outlook.com"><i class="fas fa-envelope"></i> earthzz.jirapat@outlook.com</a>
+                    <a href="tel:+66815137835"><i class="fas fa-phone"></i> 081-513-7835</a>
                 </div>
             </div>
             <div class="hero-image reveal">
-                <img src="assets/images/profile/profile_dicut.png" alt="Jirapat Chaumaungphan Silhouette">
+                <img src="assets/images/profile/profile_dicut.webp" alt="Portrait of Jirapat Chaumaungphan"
+                    width="1086" height="1188" fetchpriority="high">
             </div>
         </div>
     </header>
@@ -88,6 +102,14 @@
         <h2 class="section-title reveal">Experience & Activities</h2>
         <div class="timeline-container reveal">
             <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-panel">
+                        <h3>Technical Engineer</h3>
+                        <h4>Entech Industrial Solution</h4>
+                        <span class="date">Jul 2026 - Present</span>
+                    </div>
+                </div>
                 <div class="timeline-item">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content glass-panel">
@@ -128,7 +150,7 @@
                                     <span>ROS2 Humble</span>
                                     <span>Intel NUC</span>
                                     <span>ESP32</span>
-                                    <span>CAN BUS Protocal</span>
+                                    <span>CAN BUS Protocol</span>
                                     <span>Hub Servo Motor</span>
                                     <span>Python</span>
                                     <span>C++</span>
@@ -142,6 +164,12 @@
                                     <li>Technical documentation and progress reporting</li>
                                 </ul>
                             </div>
+                        </div>
+
+                        <div class="project-links">
+                            <button type="button" class="btn-small expand-btn" aria-expanded="false">
+                                <i class="fas fa-circle-play"></i> <span>Watch demo</span>
+                            </button>
                         </div>
 
                         <div class="intern-media">
@@ -207,13 +235,15 @@
                             Thailand in Stage 2 and Stage 3 (Tokyo, Japan). Honored to receive guidance from Dr. Zia
                             Ahmed and Assoc. Prof. Dr. Supavadee Aramvith.</p>
 
-                        <div class="project-links"
-                            style="justify-content: flex-start; margin-top: 1rem; margin-bottom: 1rem;">
+                        <div class="project-links">
                             <a href="https://drive.google.com/drive/folders/1tkVi3v1B5EPEsx9MB2_yYk1RHMiynttA?usp=drive_link"
-                                target="_blank" class="btn-small"><i class="fas fa-folder-open"></i> Project Details</a>
+                                target="_blank" rel="noopener" class="btn-small"><i class="fas fa-folder-open"></i> Project Details</a>
+                            <button type="button" class="btn-small expand-btn" aria-expanded="false">
+                                <i class="fas fa-circle-play"></i> <span>Watch demo</span>
+                            </button>
                         </div>
 
-                        <div class="intern-media" style="margin-top: 1rem;">
+                        <div class="intern-media">
                             <div class="video-container">
                                 <iframe loading="lazy" src="https://www.youtube.com/embed/qKz9dwZc6Xs"
                                     title="IEEE Presentation" frameborder="0"
@@ -281,6 +311,11 @@
                                 allowfullscreen></iframe>
                         </div>
                     </div>
+                    <div class="project-links">
+                        <button type="button" class="btn-small expand-btn" aria-expanded="false">
+                            <i class="fas fa-circle-play"></i> <span>Watch demo</span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -302,7 +337,10 @@
                         </div>
                     </div>
                     <div class="project-links">
-                        <a href="https://github.com/EARTH157/Robot_ws" class="btn-small"><i class="fab fa-github"></i> Code</a>
+                        <button type="button" class="btn-small expand-btn" aria-expanded="false">
+                            <i class="fas fa-circle-play"></i> <span>Watch demo</span>
+                        </button>
+                        <a href="https://github.com/EARTH157/Robot_ws" target="_blank" rel="noopener" class="btn-small"><i class="fab fa-github"></i> Code</a>
                     </div>
                 </div>
             </div>
@@ -325,7 +363,10 @@
                         </div>
                     </div>
                     <div class="project-links">
-                        <a href="https://github.com/EARTH157/Robot_Project1" class="btn-small"><i class="fab fa-github"></i> Code</a>
+                        <button type="button" class="btn-small expand-btn" aria-expanded="false">
+                            <i class="fas fa-circle-play"></i> <span>Watch demo</span>
+                        </button>
+                        <a href="https://github.com/EARTH157/Robot_Project1" target="_blank" rel="noopener" class="btn-small"><i class="fab fa-github"></i> Code</a>
                     </div>
                 </div>
             </div>
@@ -341,10 +382,8 @@
                         Inverse/Forward Kinematics control for the 5-DOF arm, and a custom YOLOv8 model (OpenCV) to
                         identify and track elevator buttons.</p>
                     <div class="hover-media">
-                        <div class="model-viewer-container" id="whitepost-viewer"
-                            style="height: 200px; margin-bottom: 1rem; border-radius: 8px;">
-                            <div id="whitepost-loading" class="loading-text" style="font-size: 0.85rem;">Loading 3D
-                                Model...</div>
+                        <div class="model-viewer-container" id="whitepost-viewer">
+                            <div id="whitepost-loading" class="loading-text">Loading 3D Model...</div>
                         </div>
                         <div class="video-container">
                             <iframe loading="lazy" src="https://www.youtube.com/embed/g4I4fgwufIk"
@@ -360,7 +399,10 @@
                         </div>
                     </div>
                     <div class="project-links">
-                        <a href="https://github.com/EARTH157/Senior_Project-WhitePost-Main_Arm" class="btn-small"><i class="fab fa-github"></i> Code</a>
+                        <button type="button" class="btn-small expand-btn" aria-expanded="false">
+                            <i class="fas fa-circle-play"></i> <span>Watch demo</span>
+                        </button>
+                        <a href="https://github.com/EARTH157/Senior_Project-WhitePost-Main_Arm" target="_blank" rel="noopener" class="btn-small"><i class="fab fa-github"></i> Code</a>
                     </div>
                 </div>
             </div>
@@ -383,7 +425,10 @@
                         </div>
                     </div>
                     <div class="project-links">
-                        <a href="https://github.com/EARTH157/autonomous-robot-rrt-star" class="btn-small"><i class="fab fa-github"></i> Code</a>
+                        <button type="button" class="btn-small expand-btn" aria-expanded="false">
+                            <i class="fas fa-circle-play"></i> <span>Watch demo</span>
+                        </button>
+                        <a href="https://github.com/EARTH157/autonomous-robot-rrt-star" target="_blank" rel="noopener" class="btn-small"><i class="fab fa-github"></i> Code</a>
                     </div>
                 </div>
             </div>
@@ -428,7 +473,7 @@
                     <span><img class="skill-icon" src="assets/images/logo/gazebo_icon_pos-76b768ca51b0c24a5e5ddeb5a844baf3a3efc83e42affae355ed6ce9326707e4.svg" alt="Gazebo">Gazebo Classic</span>
                     <span><img class="skill-icon" src="assets/images/logo/Visual_Studio_Code_1.35_icon.svg.png" alt="Visual Studio Code">Visual Studio Code</span>
                     <span><img class="skill-icon" src="assets/images/logo/25231.png" alt="GitHub">GitHub</span>
-                    <span><img class="skill-icon" src="assets/images/logo/2221476.webp" alt="Solidwork">Solidwork</span>
+                    <span><img class="skill-icon" src="assets/images/logo/2221476.webp" alt="SolidWorks">SolidWorks</span>
                     <span><img class="skill-icon" src="assets/images/logo/easyeda-icon-filled-256.png" alt="EasyEDA">EasyEDA</span>
                     <span><img class="skill-icon" src="assets/images/logo/Arduino_IDE_logo.svg.png" alt="Arduino IDE">Arduino IDE</span>
                 </div>
@@ -470,14 +515,12 @@
                             <span class="lang-name">Thai</span>
                             <span class="lang-level">Native</span>
                         </div>
-                        <div class="lang-bar"><div class="lang-fill" style="width: 100%"></div></div>
                     </div>
                     <div class="language-item">
                         <div class="lang-header">
                             <span class="lang-name">English</span>
-                            <span class="lang-level">EF SET 45/100 (Reading & Listening)</span>
+                            <span class="lang-level">B1 Intermediate &middot; EF SET 45/100 (Reading &amp; Listening)</span>
                         </div>
-                        <div class="lang-bar"><div class="lang-fill" style="width: 45%"></div></div>
                     </div>
                 </div>
             </div>
