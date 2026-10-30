@@ -86,16 +86,32 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Initialize 3D Model Viewer if container exists
-    const viewerContainer = document.getElementById('amr-viewer');
-    if (viewerContainer) {
-        init3DViewer(viewerContainer, 'assets/models/AMR300.STL', 'amr-loading', 0xD27D60);
-    }
+    // 3D Model Viewers: three.js and the model are only downloaded once the viewer
+    // becomes visible (its card is hovered/tapped open), not on page load
+    const viewers = [
+        { id: 'amr-viewer', model: 'assets/models/AMR300.glb', loading: 'amr-loading' },
+        { id: 'whitepost-viewer', model: 'assets/models/WhitePost.glb', loading: 'whitepost-loading' }
+    ];
 
-    const whitepostViewerContainer = document.getElementById('whitepost-viewer');
-    if (whitepostViewerContainer) {
-        init3DViewer(whitepostViewerContainer, 'assets/models/WhitePost.STL', 'whitepost-loading', 0xD27D60);
-    }
+    const viewerObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            observer.unobserve(entry.target);
+            const viewer = viewers.find(v => v.id === entry.target.id);
+            loadThree()
+                .then(() => init3DViewer(entry.target, viewer.model, viewer.loading, 0xD27D60))
+                .catch(error => {
+                    console.error('Failed to load three.js:', error);
+                    const loadingText = document.getElementById(viewer.loading);
+                    if (loadingText) loadingText.innerText = 'Failed to load model.';
+                });
+        });
+    });
+
+    viewers.forEach(v => {
+        const container = document.getElementById(v.id);
+        if (container) viewerObserver.observe(container);
+    });
 
     // Mobile Touch Support for Hover Elements
     const cardElements = document.querySelectorAll('.project-card, .timeline-item');
@@ -172,6 +188,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+function loadScript(src) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = () => reject(new Error(`Failed to load ${src}`));
+        document.head.appendChild(script);
+    });
+}
+
+// Load three.js once, then its add-ons (they need the global THREE to exist first)
+let threePromise = null;
+function loadThree() {
+    if (!threePromise) {
+        const examples = 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/';
+        threePromise = loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js')
+            .then(() => Promise.all([
+                loadScript(examples + 'controls/OrbitControls.js'),
+                loadScript(examples + 'loaders/GLTFLoader.js'),
+                loadScript(examples + 'loaders/DRACOLoader.js')
+            ]));
+        threePromise.catch(() => { threePromise = null; });
+    }
+    return threePromise;
+}
+
+let dracoLoader = null;
+
 function init3DViewer(container, modelPath, loadingElementId, modelColor = 0xD27D60) {
     const scene = new THREE.Scene();
     
@@ -214,23 +258,37 @@ function init3DViewer(container, modelPath, loadingElementId, modelColor = 0xD27
     });
     resizeObserver.observe(container);
 
-    // Load STL Model
-    const loader = new THREE.STLLoader();
+    // Load Draco-compressed GLB Model (converted from the original STL)
+    // One DRACOLoader is shared so the decoder is only downloaded once
+    if (!dracoLoader) {
+        dracoLoader = new THREE.DRACOLoader();
+        dracoLoader.setDecoderPath('assets/vendor/draco/');
+        dracoLoader.setDecoderConfig({ type: 'wasm' });
+    }
+    const loader = new THREE.GLTFLoader();
+    loader.setDRACOLoader(dracoLoader);
     const loadingText = document.getElementById(loadingElementId);
 
     loader.load(
         modelPath,
-        function (geometry) {
+        function (gltf) {
             if (loadingText) loadingText.style.display = 'none';
+
+            let geometry;
+            gltf.scene.traverse(obj => {
+                if (obj.isMesh && !geometry) geometry = obj.geometry;
+            });
 
             // Center the model
             geometry.center();
 
             // Create material (Terra Cotta color to match theme: #D27D60)
-            const material = new THREE.MeshPhongMaterial({ 
-                color: modelColor, 
-                specular: 0x111111, 
-                shininess: 200 
+            // flatShading: the model has no normals, same faceted look as the STL
+            const material = new THREE.MeshPhongMaterial({
+                color: modelColor,
+                specular: 0x111111,
+                shininess: 200,
+                flatShading: true
             });
 
             const mesh = new THREE.Mesh(geometry, material);
@@ -250,14 +308,14 @@ function init3DViewer(container, modelPath, loadingElementId, modelColor = 0xD27
             scene.add(mesh);
         },
         function (xhr) {
-            if (xhr.lengthComputable) {
+            if (xhr.lengthComputable && loadingText) {
                 const percent = (xhr.loaded / xhr.total * 100).toFixed(0);
                 loadingText.innerText = `Loading 3D Model... ${percent}%`;
             }
         },
         function (error) {
-            console.error('An error happened while loading the STL:', error);
-            loadingText.innerText = 'Failed to load model.';
+            console.error('An error happened while loading the model:', error);
+            if (loadingText) loadingText.innerText = 'Failed to load model.';
         }
     );
 
