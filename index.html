@@ -38,6 +38,7 @@
             <li><a href="#experience">Experience & Activities</a></li>
             <li><a href="#projects">Projects</a></li>
             <li><a href="#skills">Skills</a></li>
+            <li><a href="#contact">Contact</a></li>
         </ul>
         <div class="nav-right">
             <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">
@@ -48,40 +49,53 @@
                 <i class="fas fa-bars"></i>
             </button>
         </div>
+        <div class="scroll-progress" aria-hidden="true"></div>
     </nav>
 
     <header id="about" class="hero">
         <div class="hero-content-wrapper">
-            <div class="hero-text reveal">
-                <h1 class="glitch" data-text="Jirapat Chaumaungphan">Jirapat Chaumaungphan</h1>
-                <h2 class="subtitle">Robotics &amp; AI Engineer</h2>
-                <p class="summary">Technical Engineer and Robotics Engineering &amp; AI graduate (Chiang Mai University)
+            <div class="hero-text">
+                <span class="status-pill hero-anim" style="--i: 0"><span class="status-dot"></span> Technical
+                    Engineer @ Entech Industrial Solution</span>
+                <h1 class="hero-anim" style="--i: 1">Jirapat Chaumaungphan</h1>
+                <h2 class="subtitle hero-anim" style="--i: 2">Robotics &amp; AI Engineer</h2>
+                <p class="focus-line hero-anim" style="--i: 3">
+                    <span class="sr-only">Focus areas: Computer Vision, LLM &amp; RAG, ROS2 Robotics, AI-assisted
+                        Full-stack.</span>
+                    <span aria-hidden="true">Building with <span class="rotator" id="rotator">Computer
+                            Vision</span></span>
+                </p>
+                <p class="summary hero-anim" style="--i: 4">Technical Engineer and Robotics Engineering &amp; AI graduate (Chiang Mai University)
                     pursuing an AI Engineer career. Experienced in computer vision (custom YOLOv8 + OpenCV models
                     deployed on a robot), building LLM/RAG applications, and AI-assisted full-stack development, with
                     a strong Python/C++ and ROS2 foundation.</p>
-                <div class="social-links">
+                <div class="social-links hero-anim" style="--i: 5">
                     <a href="assets/docs/Jirapat_Chaumaungphan_Resume.pdf" download class="btn btn-primary"><i
                             class="fas fa-file-arrow-down"></i> Download CV</a>
-                    <a href="https://github.com/EARTH157" target="_blank" class="btn"><i class="fab fa-github"></i>
-                        GitHub</a>
+                    <a href="https://github.com/EARTH157" target="_blank" rel="noopener" class="btn btn-icon"
+                        aria-label="GitHub" title="GitHub"><i class="fab fa-github"></i></a>
                     <a href="https://www.linkedin.com/in/jirapat-chaumaungphan-9a0a66326/" target="_blank"
-                        class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                    <a href="https://www.youtube.com/@jirapatchaumaungphan6870" target="_blank" class="btn"><i
-                            class="fab fa-youtube"></i> YouTube</a>
+                        rel="noopener" class="btn btn-icon" aria-label="LinkedIn" title="LinkedIn"><i
+                            class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.youtube.com/@jirapatchaumaungphan6870" target="_blank" rel="noopener"
+                        class="btn btn-icon" aria-label="YouTube" title="YouTube"><i class="fab fa-youtube"></i></a>
                 </div>
-                <div class="contact-info">
+                <div class="contact-info hero-anim" style="--i: 6">
                     <a href="mailto:earthzz.jirapat@outlook.com"><i class="fas fa-envelope"></i> earthzz.jirapat@outlook.com</a>
                 </div>
             </div>
-            <div class="hero-image reveal">
-                <img src="assets/images/profile/profile_dicut.webp" alt="Portrait of Jirapat Chaumaungphan" width="823" height="900" fetchpriority="high">
+            <div class="hero-image hero-photo-anim">
+                <div class="hero-photo">
+                    <img src="assets/images/profile/profile_dicut.webp" alt="Portrait of Jirapat Chaumaungphan" width="823" height="900" fetchpriority="high">
+                </div>
             </div>
         </div>
+        <a href="#education" class="scroll-cue" aria-label="Scroll to content"><span></span></a>
     </header>
 
     <section id="education" class="section">
         <h2 class="section-title reveal">Education</h2>
-        <div class="timeline-container reveal">
+        <div class="timeline-container">
             <div class="timeline">
                 <div class="timeline-item">
                     <div class="timeline-dot"></div>
@@ -105,7 +119,7 @@
 
     <section id="experience" class="section">
         <h2 class="section-title reveal">Experience & Activities</h2>
-        <div class="timeline-container reveal">
+        <div class="timeline-container">
             <div class="timeline">
                 <div class="timeline-item">
                     <div class="timeline-dot"></div>
@@ -204,6 +218,12 @@
                             </div>
                         </div>
 
+                        <div class="event-gallery">
+                            <img src="assets/images/intern/amr300_tesr.webp"
+                                alt="The AMR300 high-payload mobile robot built during the TESR internship"
+                                class="zoom-img" width="1000" height="563" loading="lazy" decoding="async">
+                        </div>
+
                         <div class="intern-media">
                             <div class="video-container">
                                 <iframe loading="lazy" src="https://www.youtube.com/embed/Lm8VJtDsq-E"
@@ -227,6 +247,10 @@
                         <p>Collaborated with CMU Student Development Division and Faculty of Dentistry to facilitate
                             dental checkups and treatments for disabled students. Promoted healthcare access, equality,
                             and mutual care within the university.</p>
+                        <div class="project-links" style="justify-content: flex-start; margin-top: 1rem;">
+                            <a href="assets/docs/certificate_peer_helping_peer_2025.pdf" target="_blank" rel="noopener"
+                                class="btn-small"><i class="fas fa-certificate"></i> Certificate</a>
+                        </div>
                         <div class="event-gallery">
                             <img src="assets/images/เพื่อนช่วยเพื่อน/486680447_1147599350498312_5829310320842614446_n.webp"
                                 alt="Peer Helping Peer volunteers with CMU Disability Support Services" class="zoom-img" width="1000" height="750" loading="lazy" decoding="async">
@@ -309,6 +333,9 @@
                         <div class="event-gallery">
                             <img src="assets/images/builds_hackathon/471744996_456433480837730_7518980023600342732_n.webp"
                                 alt="Teams brainstorming Smart Campus ideas at the 24-hour builds hackathon" class="zoom-img" width="1000" height="667" loading="lazy" decoding="async">
+                            <img src="assets/images/builds_hackathon/certificate.webp"
+                                alt="Certificate of participation, 24 Hrs. builds Hackathon Smart University"
+                                class="zoom-img" width="1000" height="707" loading="lazy" decoding="async">
                         </div>
                     </div>
                 </div>
@@ -583,9 +610,23 @@
         </div>
     </section>
 
-    <footer>
-        <p>&copy; 2026 Jirapat Chaumaungphan. All rights reserved.</p>
+    <footer id="contact">
+        <div class="footer-cta reveal">
+            <h2>Let's build something together</h2>
+            <p>Interested in AI engineering and robotics roles. Email is the fastest way to reach me.</p>
+            <div class="footer-actions">
+                <a href="mailto:earthzz.jirapat@outlook.com" class="btn btn-primary"><i class="fas fa-envelope"></i>
+                    Email me</a>
+                <a href="https://www.linkedin.com/in/jirapat-chaumaungphan-9a0a66326/" target="_blank" rel="noopener"
+                    class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                <a href="https://github.com/EARTH157" target="_blank" rel="noopener" class="btn"><i
+                        class="fab fa-github"></i> GitHub</a>
+            </div>
+        </div>
+        <p class="copyright">&copy; 2026 Jirapat Chaumaungphan. All rights reserved.</p>
     </footer>
+
+    <button class="back-to-top" id="back-to-top" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
 
     <!-- Three.js for the 3D viewers is loaded on demand by script.js -->
     <script src="script.js"></script>
