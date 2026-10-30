@@ -57,34 +57,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Scroll reveal animation
-    const reveals = document.querySelectorAll(".reveal");
-
-    const revealOnScroll = () => {
-        const windowHeight = window.innerHeight;
-        const elementVisible = 100;
-
-        reveals.forEach((reveal) => {
-            const elementTop = reveal.getBoundingClientRect().top;
-            if (elementTop < windowHeight - elementVisible) {
-                reveal.classList.add("active");
+    // Scroll reveal animation (smooth scrolling for nav links is handled by CSS scroll-behavior)
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("active");
+                observer.unobserve(entry.target);
             }
         });
-    };
+    }, { rootMargin: '0px 0px -100px 0px' });
 
-    window.addEventListener("scroll", revealOnScroll);
-    revealOnScroll(); // Trigger once on load
-
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
+    document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
 
     // 3D Model Viewers: three.js and the model are only downloaded once the viewer
     // becomes visible (its card is hovered/tapped open), not on page load
@@ -130,22 +113,37 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // Cards that hide videos/3D models until opened are also reachable by keyboard
+    const expandableCards = [...cardElements].filter(el => el.querySelector('.hover-media, .intern-media'));
+    expandableCards.forEach(el => el.setAttribute('tabindex', '0'));
+
+    function setCardActive(card) {
+        const isActive = card.classList.contains('touch-active');
+
+        // Remove active class from all card/timeline elements
+        cardElements.forEach(sibling => sibling.classList.remove('touch-active'));
+
+        // Toggle: if was active, stay collapsed; if not, expand
+        if (!isActive) {
+            card.classList.add('touch-active');
+        }
+    }
+
     // Handle cards and timeline items
     cardElements.forEach(el => {
         el.addEventListener('click', function(e) {
             // Ignore if clicking a link, video, or zoom image
             const tag = e.target.tagName.toLowerCase();
-            if (tag === 'a' || tag === 'iframe' || e.target.closest('.zoom-img')) return;
-            
-            const isActive = this.classList.contains('touch-active');
-            
-            // Remove active class from all card/timeline elements
-            cardElements.forEach(sibling => sibling.classList.remove('touch-active'));
-            
-            // Toggle: if was active, stay collapsed; if not, expand
-            if (!isActive) {
-                this.classList.add('touch-active');
-            }
+            if (tag === 'a' || tag === 'iframe' || e.target.closest('a, .zoom-img')) return;
+            setCardActive(this);
+        });
+    });
+
+    expandableCards.forEach(el => {
+        el.addEventListener('keydown', function(e) {
+            if (e.target !== this || (e.key !== 'Enter' && e.key !== ' ')) return;
+            e.preventDefault();
+            setCardActive(this);
         });
     });
 
@@ -162,28 +160,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const navLinks = document.querySelector('.nav-links');
     
     if (mobileMenu && navLinks) {
-        mobileMenu.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
+        const setMenuOpen = (open) => {
+            navLinks.classList.toggle('active', open);
+            mobileMenu.setAttribute('aria-expanded', String(open));
+            mobileMenu.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
             const icon = mobileMenu.querySelector('i');
-            if (navLinks.classList.contains('active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
+            if (icon) {
+                icon.classList.toggle('fa-bars', !open);
+                icon.classList.toggle('fa-times', open);
             }
+        };
+
+        mobileMenu.addEventListener('click', () => {
+            setMenuOpen(!navLinks.classList.contains('active'));
         });
 
         // Close menu when a link is clicked
         navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                const icon = mobileMenu.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            });
+            link.addEventListener('click', () => setMenuOpen(false));
         });
     }
 });

@@ -2,8 +2,11 @@
     --bg-color: #F4F0EB;
     --text-main: #3D3935;
     --text-heading: #1C1A18;
-    --accent-color: #D27D60;
-    --accent-dark: #B56247;
+    /* Text-safe accents (WCAG AA on the cream background) */
+    --accent-color: #A4553A;
+    --accent-dark: #93472E;
+    /* Brand terracotta for decorative, non-text elements */
+    --accent-bright: #D27D60;
     --glass-bg: rgba(255, 255, 255, 0.6);
     --glass-border: rgba(0, 0, 0, 0.08);
     --nav-bg: rgba(244, 240, 235, 0.85);
@@ -20,6 +23,7 @@
     --text-heading: #f0ece7;
     --accent-color: #e8957a;
     --accent-dark: #d4775c;
+    --accent-bright: #e8957a;
     --glass-bg: rgba(30, 30, 30, 0.7);
     --glass-border: rgba(255, 255, 255, 0.08);
     --nav-bg: rgba(18, 18, 18, 0.92);
@@ -49,6 +53,12 @@ footer {
 
 html {
     scroll-behavior: smooth;
+}
+
+/* Keep section headings clear of the fixed nav when jumping via the menu */
+section[id],
+header[id] {
+    scroll-margin-top: 90px;
 }
 
 body {
@@ -124,14 +134,17 @@ nav {
     font-size: 1.5rem;
     color: var(--text-main);
     letter-spacing: 2px;
+    text-decoration: none;
 }
 
 .logo .dot {
-    color: var(--accent-color);
+    color: var(--accent-bright);
 }
 
 .menu-toggle {
     display: none;
+    background: none;
+    border: none;
     font-size: 1.5rem;
     color: var(--text-heading);
     cursor: pointer;
@@ -172,7 +185,7 @@ nav {
     position: absolute;
     width: 40vw;
     height: 40vw;
-    background: radial-gradient(circle, var(--accent-dark) 0%, transparent 70%);
+    background: radial-gradient(circle, var(--accent-bright) 0%, transparent 70%);
     opacity: 0.2;
     top: 50%;
     left: 50%;
@@ -214,7 +227,8 @@ nav {
 
 .social-links {
     display: flex;
-    gap: 1rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
     margin-bottom: 2rem;
 }
 
@@ -240,7 +254,7 @@ nav {
 
 .btn {
     display: inline-block;
-    padding: 0.8rem 1.5rem;
+    padding: 0.75rem 1.2rem;
     border: 1px solid var(--accent-color);
     border-radius: 30px;
     color: var(--accent-color);
@@ -278,6 +292,17 @@ nav {
     color: var(--text-main);
 }
 
+.contact-info a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.contact-info a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
 .contact-info i {
     color: var(--accent-color);
     margin-right: 0.5rem;
@@ -308,7 +333,7 @@ nav {
     display: block;
     width: 60px;
     height: 3px;
-    background: var(--accent-color);
+    background: var(--accent-bright);
     margin: 10px auto 0;
 }
 
@@ -364,11 +389,11 @@ nav {
     position: absolute;
     width: 15px;
     height: 15px;
-    background: var(--accent-color);
+    background: var(--accent-bright);
     border-radius: 50%;
     left: 13.5px;
     top: 5px;
-    box-shadow: 0 0 10px var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-bright);
 }
 
 .timeline-content h3 {
@@ -485,6 +510,13 @@ nav {
 .event-gallery .zoom-img:hover::after,
 .event-gallery .zoom-img.touch-active::after {
     opacity: 0;
+}
+
+/* Expandable cards are focusable so keyboard users can open them */
+.project-card:focus-visible,
+.timeline-item:focus-visible .timeline-content {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 4px;
 }
 
 /* Projects Grid */
@@ -637,6 +669,24 @@ nav {
     opacity: 0.7;
     transition: all 0.3s ease;
     animation: pulseHint 2s ease-in-out infinite;
+}
+
+/* Icon header for projects without a photo */
+.project-img--icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--tag-bg), var(--model-bg));
+    color: var(--accent-bright);
+    font-size: 4rem;
+}
+
+.project-img--icon::after {
+    display: none;
+}
+
+.project-info .tags {
+    margin-bottom: 1rem;
 }
 
 .project-card:hover .project-img::after,
@@ -796,12 +846,18 @@ footer {
     gap: 0.5rem;
 }
 
-.detail-block ul {
+.detail-block ul,
+.highlight-list {
     list-style: none;
     padding-left: 0;
 }
 
-.detail-block ul li {
+.highlight-list {
+    margin-top: 1rem;
+}
+
+.detail-block ul li,
+.highlight-list li {
     position: relative;
     padding-left: 1.2rem;
     margin-bottom: 0.4rem;
@@ -809,7 +865,8 @@ footer {
     line-height: 1.5;
 }
 
-.detail-block ul li::before {
+.detail-block ul li::before,
+.highlight-list li::before {
     content: '▸';
     position: absolute;
     left: 0;
@@ -817,22 +874,19 @@ footer {
     font-weight: bold;
 }
 
-/* Language Bars */
+/* Languages */
 .language-list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-}
-
-.language-item {
-    width: 100%;
+    gap: 0.8rem;
 }
 
 .lang-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.4rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--glass-border);
 }
 
 .lang-name {
@@ -842,24 +896,38 @@ footer {
 }
 
 .lang-level {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--accent-dark);
-    font-weight: 400;
 }
 
-.lang-bar {
-    width: 100%;
-    height: 8px;
-    background: var(--tag-bg);
-    border-radius: 10px;
-    overflow: hidden;
+.cert-link {
+    font-size: 0.85rem;
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
 }
 
-.lang-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent-color), var(--accent-dark));
-    border-radius: 10px;
-    transition: width 1s ease-out;
+.cert-link:hover {
+    text-decoration: underline;
+}
+
+/* Respect users who turn off animations in their OS */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .reveal {
+        opacity: 1;
+        transform: none;
+    }
 }
 
 /* Responsive */
