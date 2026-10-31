@@ -25,7 +25,7 @@ const robot = robots.find((r) => r.id === data.robot);
   <header class="case-hero blueprint on-ink">
     <nav class="container case-nav" aria-label="Breadcrumb">
       <a href="/#work" class="back"><Icon name="chevron-left" size={16} /> All work</a>
-      <a href="/" class="logo">JC<span>.</span></a>
+      <a href="/" class="logo vt-logo">JC<span>.</span></a>
     </nav>
     <div id="main" class="container case-intro">
       <span class="eyebrow">{data.kicker}</span>
@@ -45,7 +45,7 @@ const robot = robots.find((r) => r.id === data.robot);
   </header>
 
   <main class="container case-body">
-    <figure class:list={['case-cover', `cover-${data.coverStyle}`, { blueprint: data.coverStyle === 'render' }]}>
+    <figure class:list={['case-cover', `cover-${data.coverStyle}`, { blueprint: data.coverStyle === 'render' }]} style={`view-transition-name: cover-${entry.id}`}>
       <Image src={data.cover} alt={data.coverAlt} widths={[640, 960, 1280]} sizes="(min-width: 1280px) 1216px, 100vw" loading="eager" />
     </figure>
 

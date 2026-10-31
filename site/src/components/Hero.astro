@@ -6,6 +6,8 @@ import { profile, disciplines, stats } from '../data/site';
 
 const [firstName, ...rest] = profile.name.split(' ');
 const lastName = rest.join(' ');
+const eyebrow = `// ${profile.role}`;
+const caption = 'FIG. 00 · The engineer';
 
 const navLinks = [
   { n: '01', label: 'Work', href: '#work' },
@@ -18,7 +20,7 @@ const navLinks = [
 
 <header class="hero blueprint on-ink">
   <nav class="nav container" aria-label="Main">
-    <a href="#main" class="logo">JC<span>.</span></a>
+    <a href="#main" class="logo vt-logo">JC<span>.</span></a>
     <ul class="nav-links" id="nav-links">
       {navLinks.map((l) => (
         <li><a href={l.href}><span>{l.n}</span> {l.label}</a></li>
@@ -37,12 +39,14 @@ const navLinks = [
   <div id="main" class="cover container">
     <div class="cover-copy">
       <div class="hero-meta">
-        <span class="eyebrow">// {profile.role}</span>
+        <span class="eyebrow typed" style={`--chars: ${eyebrow.length}`}>
+          <span class="typed-text">{eyebrow}</span><span class="cursor" aria-hidden="true"></span>
+        </span>
         <span class="status"><span class="status-dot"></span>{profile.current}</span>
       </div>
       <h1 class="cover-name">
         <span class="hi">Hi, I'm</span>
-        <span class="first">{firstName}</span>
+        <span class="first"><span>{firstName}</span></span>
         <span class="last">{lastName}</span>
       </h1>
       <p class="tagline">{profile.headline}</p>
@@ -80,7 +84,7 @@ const navLinks = [
       />
       <span class="crop crop-tl" aria-hidden="true"></span>
       <span class="crop crop-tr" aria-hidden="true"></span>
-      <figcaption class="mono">FIG. 00 · The engineer</figcaption>
+      <figcaption class="mono" style={`--chars: ${caption.length}`}>{caption}</figcaption>
     </figure>
   </div>
 
@@ -188,15 +192,67 @@ const navLinks = [
     padding-bottom: 48px;
   }
 
-  .cover-copy > * {
-    animation: rise 0.9s var(--ease) both;
+  /*
+   Cover intro, in order: the eyebrow types itself, the name rises out of a mask,
+   the outlined surname is drawn left to right, then the rest of the copy settles.
+   Every keyframe only says where an element starts, so with animations off
+   (prefers-reduced-motion) everything simply sits in its final place.
+  */
+  .typed {
+    display: inline-flex;
+    align-items: center;
   }
 
-  .cover-copy > :nth-child(2) { animation-delay: 0.08s; }
-  .cover-copy > :nth-child(3) { animation-delay: 0.16s; }
-  .cover-copy > :nth-child(4) { animation-delay: 0.22s; }
-  .cover-copy > :nth-child(5) { animation-delay: 0.28s; }
-  .cover-copy > :nth-child(6) { animation-delay: 0.34s; }
+  .typed-text {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    width: calc(var(--chars) * (1ch + 0.1em));
+    animation: type 0.9s steps(var(--chars), end) 0.15s both;
+  }
+
+  /* Blinks five times, then bows out so nothing keeps flashing */
+  .cursor {
+    width: 0.62em;
+    height: 1.25em;
+    margin-left: 4px;
+    background: var(--clay-light);
+    animation:
+      blink 1s steps(1) 0.15s 5,
+      fade-out 0.3s ease 5.2s forwards;
+  }
+
+  .status {
+    animation: rise 0.7s var(--ease) 0.9s both;
+  }
+
+  .cover-name .hi {
+    animation: rise 0.8s var(--ease) 0.35s both;
+  }
+
+  .cover-name .first {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+  }
+
+  .cover-name .first > span {
+    display: block;
+    animation: mask-up 0.9s var(--ease) 0.5s both;
+  }
+
+  .cover-name .last {
+    animation: draw 1.1s cubic-bezier(0.65, 0, 0.35, 1) 0.85s both;
+  }
+
+  .tagline { animation: rise 0.8s var(--ease) 1.05s both; }
+  .hero-intro { animation: rise 0.8s var(--ease) 1.15s both; }
+  .disciplines li { animation: rise 0.7s var(--ease) both; }
+  .disciplines li:nth-child(1) { animation-delay: 1.3s; }
+  .disciplines li:nth-child(2) { animation-delay: 1.4s; }
+  .disciplines li:nth-child(3) { animation-delay: 1.5s; }
+  .hero-actions { animation: rise 0.8s var(--ease) 1.6s both; }
 
   .cover-name {
     display: flex;
@@ -243,7 +299,20 @@ const navLinks = [
     margin: 0;
     padding: 0;
     list-style: none;
-    border-top: 1px solid var(--on-ink-line);
+    position: relative;
+  }
+
+  /* The rule above the three disciplines extends from the left like a drafting line */
+  .disciplines::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 1px;
+    background: var(--on-ink-line);
+    transform-origin: left;
+    animation: grow-x 0.9s cubic-bezier(0.65, 0, 0.35, 1) 1.2s both;
   }
 
   .disciplines li {
@@ -288,7 +357,6 @@ const navLinks = [
     justify-self: center;
     width: min(100%, 520px);
     aspect-ratio: 823 / 900;
-    animation: rise 1.1s var(--ease) 0.2s both;
   }
 
   .arch {
@@ -304,6 +372,22 @@ const navLinks = [
       repeating-linear-gradient(90deg, rgba(239, 233, 226, 0.06) 0 1px, transparent 1px 24px);
     border: 1px solid rgba(232, 149, 122, 0.5);
     border-bottom: 0;
+    overflow: hidden;
+    transform-origin: bottom;
+    animation: arch-up 1.1s var(--ease) 0.25s both;
+  }
+
+  /* A soft scan line passes down the arch a few times, then rests */
+  .arch::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 18%;
+    background: linear-gradient(180deg, transparent, rgba(232, 149, 122, 0.26) 85%, rgba(247, 242, 236, 0.6));
+    opacity: 0;
+    animation: scan 4.5s cubic-bezier(0.45, 0, 0.55, 1) 2.4s 3;
   }
 
   .cover-portrait :global(.portrait-img) {
@@ -312,6 +396,7 @@ const navLinks = [
     height: 100%;
     object-fit: contain;
     object-position: bottom;
+    animation: rise-far 1.1s var(--ease) 0.6s both;
   }
 
   .crop {
@@ -323,8 +408,12 @@ const navLinks = [
     border-width: 0;
   }
 
-  .crop-tl { top: 0; left: 0; border-top-width: 2px; border-left-width: 2px; }
-  .crop-tr { top: 0; right: 0; border-top-width: 2px; border-right-width: 2px; }
+  .crop-tl { top: 0; left: 0; border-top-width: 2px; border-left-width: 2px; --dx: -14px; }
+  .crop-tr { top: 0; right: 0; border-top-width: 2px; border-right-width: 2px; --dx: 14px; }
+
+  .crop {
+    animation: crop-in 0.5s var(--ease) 1.25s both;
+  }
 
   .cover-portrait figcaption {
     position: absolute;
@@ -334,11 +423,67 @@ const navLinks = [
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--on-ink-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    width: calc(var(--chars) * (1ch + 0.08em));
+    animation: type 0.8s steps(var(--chars), end) 1.45s both;
   }
 
   @keyframes rise {
     from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes rise-far {
+    from { opacity: 0; transform: translateY(40px); }
+  }
+
+  @keyframes mask-up {
+    from { transform: translateY(105%); }
+  }
+
+  @keyframes draw {
+    from { clip-path: inset(0 100% 0 0); }
+    to { clip-path: inset(0 0 0 0); }
+  }
+
+  @keyframes type {
+    from { width: 0; }
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  @keyframes fade-out {
+    to { opacity: 0; }
+  }
+
+  @keyframes menu-in {
+    from { opacity: 0; transform: translateY(-8px); }
+  }
+
+  @keyframes grow-x {
+    from { transform: scaleX(0); }
+  }
+
+  @keyframes arch-up {
+    from { opacity: 0; transform: scaleY(0); }
+  }
+
+  @keyframes crop-in {
+    from { opacity: 0; transform: translate(var(--dx), -14px); }
+  }
+
+  @keyframes scan {
+    0% { opacity: 1; transform: translateY(-100%); }
+    55% { opacity: 1; transform: translateY(560%); }
+    56%, 100% { opacity: 0; transform: translateY(560%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor {
+      display: none;
+    }
   }
 
   .hero-meta {
@@ -454,7 +599,17 @@ const navLinks = [
 
     .nav-links.is-open {
       display: flex;
+      animation: menu-in 0.35s var(--ease) both;
     }
+
+    .nav-links.is-open li {
+      animation: rise 0.45s var(--ease) both;
+    }
+
+    .nav-links.is-open li:nth-child(2) { animation-delay: 0.04s; }
+    .nav-links.is-open li:nth-child(3) { animation-delay: 0.08s; }
+    .nav-links.is-open li:nth-child(4) { animation-delay: 0.12s; }
+    .nav-links.is-open li:nth-child(5) { animation-delay: 0.16s; }
 
     .nav-links li {
       border-bottom: 1px solid var(--on-ink-line);
