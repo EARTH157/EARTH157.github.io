@@ -3,7 +3,7 @@ import '@fontsource-variable/space-grotesk';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
-import { profile } from '../data/site';
+import { goatcounterCode, profile } from '../data/site';
 
 interface Props {
   title?: string;
@@ -17,6 +17,10 @@ const {
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL('/og-image.jpg', Astro.site);
+// Cookie-free GoatCounter analytics: production builds only, and only once a site code is set.
+// Links with data-goatcounter-click are counted as events by count.js.
+const analyticsEndpoint =
+  import.meta.env.PROD && goatcounterCode ? `https://${goatcounterCode}.goatcounter.com/count` : null;
 ---
 
 <!doctype html>
@@ -40,6 +44,9 @@ const ogImage = new URL('/og-image.jpg', Astro.site);
     <meta name="twitter:card" content="summary_large_image" />
 
     <script is:inline>document.documentElement.classList.add('js');</script>
+    {analyticsEndpoint && (
+      <script is:inline async data-goatcounter={analyticsEndpoint} src="https://gc.zgo.at/count.js"></script>
+    )}
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
