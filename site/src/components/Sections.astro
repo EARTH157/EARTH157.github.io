@@ -39,7 +39,12 @@ import { moreProjects, work, awards, education, toolkit, languages, languageCert
             <li class:list={{ current: i === 0 }}>
               <span class="mono date">{w.period}</span>
               <h4>{w.role}</h4>
-              <p class="org">{w.org}</p>
+              <p class="org">
+                <a href={w.orgUrl}>{w.org}<Icon name="arrow-up-right" size={13} /></a>
+                {w.orgLinks.map((l) => (
+                  <a class="org-social mono" href={l.href} aria-label={`${w.org} on ${l.label}`}>{l.label}</a>
+                ))}
+              </p>
               <p class="exp-text">{w.summary}</p>
               {w.highlights.length > 0 && (
                 <ul class="highlights">
@@ -258,9 +263,36 @@ import { moreProjects, work, awards, education, toolkit, languages, languageCert
   }
 
   .org {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 2px 12px;
     font-size: 14px;
     font-weight: 600;
     color: var(--clay);
+  }
+
+  .org a {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    min-height: 32px;
+    color: var(--clay);
+    text-decoration: none;
+  }
+
+  .org a:hover {
+    color: var(--clay-hover);
+    text-decoration: underline;
+  }
+
+  .org-social {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 0 8px;
+    border: 1px solid rgba(164, 85, 58, 0.35);
+    border-radius: 999px;
   }
 
   .exp-text {
