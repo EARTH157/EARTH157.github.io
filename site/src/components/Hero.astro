@@ -67,9 +67,9 @@ const first = robots[0];
         <button class="robot-3d-btn" type="button" aria-pressed="false" hidden>View in 3D</button>
         <p class="robot-status" role="status"></p>
         {robots.map((r, i) => (
-          <ul class="callouts" data-callouts={r.id} hidden={i !== 0}>
+          <ul class="callouts" data-callouts={r.id} hidden={i !== 0} data-poster-centre={r.posterCentre && JSON.stringify(r.posterCentre)}>
             {r.callouts.map((c, j) => (
-              <li class={`callout callout-${j}`} data-anchor={JSON.stringify(c.anchor)}>
+              <li class={`callout callout-${j}`} data-anchor={JSON.stringify(c.anchor)} data-poster-anchor={c.posterAnchor && JSON.stringify(c.posterAnchor)}>
                 <b>{c.title}</b>
                 {c.lines.map((line) => <span>{line}</span>)}
               </li>
@@ -295,11 +295,13 @@ const first = robots[0];
     justify-content: center;
   }
 
+  /* The poster is the 3D view's first frame, laid over the stage exactly like the canvas */
   .robot-poster {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.45));
     transition: opacity 0.5s;
   }
 
@@ -414,10 +416,21 @@ const first = robots[0];
     background: rgba(232, 149, 122, 0.6);
   }
 
-  /* In 3D the static leaders give way to SVG lines that follow points on the model */
-  .robot.is-3d .callout::before {
+  /* Once JS places the labels, they float next to their points and SVG leaders replace the static ones */
+  .robot.is-floating .callout {
+    left: 0;
+    top: 0;
+    right: auto;
+    bottom: auto;
+    align-items: flex-start;
+    text-align: left;
+    will-change: transform;
+  }
+
+  .robot.is-floating .callout::before {
     display: none;
   }
+
 
   .leaders {
     position: absolute;
@@ -430,7 +443,7 @@ const first = robots[0];
     display: none;
   }
 
-  .robot.is-3d .leaders {
+  .robot.is-floating .leaders {
     display: block;
   }
 
@@ -445,9 +458,6 @@ const first = robots[0];
     stroke-width: 2;
   }
 
-  .leaders :global(.is-behind) {
-    opacity: 0.3;
-  }
 
   /* Top-right, middle-left and bottom-right corners of the stage, clear of the robot's centre */
   .callout-0 { right: 0; top: 3%; align-items: flex-end; text-align: right; }
@@ -457,11 +467,24 @@ const first = robots[0];
   .callout-2 { right: 0; bottom: 13%; align-items: flex-end; text-align: right; }
   .callout-2::before { right: calc(100% + 6px); top: 13px; width: 40px; }
 
-  /* Below this the labels would cover the robot */
+  /* Small stages (phones): titles only, so the labels don't cover the robot */
   @container (max-width: 440px) {
-    .callouts,
-    .leaders {
-      display: none !important;
+    .callout {
+      padding: 4px 7px;
+      font-size: 10px;
+    }
+
+    .callout span {
+      display: none;
+    }
+
+    /* The toggle button sits in the same spot; keep the status for screen readers only */
+    .robot-status {
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
     }
   }
 

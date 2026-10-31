@@ -3,18 +3,18 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader, DRACO_GLTF_CONFIG } from 'three/addons/loaders/DRACOLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-/** A projected anchor in host pixels; `front` is false when it faces away from the camera. */
+/** A projected point in host pixels. */
 export interface ScreenPoint {
   x: number;
   y: number;
-  front: boolean;
 }
 
 export interface RobotScene {
   /** Shows the model and tracks the given anchors. Resolves false if a newer call replaced it. */
   show(url: string, anchors: number[][]): Promise<boolean>;
   setActive(active: boolean): void;
-  onFrame(callback: (points: ScreenPoint[]) => void): void;
+  /** Called after every rendered frame with the anchors and the model's centre, in host pixels. */
+  onFrame(callback: (points: ScreenPoint[], centre: ScreenPoint) => void): void;
 }
 
 // Longest side in scene units; sized so the arm and wheels stay inside the square stage
@@ -111,25 +111,19 @@ export function createRobotScene(host: HTMLElement, { reduceMotion, touch }: { r
 
   let current: THREE.Mesh | null = null;
   let anchors: THREE.Vector3[] = [];
-  let frameCallback: ((points: ScreenPoint[]) => void) | null = null;
+  let frameCallback: ((points: ScreenPoint[], centre: ScreenPoint) => void) | null = null;
   let request = 0;
   const world = new THREE.Vector3();
-  const normal = new THREE.Vector3();
-  const toCamera = new THREE.Vector3();
+
+  function toScreen(point: THREE.Vector3): ScreenPoint {
+    const { clientWidth: w, clientHeight: h } = host;
+    const ndc = point.project(camera);
+    return { x: ((ndc.x + 1) / 2) * w, y: ((1 - ndc.y) / 2) * h };
+  }
 
   function project(): ScreenPoint[] {
     if (!current) return [];
-    const { clientWidth: w, clientHeight: h } = host;
-    const centre = current.getWorldPosition(new THREE.Vector3());
-    return anchors.map((local) => {
-      world.copy(local).applyMatrix4(current!.matrixWorld);
-      // Rough facing test: anchor's outward direction from the model centre vs. the camera
-      normal.copy(world).sub(centre);
-      toCamera.copy(camera.position).sub(world);
-      const front = normal.dot(toCamera) > 0;
-      const ndc = world.project(camera);
-      return { x: ((ndc.x + 1) / 2) * w, y: ((1 - ndc.y) / 2) * h, front };
-    });
+    return anchors.map((local) => toScreen(world.copy(local).applyMatrix4(current!.matrixWorld)));
   }
 
   renderer.setAnimationLoop((time) => {
@@ -137,7 +131,7 @@ export function createRobotScene(host: HTMLElement, { reduceMotion, touch }: { r
     if (swaying) pivot.rotation.y = Math.sin((time / 1000) * 0.4) * SWAY;
     controls.update();
     renderer.render(scene, camera);
-    if (frameCallback) frameCallback(project());
+    if (frameCallback && current) frameCallback(project(), toScreen(current.getWorldPosition(world)));
   });
 
   return {
