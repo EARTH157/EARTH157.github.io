@@ -1,5 +1,5 @@
-import whitepostRender from '../assets/robots/whitepost-render.webp';
-import amr300Render from '../assets/robots/amr300-render.webp';
+import whitepostHero from '../assets/robots/whitepost-hero.webp';
+import amr300Hero from '../assets/robots/amr300-hero.webp';
 import entechPim from '../assets/events/entech-pim.webp';
 import entechRmutr from '../assets/events/entech-rmutr.webp';
 import entechCobot from '../assets/events/entech-cobot.webp';
@@ -34,7 +34,9 @@ export const stats = [
 // Robots shown in the hero. Only robots with a real 3D model belong here.
 // anchor: the point a callout's leader line follows, as fractions (x, y, z) of the model's
 // bounding box in its own Y-up coordinates (0 = min side, 1 = max side), snapped to real
-// surface points of the original STL. Callout 0 sits top-right, 1 left, 2 bottom-right.
+// surface points of the original STL. posterAnchor / posterCentre: where those points land on
+// the poster image (fractions of the square stage); the posters are the 3D view's first frame
+// (no sway), so labels sit in the same place before and after the 3D scene loads.
 export const robots = [
   {
     id: 'whitepost',
@@ -42,12 +44,13 @@ export const robots = [
     name: 'WHITE POST',
     meta: 'Senior project · 2025–26',
     model: '/models/WhitePost.glb',
-    poster: whitepostRender,
+    poster: whitepostHero,
+    posterCentre: [0.5, 0.4744],
     alt: '3D model of the White Post delivery robot: tracked base, electronics box and 5-DOF arm',
     callouts: [
-      { title: '01 · 5-DOF ARM', lines: ['full IK / FK control', 'presses elevator buttons'], anchor: [0.664, 1.0, 0.05] },
-      { title: '02 · VISION', lines: ['YOLOv8 + OpenCV', 'buttons + door state'], anchor: [0.567, 0.791, 0.779] },
-      { title: '03 · DRIVE', lines: ['tracked + wheel', 'multi-terrain base'], anchor: [0.869, 0.101, 0.493] },
+      { title: '01 · 5-DOF ARM', lines: ['full IK / FK control', 'presses elevator buttons'], anchor: [0.664, 1.0, 0.05], posterAnchor: [0.66, 0.1456] },
+      { title: '02 · VISION', lines: ['YOLOv8 + OpenCV', 'buttons + door state'], anchor: [0.567, 0.791, 0.779], posterAnchor: [0.4217, 0.3383] },
+      { title: '03 · DRIVE', lines: ['tracked + wheel', 'multi-terrain base'], anchor: [0.869, 0.101, 0.493], posterAnchor: [0.5681, 0.7106] },
     ],
   },
   {
@@ -56,12 +59,13 @@ export const robots = [
     name: 'AMR300',
     meta: 'TESR internship · 2025',
     model: '/models/AMR300.glb',
-    poster: amr300Render,
+    poster: amr300Hero,
+    posterCentre: [0.5, 0.4744],
     alt: '3D model of the AMR300 high-payload autonomous mobile robot',
     callouts: [
-      { title: '01 · PAYLOAD', lines: ['up to 300 kg', 'tested in real conditions'], anchor: [0.5, 0.604, 0.5] },
-      { title: '02 · COMPUTE', lines: ['ROS2 Humble', 'on an Intel NUC'], anchor: [0.5, 0.482, 0.925] },
-      { title: '03 · DRIVE', lines: ['hub servo motors', 'ESP32 over serial'], anchor: [0.891, 0.05, 0.872] },
+      { title: '01 · PAYLOAD', lines: ['up to 300 kg', 'tested in real conditions'], anchor: [0.5, 0.604, 0.5], posterAnchor: [0.5, 0.415] },
+      { title: '02 · COMPUTE', lines: ['ROS2 Humble', 'on an Intel NUC'], anchor: [0.5, 0.482, 0.925], posterAnchor: [0.3452, 0.5569] },
+      { title: '03 · DRIVE', lines: ['hub servo motors', 'ESP32 over serial'], anchor: [0.891, 0.05, 0.872], posterAnchor: [0.5717, 0.8721] },
     ],
   },
 ];

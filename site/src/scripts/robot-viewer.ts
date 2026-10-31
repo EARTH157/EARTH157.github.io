@@ -1,8 +1,18 @@
 // Robot switcher in the hero. Shows a rendered poster immediately; the live three.js
 // scene (a separate chunk) loads when the hero is visible on desktop, or on request on touch devices.
+// Callout labels float next to the point they describe, both on the poster and in 3D.
 import type { RobotScene, ScreenPoint } from './robot-scene';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
+const EDGE_PAD = 6;
+const SMOOTHING = 0.22;
+
+interface Box {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
 
 export function initRobotViewer(root: HTMLElement) {
   const tabs = [...root.querySelectorAll<HTMLButtonElement>('.robot-tab')];
@@ -23,8 +33,10 @@ export function initRobotViewer(root: HTMLElement) {
   let scene: RobotScene | null = null;
   let starting = false;
   let showing3d = false;
+  let placed: Box[] | null = null;
+  let sizes: { w: number; h: number }[] | null = null;
 
-  // One leader line + anchor dot per callout slot, reused across robots
+  // One leader line + anchor dot per callout, reused across robots
   const lines = [0, 1, 2].map(() => {
     const line = document.createElementNS(SVG_NS, 'line');
     const dot = document.createElementNS(SVG_NS, 'circle');
@@ -33,43 +45,105 @@ export function initRobotViewer(root: HTMLElement) {
     return { line, dot };
   });
 
-  function activeCallouts() {
-    return calloutSets.find((c) => !c.hidden);
-  }
+  const activeSet = () => calloutSets[index];
+  const labels = () => [...activeSet().querySelectorAll<HTMLElement>('.callout')];
 
   function anchorsFor(i: number): number[][] {
-    const set = calloutSets.find((c) => c.dataset.callouts === tabs[i].dataset.robot);
-    return [...(set?.querySelectorAll<HTMLElement>('[data-anchor]') ?? [])].map((li) => JSON.parse(li.dataset.anchor!));
+    return [...calloutSets[i].querySelectorAll<HTMLElement>('[data-anchor]')].map((li) => JSON.parse(li.dataset.anchor!));
   }
 
-  // Leader starts at the side of each label that faces the robot, level with its title
-  function labelPoints() {
-    const stageBox = stage.getBoundingClientRect();
-    return [...(activeCallouts()?.querySelectorAll<HTMLElement>('.callout') ?? [])].map((label) => {
-      const box = label.getBoundingClientRect();
-      const facesLeft = !label.classList.contains('callout-1');
-      return { x: (facesLeft ? box.left - 6 : box.right + 6) - stageBox.left, y: box.top + 13 - stageBox.top };
+  // Where each anchor sits on the rendered poster, as fractions of the stage
+  function posterPoints(): { points: ScreenPoint[]; centre: ScreenPoint } | null {
+    const set = activeSet();
+    if (!set.dataset.posterCentre) return null;
+    const { clientWidth: w, clientHeight: h } = stage;
+    const [cx, cy] = JSON.parse(set.dataset.posterCentre);
+    const points = labels().map((label) => {
+      const [fx, fy] = JSON.parse(label.dataset.posterAnchor!);
+      return { x: fx * w, y: fy * h };
     });
+    return { points, centre: { x: cx * w, y: cy * h } };
   }
 
-  function drawLeaders(points: ScreenPoint[]) {
-    const starts = labelPoints();
+  function measure() {
+    sizes = labels().map((label) => ({ w: label.offsetWidth, h: label.offsetHeight }));
+  }
+
+  // Each label goes out from its anchor, away from the robot's centre, then labels are
+  // nudged apart and kept inside the stage.
+  function targetBoxes(points: ScreenPoint[], centre: ScreenPoint): Box[] {
+    const W = stage.clientWidth;
+    const H = stage.clientHeight;
+    const gap = W < 440 ? 20 : 34;
+    const boxes = points.map((p, i) => {
+      const { w, h } = sizes![i];
+      let dx = p.x - centre.x;
+      let dy = p.y - centre.y;
+      const len = Math.hypot(dx, dy) || 1;
+      dx /= len;
+      dy /= len;
+      const ax = p.x + dx * gap;
+      const ay = p.y + dy * gap;
+      return { x: dx >= 0 ? ax : ax - w, y: ay - h / 2 + (dy * h) / 2, w, h };
+    });
+    const clamp = (b: Box) => {
+      b.x = Math.min(Math.max(b.x, EDGE_PAD), W - b.w - EDGE_PAD);
+      b.y = Math.min(Math.max(b.y, EDGE_PAD), H - b.h - EDGE_PAD);
+    };
+    boxes.forEach(clamp);
+    for (let pass = 0; pass < 6; pass++) {
+      for (let i = 0; i < boxes.length; i++) {
+        for (let j = i + 1; j < boxes.length; j++) {
+          const a = boxes[i];
+          const b = boxes[j];
+          const overlapX = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x) + 6;
+          const overlapY = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y) + 6;
+          if (overlapX <= 0 || overlapY <= 0) continue;
+          const [first, second] = a.y <= b.y ? [a, b] : [b, a];
+          first.y -= overlapY / 2;
+          second.y += overlapY / 2;
+          clamp(first);
+          clamp(second);
+        }
+      }
+    }
+    return boxes;
+  }
+
+  function layout(points: ScreenPoint[], centre: ScreenPoint, smooth: boolean) {
+    if (!sizes || sizes.length !== points.length) measure();
+    const targets = targetBoxes(points, centre);
+    placed = targets.map((t, i) => {
+      const prev = placed?.[i];
+      if (!smooth || !prev) return t;
+      return { ...t, x: prev.x + (t.x - prev.x) * SMOOTHING, y: prev.y + (t.y - prev.y) * SMOOTHING };
+    });
+    root.classList.add('is-floating');
+    labels().forEach((label, i) => {
+      const box = placed![i];
+      label.style.transform = `translate(${box.x.toFixed(1)}px, ${box.y.toFixed(1)}px)`;
+    });
     lines.forEach(({ line, dot }, i) => {
-      const from = starts[i];
-      const to = points[i];
-      const show = Boolean(from && to);
+      const p = points[i];
+      const box = placed![i];
+      const show = Boolean(p && box);
       line.style.display = dot.style.display = show ? '' : 'none';
       if (!show) return;
-      line.setAttribute('x1', String(from.x));
-      line.setAttribute('y1', String(from.y));
-      line.setAttribute('x2', String(to.x));
-      line.setAttribute('y2', String(to.y));
-      dot.setAttribute('cx', String(to.x));
-      dot.setAttribute('cy', String(to.y));
-      // Points turned away from the camera fade so the line doesn't point at the back of the robot
-      line.classList.toggle('is-behind', !to.front);
-      dot.classList.toggle('is-behind', !to.front);
+      // Leader runs from the anchor to the nearest point on the label's edge
+      const ex = Math.min(Math.max(p.x, box.x), box.x + box.w);
+      const ey = Math.min(Math.max(p.y, box.y), box.y + box.h);
+      line.setAttribute('x1', p.x.toFixed(1));
+      line.setAttribute('y1', p.y.toFixed(1));
+      line.setAttribute('x2', ex.toFixed(1));
+      line.setAttribute('y2', ey.toFixed(1));
+      dot.setAttribute('cx', p.x.toFixed(1));
+      dot.setAttribute('cy', p.y.toFixed(1));
     });
+  }
+
+  function layoutPoster() {
+    const poster = posterPoints();
+    if (poster) layout(poster.points, poster.centre, false);
   }
 
   function setMode(on3d: boolean) {
@@ -82,18 +156,21 @@ export function initRobotViewer(root: HTMLElement) {
       toggle3d.setAttribute('aria-pressed', String(on3d));
     }
     status.textContent = on3d ? (touch ? 'Swipe sideways to rotate' : 'Drag to rotate') : '';
+    if (!on3d) layoutPoster();
   }
 
   function select(next: number) {
     index = (next + tabs.length) % tabs.length;
     const tab = tabs[index];
-    const id = tab.dataset.robot;
     tabs.forEach((t) => t.setAttribute('aria-pressed', String(t === tab)));
-    posters.forEach((p) => (p.hidden = p.dataset.poster !== id));
-    calloutSets.forEach((c) => (c.hidden = c.dataset.callouts !== id));
+    posters.forEach((p, i) => (p.hidden = i !== index));
+    calloutSets.forEach((c, i) => (c.hidden = i !== index));
     fig.textContent = String(index + 1).padStart(2, '0');
     name.textContent = tab.dataset.name ?? '';
     meta.textContent = tab.dataset.meta ?? '';
+    placed = null;
+    sizes = null;
+    layoutPoster();
     if (scene && showing3d) showModel();
   }
 
@@ -122,7 +199,9 @@ export function initRobotViewer(root: HTMLElement) {
     try {
       const { createRobotScene } = await import('./robot-scene');
       scene = createRobotScene(canvasHost, { reduceMotion, touch });
-      scene.onFrame(drawLeaders);
+      scene.onFrame((points, centre) => {
+        if (showing3d) layout(points, centre, true);
+      });
       showing3d = true;
       await showModel();
     } catch (error) {
@@ -137,6 +216,18 @@ export function initRobotViewer(root: HTMLElement) {
   root.querySelectorAll<HTMLButtonElement>('[data-step]').forEach((b) =>
     b.addEventListener('click', () => select(index + Number(b.dataset.step))),
   );
+
+  // Label sizes change with the stage (compact labels on small stages)
+  new ResizeObserver(() => {
+    sizes = null;
+    placed = null;
+    if (!showing3d) layoutPoster();
+  }).observe(stage);
+  document.fonts?.ready.then(() => {
+    sizes = null;
+    if (!showing3d) layoutPoster();
+  });
+  layoutPoster();
 
   if (touch) {
     toggle3d.hidden = false;
