@@ -26,6 +26,13 @@ export const profile = {
   cv: '/docs/Jirapat_Chaumaungphan_Resume.pdf',
 };
 
+// The three things I bring, shown on the cover
+export const disciplines = [
+  { n: '01', title: 'Software', text: 'System design and planning, then the code' },
+  { n: '02', title: 'Hardware', text: 'Mechanical parts and basic electrical systems' },
+  { n: '03', title: 'AI', text: 'Vision models, RAG apps, AI harness design' },
+];
+
 export const stats = [
   { value: '300 kg', label: 'AMR payload, tested · TESR internship' },
   { value: '0.67 → 1.00', label: 'hit@1 with hybrid search + reranker · Tamra' },
