@@ -48,7 +48,7 @@ export function initRobotViewer(root: HTMLElement) {
     return [...(activeCallouts()?.querySelectorAll<HTMLElement>('.callout') ?? [])].map((label) => {
       const box = label.getBoundingClientRect();
       const facesLeft = !label.classList.contains('callout-1');
-      return { x: (facesLeft ? box.left - 8 : box.right + 8) - stageBox.left, y: box.top + 8 - stageBox.top };
+      return { x: (facesLeft ? box.left - 6 : box.right + 6) - stageBox.left, y: box.top + 13 - stageBox.top };
     });
   }
 
