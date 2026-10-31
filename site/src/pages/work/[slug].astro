@@ -4,23 +4,27 @@ import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Icon from '../../components/Icon.astro';
 import Contact from '../../components/Contact.astro';
-import VideoDialog from '../../components/VideoDialog.astro';
+import RobotViewer from '../../components/RobotViewer.astro';
+import { robots } from '../../data/site';
 
 export async function getStaticPaths() {
-  const entries = await getCollection('work');
-  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+  const entries = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+  return entries.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: { entry, next: entries[(i + 1) % entries.length] },
+  }));
 }
 
-const { entry } = Astro.props;
+const { entry, next } = Astro.props;
 const { data } = entry;
 const { Content } = await render(entry);
-const videos = JSON.stringify({ title: `${data.shortTitle} in action`, items: data.videos });
+const robot = robots.find((r) => r.id === data.robot);
 ---
 
 <Base title={`${data.shortTitle} | Jirapat Chaumaungphan`} description={data.summary}>
   <header class="case-hero blueprint on-ink">
     <nav class="container case-nav" aria-label="Breadcrumb">
-      <a href="/" class="back"><Icon name="chevron-left" size={16} /> All work</a>
+      <a href="/#work" class="back"><Icon name="chevron-left" size={16} /> All work</a>
       <a href="/" class="logo">JC<span>.</span></a>
     </nav>
     <div id="main" class="container case-intro">
@@ -29,9 +33,9 @@ const videos = JSON.stringify({ title: `${data.shortTitle} in action`, items: da
       <p>{data.summary}</p>
       <div class="case-actions">
         {data.videos.length > 0 && (
-          <button class="btn btn-primary" type="button" data-videos={videos}>
+          <a class="btn btn-primary" href="#demo">
             <Icon name="play" size={14} /> Watch demo{data.videos.length > 1 ? ` · ${data.videos.length} videos` : ''}
-          </button>
+          </a>
         )}
         {data.github && (
           <a class="btn btn-ghost-ink" href={data.github}><Icon name="github" size={18} /> Code on GitHub</a>
@@ -45,7 +49,44 @@ const videos = JSON.stringify({ title: `${data.shortTitle} in action`, items: da
       <Image src={data.cover} alt={data.coverAlt} widths={[640, 960, 1280]} sizes="(min-width: 1280px) 1216px, 100vw" loading="eager" />
     </figure>
 
-    <div class="case-grid">
+    {data.facts.length > 0 && (
+      <dl class="facts">
+        {data.facts.map((f) => (
+          <div>
+            <dt>{f.label}</dt>
+            <dd>{f.value}</dd>
+          </div>
+        ))}
+      </dl>
+    )}
+
+    {robot && (
+      <section class="case-section model blueprint on-ink" aria-labelledby="model-title">
+        <div class="model-copy">
+          <span class="eyebrow">Interactive model</span>
+          <h2 id="model-title">Explore the robot</h2>
+          <p>Drag to turn it. Each label stays pinned to the part it describes.</p>
+        </div>
+        <RobotViewer robots={[robot]} />
+      </section>
+    )}
+
+    {data.flow && (
+      <section class="case-section" aria-labelledby="flow-title">
+        <h2 id="flow-title" class="section-heading">{data.flow.title}</h2>
+        <ol class="flow">
+          {data.flow.steps.map((step, i) => (
+            <li>
+              <span class="flow-step mono">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )}
+
+    <div class="case-grid case-section">
       <aside class="card case-specs" aria-label="Specifications">
         <h2 class="mono">Spec sheet</h2>
         <dl>
@@ -62,10 +103,37 @@ const videos = JSON.stringify({ title: `${data.shortTitle} in action`, items: da
         <Content />
       </article>
     </div>
+
+    {data.videos.length > 0 && (
+      <section id="demo" class="case-section" aria-labelledby="demo-title">
+        <h2 id="demo-title" class="section-heading">Demo {data.videos.length > 1 ? 'videos' : 'video'}</h2>
+        <div class="videos">
+          {data.videos.map((v) => (
+            <figure>
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${v.youtubeId}?rel=0`}
+                title={`${data.shortTitle}: ${v.label}`}
+                loading="lazy"
+                allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              ></iframe>
+              <figcaption class="mono">{v.label}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {next && next.id !== entry.id && (
+      <a class="next-case card" href={`/work/${next.id}/`}>
+        <span class="eyebrow">Next case study</span>
+        <span class="next-title">{next.data.title}</span>
+        <Icon name="arrow-right" size={22} />
+      </a>
+    )}
   </main>
 
   <Contact />
-  <VideoDialog />
 </Base>
 
 <style>
@@ -141,8 +209,17 @@ const videos = JSON.stringify({ title: `${data.shortTitle} in action`, items: da
     padding-block: 0 88px;
   }
 
+  .case-section {
+    margin-top: 72px;
+  }
+
+  .section-heading {
+    font-size: clamp(26px, 3vw, 36px);
+    margin-bottom: 28px;
+  }
+
   .case-cover {
-    margin: -40px 0 48px;
+    margin: -40px 0 0;
     border-radius: var(--radius);
     overflow: hidden;
     border: 1px solid var(--line);
@@ -178,6 +255,129 @@ const videos = JSON.stringify({ title: `${data.shortTitle} in action`, items: da
     border-radius: 10px 10px 0 0;
   }
 
+  /* Key numbers */
+  .facts {
+    margin: 32px 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    border-top: 1px solid var(--line-strong);
+  }
+
+  .facts > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px 20px 0 0;
+  }
+
+  /* Value above its label (dt stays first in the markup), so values line up across columns */
+  .facts dd {
+    order: -1;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(26px, 3vw, 36px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--heading);
+  }
+
+  .facts dt {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Interactive model */
+  .model {
+    border-radius: var(--radius);
+    padding: clamp(24px, 4vw, 48px);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    gap: 32px;
+    align-items: center;
+  }
+
+  .model-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .model-copy h2 {
+    font-size: clamp(26px, 3vw, 36px);
+  }
+
+  .model-copy p {
+    color: var(--on-ink-soft);
+    max-width: 420px;
+  }
+
+  /* Flow diagram: numbered steps joined by arrows (stacked on small screens) */
+  .flow {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 20px;
+  }
+
+  .flow li {
+    position: relative;
+    padding: 24px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--paper-card);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* Arrows only where the steps sit in one row (wide) or one column (phones), never in a 2x2 wrap */
+  .flow li:not(:last-child)::after {
+    position: absolute;
+    z-index: 1;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--clay-bright);
+    color: var(--ink);
+    font-size: 14px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (min-width: 1040px) {
+    .flow {
+      grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    }
+
+    .flow li:not(:last-child)::after {
+      content: '→';
+      display: flex;
+      right: -17px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  .flow-step {
+    font-size: 12px;
+    color: var(--clay);
+    letter-spacing: 0.08em;
+  }
+
+  .flow h3 {
+    font-size: 20px;
+  }
+
+  .flow p {
+    font-size: 15px;
+    color: var(--text-soft);
+  }
+
+  /* Spec sheet + write-up */
   .case-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
@@ -251,6 +451,73 @@ const videos = JSON.stringify({ title: `${data.shortTitle} in action`, items: da
     color: var(--heading);
   }
 
+  /* Demo videos */
+  .videos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 24px;
+  }
+
+  .videos figure {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .videos iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    border-radius: 14px;
+    background: var(--ink);
+  }
+
+  .videos figcaption {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Next case study */
+  .next-case {
+    margin-top: 72px;
+    padding: 28px 32px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px 24px;
+    align-items: center;
+    text-decoration: none;
+    color: var(--heading);
+    transition: border-color 0.2s;
+  }
+
+  .next-case:hover {
+    border-color: var(--clay);
+    color: var(--heading);
+  }
+
+  .next-case .eyebrow {
+    grid-column: 1;
+  }
+
+  .next-title {
+    grid-column: 1;
+    font-family: var(--font-display);
+    font-size: clamp(20px, 2.4vw, 28px);
+    font-weight: 700;
+  }
+
+  .next-case :global(svg) {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    color: var(--clay);
+    transition: transform 0.2s var(--ease);
+  }
+
+  .next-case:hover :global(svg) {
+    transform: translateX(4px);
+  }
+
   @media (max-width: 760px) {
     .prose {
       grid-column: auto;
@@ -258,6 +525,22 @@ const videos = JSON.stringify({ title: `${data.shortTitle} in action`, items: da
 
     .case-cover {
       margin-top: -24px;
+    }
+
+    .case-section {
+      margin-top: 56px;
+    }
+
+    .flow {
+      grid-template-columns: 1fr;
+    }
+
+    .flow li:not(:last-child)::after {
+      content: '↓';
+      display: flex;
+      left: 50%;
+      bottom: -17px;
+      transform: translateX(-50%);
     }
   }
 </style>
