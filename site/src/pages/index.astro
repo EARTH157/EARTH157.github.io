@@ -7,6 +7,8 @@ import About from '../components/About.astro';
 import Sections from '../components/Sections.astro';
 import Contact from '../components/Contact.astro';
 import VideoDialog from '../components/VideoDialog.astro';
+import RobotViewer from '../components/RobotViewer.astro';
+import { robots } from '../data/site';
 
 const cases = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
 const [featured, ...rest] = cases;
@@ -24,6 +26,14 @@ const [featured, ...rest] = cases;
           </div>
           <p>Three projects told end to end: what the problem was, what I built, and what it achieved.</p>
         </div>
+        <section class="bench blueprint on-ink" aria-labelledby="bench-title">
+          <div class="bench-copy">
+            <span class="eyebrow">On the bench</span>
+            <h3 id="bench-title">Two robots from my projects</h3>
+            <p>Both are real machines, shown here as 3D models. Drag to turn them; each label stays pinned to the part it describes.</p>
+          </div>
+          <RobotViewer robots={robots} />
+        </section>
         <div class="work-list">
           {featured && <WorkCard entry={featured} featured />}
           <div class="work-pair">
@@ -64,6 +74,33 @@ const [featured, ...rest] = cases;
     color: var(--muted);
   }
 
+  /* Dark lab panel with the interactive robots, ahead of the case study cards */
+  .bench {
+    border-radius: var(--radius);
+    padding: clamp(24px, 4vw, 48px);
+    margin-bottom: 24px;
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: clamp(24px, 4vw, 56px);
+    align-items: center;
+  }
+
+  .bench-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .bench-copy h3 {
+    font-size: clamp(26px, 3vw, 38px);
+    line-height: 1.1;
+  }
+
+  .bench-copy p {
+    color: var(--on-ink-soft);
+    max-width: 420px;
+  }
+
   .work-list {
     display: flex;
     flex-direction: column;
@@ -74,6 +111,12 @@ const [featured, ...rest] = cases;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
     gap: 24px;
+  }
+
+  @media (max-width: 860px) {
+    .bench {
+      grid-template-columns: 1fr;
+    }
   }
 
   @media (max-width: 640px) {

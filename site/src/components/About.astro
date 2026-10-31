@@ -1,7 +1,5 @@
 ---
-import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
-import portrait from '../assets/profile.webp';
 import { profile, work, education, languages } from '../data/site';
 
 const [currentJob] = work;
@@ -16,13 +14,12 @@ const facts = [
 
 <section id="about" class="about" aria-labelledby="about-title">
   <div class="container about-grid">
-    <figure class="about-photo" data-reveal>
-      <Image src={portrait} alt="Portrait of Jirapat Chaumaungphan" widths={[320, 480, 640]} sizes="(min-width: 980px) 400px, 80vw" />
-    </figure>
-    <div class="about-copy" data-reveal="1">
+    <div class="about-copy" data-reveal>
       <span class="eyebrow">02 / About</span>
-      <h2 id="about-title">Hi, I'm {profile.name.split(' ')[0]}.</h2>
+      <h2 id="about-title">A bit more about me</h2>
       {profile.about.map((text) => <p class="about-text">{text}</p>)}
+    </div>
+    <div class="about-side" data-reveal="1">
       <dl class="about-facts">
         {facts.map((f) => (
           <>
@@ -47,35 +44,17 @@ const facts = [
 
   .about-grid {
     display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: clamp(32px, 6vw, 80px);
-    align-items: center;
+    align-items: start;
   }
 
-  /* Photo with the offset clay frame used elsewhere for the hero robot */
-  .about-photo {
-    position: relative;
-    margin: 0 18px 18px 0;
-    max-width: 400px;
-    justify-self: center;
-  }
-
-  .about-photo::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    transform: translate(18px, 18px);
-    border: 2px solid var(--clay-bright);
-    border-radius: var(--radius);
-  }
-
-  .about-photo img {
-    position: relative;
-    width: 100%;
-    height: auto;
-    border-radius: var(--radius);
-    background: linear-gradient(180deg, #FBF9F6 0%, #EDE6DE 100%);
-    border: 1px solid var(--line);
+  .about-side {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 0;
+    padding-top: 40px;
   }
 
   .about-copy {
@@ -141,8 +120,8 @@ const facts = [
       grid-template-columns: 1fr;
     }
 
-    .about-photo {
-      max-width: 280px;
+    .about-side {
+      padding-top: 0;
     }
   }
 </style>
