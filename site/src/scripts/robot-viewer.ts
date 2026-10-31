@@ -71,7 +71,7 @@ export function initRobotViewer(root: HTMLElement) {
 
   // Each label goes out from its anchor, away from the robot's centre, then labels are
   // nudged apart and kept inside the stage.
-  function targetBoxes(points: ScreenPoint[], centre: ScreenPoint): Box[] {
+  function targetBoxes(points: ScreenPoint[], centre: ScreenPoint, shown: boolean[]): Box[] {
     const W = stage.clientWidth;
     const H = stage.clientHeight;
     const gap = W < 440 ? 20 : 34;
@@ -94,6 +94,7 @@ export function initRobotViewer(root: HTMLElement) {
     for (let pass = 0; pass < 6; pass++) {
       for (let i = 0; i < boxes.length; i++) {
         for (let j = i + 1; j < boxes.length; j++) {
+          if (!shown[i] || !shown[j]) continue;
           const a = boxes[i];
           const b = boxes[j];
           const overlapX = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x) + 6;
@@ -112,7 +113,11 @@ export function initRobotViewer(root: HTMLElement) {
 
   function layout(points: ScreenPoint[], centre: ScreenPoint, smooth: boolean) {
     if (!sizes || sizes.length !== points.length) measure();
-    const targets = targetBoxes(points, centre);
+    // A point zoomed out of the stage takes its label and leader with it
+    const W = stage.clientWidth;
+    const H = stage.clientHeight;
+    const shown = points.map((p) => p.x >= 0 && p.x <= W && p.y >= 0 && p.y <= H);
+    const targets = targetBoxes(points, centre, shown);
     placed = targets.map((t, i) => {
       const prev = placed?.[i];
       if (!smooth || !prev) return t;
@@ -122,11 +127,12 @@ export function initRobotViewer(root: HTMLElement) {
     labels().forEach((label, i) => {
       const box = placed![i];
       label.style.transform = `translate(${box.x.toFixed(1)}px, ${box.y.toFixed(1)}px)`;
+      label.style.visibility = shown[i] ? '' : 'hidden';
     });
     lines.forEach(({ line, dot }, i) => {
       const p = points[i];
       const box = placed![i];
-      const show = Boolean(p && box);
+      const show = Boolean(p && box && shown[i]);
       line.style.display = dot.style.display = show ? '' : 'none';
       if (!show) return;
       // Leader runs from the anchor to the nearest point on the label's edge
@@ -155,7 +161,7 @@ export function initRobotViewer(root: HTMLElement) {
       toggle3d.textContent = on3d ? 'Show photo' : 'View in 3D';
       toggle3d.setAttribute('aria-pressed', String(on3d));
     }
-    status.textContent = on3d ? (touch ? 'Swipe sideways to rotate' : 'Drag to rotate') : '';
+    status.textContent = on3d ? (touch ? 'Swipe sideways to rotate · pinch to zoom' : 'Drag to rotate · Ctrl + scroll to zoom') : '';
     if (!on3d) layoutPoster();
   }
 
@@ -213,6 +219,12 @@ export function initRobotViewer(root: HTMLElement) {
   }
 
   tabs.forEach((tab, i) => tab.addEventListener('click', () => select(i)));
+  root.querySelectorAll<HTMLButtonElement>('[data-zoom]').forEach((b) =>
+    b.addEventListener('click', () => {
+      if (b.dataset.zoom === 'reset') scene?.resetView();
+      else scene?.zoom(b.dataset.zoom === 'in' ? 0.75 : 1 / 0.75);
+    }),
+  );
   root.querySelectorAll<HTMLButtonElement>('[data-step]').forEach((b) =>
     b.addEventListener('click', () => select(index + Number(b.dataset.step))),
   );

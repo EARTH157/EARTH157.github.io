@@ -23,6 +23,12 @@ const work = defineCollection({
         .optional(),
       videos: z.array(z.object({ label: z.string(), youtubeId: z.string() })).default([]),
       github: z.url().optional(),
+      // id of a robot in src/data/site.ts: shows its interactive 3D model on the page
+      robot: z.string().optional(),
+      // Key numbers shown under the cover
+      facts: z.array(z.object({ value: z.string(), label: z.string() })).default([]),
+      // Step-by-step flow diagram ("how it works")
+      flow: z.object({ title: z.string(), steps: z.array(z.object({ title: z.string(), text: z.string() })) }).optional(),
     }),
 });
 

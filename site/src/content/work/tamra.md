@@ -7,6 +7,11 @@ order: 2
 cover: ../../assets/work/tamra-app.webp
 coverAlt: 'Tamra desktop app: project folders in the sidebar and an Ask your documents prompt with answer mode, folder, model and Think longer options'
 coverStyle: screen
+facts:
+  - { value: '0.67 → 1.00', label: 'hit@1 after hybrid search + reranker' }
+  - { value: '24', label: 'questions in the retrieval evaluation' }
+  - { value: '3', label: 'document languages (Thai, English, Chinese)' }
+  - { value: 'Offline', label: 'no data leaves the machine' }
 specs:
   - { label: What, value: 'Offline desktop RAG app with cited Q&A' }
   - { label: Languages, value: 'Thai, English and Chinese documents' }
