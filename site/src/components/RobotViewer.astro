@@ -32,6 +32,11 @@ const first = robots[0];
     <svg class="leaders" aria-hidden="true"></svg>
     <span class="robot-badge">3D MODEL</span>
     <button class="robot-3d-btn" type="button" aria-pressed="false" hidden>View in 3D</button>
+    <div class="robot-zoom" role="group" aria-label="Zoom the 3D model">
+      <button class="zoom-btn" type="button" data-zoom="in" aria-label="Zoom in"><Icon name="plus" size={18} /></button>
+      <button class="zoom-btn" type="button" data-zoom="out" aria-label="Zoom out"><Icon name="minus" size={18} /></button>
+      <button class="zoom-btn" type="button" data-zoom="reset" aria-label="Reset view"><Icon name="reset" size={17} /></button>
+    </div>
     <p class="robot-status" role="status"></p>
     {robots.map((r, i) => (
       <ul class="callouts" data-callouts={r.id} hidden={i !== 0} data-poster-centre={r.posterCentre && JSON.stringify(r.posterCentre)}>
@@ -324,6 +329,47 @@ const first = robots[0];
 
   .robot-picker[hidden] {
     display: none;
+  }
+
+  /* Zoom controls: only while the live 3D scene is showing */
+  .robot-zoom {
+    position: absolute;
+    left: 0;
+    bottom: 8px;
+    z-index: 3;
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .robot.is-3d .robot-zoom {
+    display: flex;
+  }
+
+  .zoom-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(239, 233, 226, 0.3);
+    background: rgba(22, 20, 18, 0.8);
+    color: var(--on-ink);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .zoom-btn:hover {
+    border-color: var(--clay-bright);
+    color: var(--clay-light);
+  }
+
+  @media (pointer: coarse) {
+    .zoom-btn {
+      width: 44px;
+      height: 44px;
+    }
   }
 
   @media (max-width: 860px) {

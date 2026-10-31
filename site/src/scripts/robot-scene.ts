@@ -13,6 +13,10 @@ export interface RobotScene {
   /** Shows the model and tracks the given anchors. Resolves false if a newer call replaced it. */
   show(url: string, anchors: number[][]): Promise<boolean>;
   setActive(active: boolean): void;
+  /** Zooms in (factor < 1) or out (factor > 1), eased and clamped to the allowed range. */
+  zoom(factor: number): void;
+  /** Eases the camera back to the starting view and resumes the idle sway. */
+  resetView(): void;
   /** Called after every rendered frame with the anchors and the model's centre, in host pixels. */
   onFrame(callback: (points: ScreenPoint[], centre: ScreenPoint) => void): void;
 }
@@ -20,6 +24,9 @@ export interface RobotScene {
 // Longest side in scene units; sized so the arm and wheels stay inside the square stage
 const MODEL_SIZE = 220;
 const SWAY = 0.35;
+// Camera distance range for zooming; the starting view is about 680 away
+const MIN_DISTANCE = 300;
+const MAX_DISTANCE = 1100;
 
 interface LoadedModel {
   mesh: THREE.Mesh;
@@ -47,9 +54,20 @@ export function createRobotScene(host: HTMLElement, { reduceMotion, touch }: { r
   controls.target.set(0, -10, 0);
   controls.enableDamping = true;
   controls.enablePan = false;
-  // Zoom off so the wheel keeps scrolling the page
-  controls.enableZoom = false;
+  controls.minDistance = MIN_DISTANCE;
+  controls.maxDistance = MAX_DISTANCE;
   controls.update();
+  const homePosition = camera.position.clone();
+  // A plain mouse wheel keeps scrolling the page; Ctrl/⌘ + wheel (and trackpad pinch, which
+  // browsers report as Ctrl + wheel) zooms. Stopping the event on the host, in the capture
+  // phase, keeps it away from OrbitControls without preventing the page scroll.
+  host.addEventListener(
+    'wheel',
+    (event) => {
+      if (!event.ctrlKey && !event.metaKey) event.stopPropagation();
+    },
+    { capture: true, passive: true },
+  );
   // Keep the robot the right way up
   const polar = controls.getPolarAngle();
   controls.minPolarAngle = touch ? polar : 0.5;
@@ -103,7 +121,16 @@ export function createRobotScene(host: HTMLElement, { reduceMotion, touch }: { r
 
   // Gentle sway until the visitor grabs the model
   let swaying = !reduceMotion;
-  controls.addEventListener('start', () => (swaying = false));
+  controls.addEventListener('start', () => {
+    swaying = false;
+    zoomTarget = null;
+    returningHome = false;
+  });
+
+  // Button zoom and reset ease towards a goal over a few frames
+  let zoomTarget: number | null = null;
+  let returningHome = false;
+  const offset = new THREE.Vector3();
 
   let visible = true;
   let active = true;
@@ -126,9 +153,29 @@ export function createRobotScene(host: HTMLElement, { reduceMotion, touch }: { r
     return anchors.map((local) => toScreen(world.copy(local).applyMatrix4(current!.matrixWorld)));
   }
 
+  // Easing measured in time, not frames, so slow devices finish zoom/reset just as fast
+  let lastTime = 0;
+  const ease = (rate: number, dt: number) => 1 - Math.pow(1 - rate, dt * 60);
+
   renderer.setAnimationLoop((time) => {
+    const dt = lastTime ? Math.min((time - lastTime) / 1000, 0.25) : 1 / 60;
+    lastTime = time;
     if (!visible || !active) return;
     if (swaying) pivot.rotation.y = Math.sin((time / 1000) * 0.4) * SWAY;
+    if (zoomTarget !== null) {
+      offset.copy(camera.position).sub(controls.target);
+      const distance = offset.length();
+      const next = distance + (zoomTarget - distance) * ease(0.18, dt);
+      camera.position.copy(controls.target).add(offset.setLength(next));
+      if (Math.abs(zoomTarget - next) < 1) zoomTarget = null;
+    }
+    if (returningHome) {
+      camera.position.lerp(homePosition, ease(0.15, dt));
+      if (camera.position.distanceTo(homePosition) < 1) {
+        camera.position.copy(homePosition);
+        returningHome = false;
+      }
+    }
     controls.update();
     renderer.render(scene, camera);
     if (frameCallback && current) frameCallback(project(), toScreen(current.getWorldPosition(world)));
@@ -149,6 +196,16 @@ export function createRobotScene(host: HTMLElement, { reduceMotion, touch }: { r
     },
     setActive(value) {
       active = value;
+    },
+    zoom(factor) {
+      const from = zoomTarget ?? camera.position.distanceTo(controls.target);
+      zoomTarget = THREE.MathUtils.clamp(from * factor, MIN_DISTANCE, MAX_DISTANCE);
+      returningHome = false;
+    },
+    resetView() {
+      zoomTarget = null;
+      returningHome = true;
+      swaying = !reduceMotion;
     },
     onFrame(callback) {
       frameCallback = callback;
