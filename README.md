@@ -4,34 +4,38 @@ Personal portfolio of **Jirapat Chaumaungphan**, Robotics & AI Engineer.
 
 Live site: https://earth157.github.io/
 
-## Stack
+## Repository layout
 
-Plain HTML, CSS, and JavaScript served by GitHub Pages. No build step.
-
-- `index.html`: all page content
-- `style.css`: theme tokens (light/dark), layout, and the motion layer at the end of the file
-- `script.js`: theme toggle, scroll reveal, nav state, mobile menu, and the 3D model viewers
-- 3D viewers use three.js r128 from a CDN, loaded only when a viewer is opened
-
-## Assets
-
-| Folder | Contents |
+| Path | What it is |
 |---|---|
-| `assets/images/` | WebP photos sized for display, skill icons (64px), `og-image.jpg` for link previews |
-| `assets/models/` | Robot models as Draco-compressed `.glb` |
-| `assets/vendor/draco/` | Draco decoder used by the 3D viewers |
-| `assets/docs/` | Resume and certificates linked from the page |
+| `site/` | The redesigned site, built with [Astro](https://astro.build/). This is what gets deployed once Pages uses GitHub Actions. |
+| `index.html`, `style.css`, `script.js`, `assets/` | The previous plain-HTML site. GitHub Pages still serves it while Pages is set to "Deploy from a branch". |
+| `.github/workflows/deploy.yml` | Builds `site/` on every pull request, and builds + deploys it on every push to `main`. |
 
-## Adding content
+## Switching the live site to the new version
 
-- **Photos:** export as WebP around 1000-1200px on the long side, then add `width`, `height`, and `loading="lazy"` to the `<img>`.
-- **3D models:** convert STL to GLB with Draco compression (for example with [glTF Transform](https://gltf-transform.dev/)) rather than committing raw STL files.
-- **Resume:** replace `assets/docs/Jirapat_Chaumaungphan_Resume.pdf` and keep the same filename so the Download CV button keeps working.
+1. Merge the pull request that adds `site/`.
+2. In the repository go to **Settings → Pages → Build and deployment → Source** and choose **GitHub Actions**.
+3. Re-run the latest **Build and deploy site** workflow (Actions tab), or push any commit to `main`.
 
-## Run locally
+Until step 2, the old site keeps working, and the deploy job fails harmlessly.
+
+## Working on the new site
+
+Requires Node.js 22.23.4+ (CI uses Node 24).
 
 ```bash
-python3 -m http.server 8000
+cd site
+npm ci
+npm run dev       # http://localhost:4321
+npm run build     # output in site/dist
+npx astro check   # type check
 ```
 
-Then open http://localhost:8000.
+### Where content lives
+
+- `site/src/data/site.ts`: profile, headline, stats, hero robots, experience, awards, education, toolkit, languages, events
+- `site/src/content/work/*.md`: one Markdown file per case study (frontmatter = card + spec sheet, body = write-up). A new file becomes a new card and a page at `/work/<file-name>/`.
+- `site/src/assets/`: images, optimised to WebP at build time
+- `site/public/models/`: robot models as Draco-compressed `.glb`. Only robots with a model belong in the hero switcher.
+- `site/public/docs/`: resume and certificates. Replace `Jirapat_Chaumaungphan_Resume.pdf` with the same filename to update the Download CV button.
