@@ -62,13 +62,14 @@ const first = robots[0];
           />
         ))}
         <div class="robot-canvas" aria-hidden="true"></div>
+        <svg class="leaders" aria-hidden="true"></svg>
         <span class="robot-badge">3D MODEL</span>
-        <button class="robot-3d-btn" type="button" hidden>View in 3D</button>
+        <button class="robot-3d-btn" type="button" aria-pressed="false" hidden>View in 3D</button>
         <p class="robot-status" role="status"></p>
         {robots.map((r, i) => (
           <ul class="callouts" data-callouts={r.id} hidden={i !== 0}>
             {r.callouts.map((c, j) => (
-              <li class={`callout callout-${j}`}>
+              <li class={`callout callout-${j}`} data-anchor={JSON.stringify(c.anchor)}>
                 <b>{c.title}</b>
                 {c.lines.map((line) => <span>{line}</span>)}
               </li>
@@ -77,8 +78,8 @@ const first = robots[0];
         ))}
       </div>
       <figcaption class="robot-caption">
-        <span><span class="robot-fig">FIG. <span data-fig>01</span> / {String(robots.length).padStart(2, '0')}</span> · <span data-name>{first.name}</span></span>
-        <span data-meta>{first.meta}</span>
+        <span><span class="robot-fig">FIG. <span data-fig>01</span> / {String(robots.length).padStart(2, '0')}</span> · <span data-caption-name>{first.name}</span></span>
+        <span data-caption-meta>{first.meta}</span>
       </figcaption>
       <div class="robot-picker" role="group" aria-label="Choose a robot to display">
         <button class="icon-btn" type="button" data-step="-1" aria-label="Previous robot"><Icon name="chevron-left" /></button>
@@ -406,6 +407,41 @@ const first = robots[0];
     background: rgba(232, 149, 122, 0.6);
   }
 
+  /* In 3D the static leaders give way to SVG lines that follow points on the model */
+  .robot.is-3d .callout::before {
+    display: none;
+  }
+
+  .leaders {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    display: none;
+  }
+
+  .robot.is-3d .leaders {
+    display: block;
+  }
+
+  .leaders :global(line) {
+    stroke: rgba(232, 149, 122, 0.75);
+    stroke-width: 1;
+  }
+
+  .leaders :global(circle) {
+    fill: var(--clay-light);
+    stroke: var(--ink);
+    stroke-width: 2;
+  }
+
+  .leaders :global(.is-behind) {
+    opacity: 0.3;
+  }
+
   .callout-0 { left: 84%; top: 4%; }
   .callout-0::before { right: calc(100% + 8px); top: 8px; width: 80px; }
   .callout-1 { right: 92%; top: 37%; align-items: flex-end; text-align: right; }
@@ -491,7 +527,8 @@ const first = robots[0];
   }
 
   @media (max-width: 1100px) {
-    .callouts {
+    .callouts,
+    .robot.is-3d .leaders {
       display: none;
     }
   }
