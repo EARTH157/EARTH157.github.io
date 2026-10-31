@@ -9,10 +9,10 @@ import { profile } from '../data/site';
       <span class="eyebrow">05 / Contact</span>
       <h2>Let's build something together.</h2>
       <p>Interested in AI engineering and robotics roles. Email is the fastest way to reach me.</p>
-      <a class="email" href={`mailto:${profile.email}`}>{profile.email}</a>
+      <a class="email" href={`mailto:${profile.email}`} data-goatcounter-click="email/contact-address">{profile.email}</a>
       <div class="contact-actions">
-        <a class="btn btn-primary" href={`mailto:${profile.email}`}><Icon name="mail" size={18} /> Email me</a>
-        <a class="btn btn-ghost-ink" href={profile.cv} download><Icon name="download" size={16} /> Download CV</a>
+        <a class="btn btn-primary" href={`mailto:${profile.email}`} data-goatcounter-click="email/contact-button"><Icon name="mail" size={18} /> Email me</a>
+        <a class="btn btn-ghost-ink" href={profile.cv} download data-goatcounter-click="cv-download/contact"><Icon name="download" size={16} /> Download CV</a>
       </div>
     </div>
     <div class="card-person" data-reveal="1">

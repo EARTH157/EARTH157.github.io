@@ -26,6 +26,10 @@ export const profile = {
   cv: '/docs/Jirapat_Chaumaungphan_Resume.pdf',
 };
 
+// GoatCounter site code: the <code> part of https://<code>.goatcounter.com.
+// Cookie-free page analytics, loaded only in production builds. Empty = off.
+export const goatcounterCode: string = '';
+
 // The three things I bring, shown on the cover
 export const disciplines = [
   { n: '01', title: 'Software', text: 'System design and planning, then the code' },
