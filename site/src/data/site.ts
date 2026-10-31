@@ -15,8 +15,10 @@ export const profile = {
   headline: 'Robots that see, decide, and deliver.',
   intro:
     'I build computer-vision robots, LLM/RAG tools, and the software that ties them together, on a Python, C++ and ROS2 foundation.',
-  about:
-    "I like work where software meets the physical world: teaching a robot to find and press an elevator button, or making search return the exact passage that answers a question. I'm looking for AI engineering and robotics roles where models have to work outside the notebook.",
+  about: [
+    "I work on both sides of a robot. In software, I design how a system should behave and plan its architecture before writing the code. In hardware, I design mechanical parts and lay out basic electrical systems, so the software has something real to run on.",
+    "I'm now growing into AI engineering: designing AI harnesses that let a model use tools and run reliably, and building RAG applications that answer from real documents. I'm looking for AI engineering and robotics roles where models have to work outside the notebook.",
+  ],
   email: 'earthzz.jirapat@outlook.com',
   github: 'https://github.com/EARTH157',
   linkedin: 'https://www.linkedin.com/in/jirapat-chaumaungphan-9a0a66326/',
