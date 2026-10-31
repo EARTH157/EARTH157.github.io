@@ -8,7 +8,8 @@ const [currentJob] = work;
 const facts = [
   { label: 'Now', value: `${currentJob.role}, ${currentJob.org.replace(' Co., Ltd.', '')}` },
   { label: 'Studied', value: `${education.degree}, ${education.school}` },
-  { label: 'Focus', value: 'Computer vision · LLM/RAG · ROS2 robotics' },
+  { label: 'Builds', value: 'Software design & planning · Mechanical parts · Basic electrical systems' },
+  { label: 'Learning', value: 'AI harness design · RAG applications' },
   { label: 'Languages', value: languages.map((l) => `${l.name}: ${l.level}`).join(' · ') },
 ];
 ---
@@ -21,7 +22,7 @@ const facts = [
     <div class="about-copy" data-reveal="1">
       <span class="eyebrow">02 / About</span>
       <h2 id="about-title">Hi, I'm {profile.name.split(' ')[0]}.</h2>
-      <p class="about-text">{profile.about}</p>
+      {profile.about.map((text) => <p class="about-text">{text}</p>)}
       <dl class="about-facts">
         {facts.map((f) => (
           <>
