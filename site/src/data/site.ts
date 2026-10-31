@@ -78,6 +78,11 @@ export const work = [
     period: 'Jul 2026 – Present',
     role: 'Technical Engineer (Robotics)',
     org: 'Entech Industrial Solution Co., Ltd.',
+    orgUrl: 'https://www.entech.co.th',
+    orgLinks: [
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/company/entechindustrialsolution/' },
+      { label: 'Facebook', href: 'https://www.facebook.com/entechfanpage' },
+    ],
     summary:
       'Python scripts and ROS2 packages for supplier robots, validated in NVIDIA Isaac Sim. Internal task tracker on Next.js + Supabase, deployed on Vercel.',
     highlights: [
@@ -86,14 +91,16 @@ export const work = [
       { date: 'Aug 2026', text: "Robot demos at Entech's booth, Cobot Contest Thailand 2026 (RMUTI Khon Kaen)" },
     ],
     links: [
-      { label: 'Entech on LinkedIn', href: 'https://www.linkedin.com/posts/entechindustrialsolution_entechindustrialsolution-entech-eis-activity-7514153906193489920--wDK' },
-      { label: 'Entech on Facebook', href: 'https://www.facebook.com/share/p/1C1M5g88rF/' },
+      { label: 'Event post on LinkedIn', href: 'https://www.linkedin.com/posts/entechindustrialsolution_entechindustrialsolution-entech-eis-activity-7514153906193489920--wDK' },
+      { label: 'Event post on Facebook', href: 'https://www.facebook.com/share/p/1C1M5g88rF/' },
     ],
   },
   {
     period: 'Apr – May 2025',
     role: 'Robotics Intern',
     org: 'TESR Co., Ltd.',
+    orgUrl: 'https://www.facebook.com/ThaiEmbedded',
+    orgLinks: [],
     summary: 'AMR300 high-payload mobile robot: drive system, ROS2 to ESP32 integration, 300 kg payload tests.',
     highlights: [],
     links: [],
