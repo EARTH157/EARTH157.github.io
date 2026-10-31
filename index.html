@@ -4,11 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jirapat Chaumaungphan | Robotics Engineer</title>
+    <title>Jirapat Chaumaungphan | Robotics &amp; AI Engineer</title>
     <!-- Favicon (Browser Tab Logo) -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23D27D60'/></svg>" type="image/svg+xml">
     <meta name="description"
-        content="Portfolio of Jirapat Chaumaungphan, a Robotics Engineering student passionate about ROS2, Computer Vision, and Autonomous Systems.">
+        content="Portfolio of Jirapat Chaumaungphan, a Technical Engineer (Robotics) and Robotics & AI graduate from Chiang Mai University working on computer vision, LLM/RAG applications, and ROS2.">
+    <link rel="canonical" href="https://earth157.github.io/">
+
+    <!-- Link previews (LinkedIn, LINE, Facebook, X) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://earth157.github.io/">
+    <meta property="og:title" content="Jirapat Chaumaungphan | Robotics & AI Engineer">
+    <meta property="og:description"
+        content="Computer vision, LLM/RAG applications, and ROS2 robotics. Projects, experience, and skills.">
+    <meta property="og:image" content="https://earth157.github.io/assets/images/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+
     <link rel="stylesheet" href="style.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;600&display=swap"
@@ -18,51 +31,71 @@
 
 <body>
     <nav>
-        <div class="logo">Portfolio<span class="dot">.</span></div>
-        <ul class="nav-links">
+        <a href="#about" class="logo" aria-label="Jirapat Chaumaungphan, back to top">JC<span class="dot">.</span></a>
+        <ul class="nav-links" id="nav-links">
             <li><a href="#about">About</a></li>
             <li><a href="#education">Education</a></li>
             <li><a href="#experience">Experience & Activities</a></li>
             <li><a href="#projects">Projects</a></li>
             <li><a href="#skills">Skills</a></li>
+            <li><a href="#contact">Contact</a></li>
         </ul>
         <div class="nav-right">
             <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">
                 <i class="fas fa-moon" id="theme-icon"></i>
             </button>
-            <div class="menu-toggle" id="mobile-menu">
+            <button class="menu-toggle" id="mobile-menu" aria-label="Open menu" aria-expanded="false"
+                aria-controls="nav-links">
                 <i class="fas fa-bars"></i>
-            </div>
+            </button>
         </div>
+        <div class="scroll-progress" aria-hidden="true"></div>
     </nav>
 
     <header id="about" class="hero">
         <div class="hero-content-wrapper">
-            <div class="hero-text reveal">
-                <h1 class="glitch" data-text="Jirapat Chaumaungphan">Jirapat Chaumaungphan</h1>
-                <h2 class="subtitle">Bachelor of Robotics Engineering and Artificial Intelligence</h2>
-                <p class="summary">Robotics Engineering and Artificial Intelligence graduate from Chiang Mai University with a strong passion for ROS2, Computer Vision, and Autonomous Systems. Proven logical problem-solving skills through the development of a 5-DOF robotic arm (WhitePost). Experienced in Python/C++</p>
-                <div class="social-links">
-                    <a href="https://github.com/EARTH157" target="_blank" class="btn"><i class="fab fa-github"></i>
-                        GitHub</a>
+            <div class="hero-text">
+                <span class="status-pill hero-anim" style="--i: 0"><span class="status-dot"></span> Technical
+                    Engineer @ Entech Industrial Solution</span>
+                <h1 class="hero-anim" style="--i: 1">Jirapat Chaumaungphan</h1>
+                <h2 class="subtitle hero-anim" style="--i: 2">Robotics &amp; AI Engineer</h2>
+                <p class="focus-line hero-anim" style="--i: 3">
+                    <span class="sr-only">Focus areas: Computer Vision, LLM &amp; RAG, ROS2 Robotics, AI-assisted
+                        Full-stack.</span>
+                    <span aria-hidden="true">Building with <span class="rotator" id="rotator">Computer
+                            Vision</span></span>
+                </p>
+                <p class="summary hero-anim" style="--i: 4">Technical Engineer and Robotics Engineering &amp; AI graduate (Chiang Mai University)
+                    pursuing an AI Engineer career. Experienced in computer vision (custom YOLOv8 + OpenCV models
+                    deployed on a robot), building LLM/RAG applications, and AI-assisted full-stack development, with
+                    a strong Python/C++ and ROS2 foundation.</p>
+                <div class="social-links hero-anim" style="--i: 5">
+                    <a href="assets/docs/Jirapat_Chaumaungphan_Resume.pdf" download class="btn btn-primary"><i
+                            class="fas fa-file-arrow-down"></i> Download CV</a>
+                    <a href="https://github.com/EARTH157" target="_blank" rel="noopener" class="btn btn-icon"
+                        aria-label="GitHub" title="GitHub"><i class="fab fa-github"></i></a>
                     <a href="https://www.linkedin.com/in/jirapat-chaumaungphan-9a0a66326/" target="_blank"
-                        class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                    <a href="https://www.youtube.com/@jirapatchaumaungphan6870" target="_blank" class="btn"><i
-                            class="fab fa-youtube"></i> YouTube</a>
+                        rel="noopener" class="btn btn-icon" aria-label="LinkedIn" title="LinkedIn"><i
+                            class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.youtube.com/@jirapatchaumaungphan6870" target="_blank" rel="noopener"
+                        class="btn btn-icon" aria-label="YouTube" title="YouTube"><i class="fab fa-youtube"></i></a>
                 </div>
-                <div class="contact-info">
-                    <span><i class="fas fa-envelope"></i> earthzz.jirapat@outlook.com</span>
+                <div class="contact-info hero-anim" style="--i: 6">
+                    <a href="mailto:earthzz.jirapat@outlook.com"><i class="fas fa-envelope"></i> earthzz.jirapat@outlook.com</a>
                 </div>
             </div>
-            <div class="hero-image reveal">
-                <img src="assets/images/profile/profile_dicut.webp" alt="Jirapat Chaumaungphan Silhouette" width="823" height="900" fetchpriority="high">
+            <div class="hero-image hero-photo-anim">
+                <div class="hero-photo">
+                    <img src="assets/images/profile/profile_dicut.webp" alt="Portrait of Jirapat Chaumaungphan" width="823" height="900" fetchpriority="high">
+                </div>
             </div>
         </div>
+        <a href="#education" class="scroll-cue" aria-label="Scroll to content"><span></span></a>
     </header>
 
     <section id="education" class="section">
         <h2 class="section-title reveal">Education</h2>
-        <div class="timeline-container reveal">
+        <div class="timeline-container">
             <div class="timeline">
                 <div class="timeline-item">
                     <div class="timeline-dot"></div>
@@ -71,11 +104,12 @@
                             <h3>B.Eng. Robotics Engineering and Artificial Intelligence</h3>
                             <h4>Chiang Mai University</h4>
                             <span class="date">Jun 2022 - Mar 2026</span>
-                            <p>GPAX: 3.05. Relevant Coursework: Robot Design Essential, Computer Vision, Robotic
+                            <p>GPAX: 3.06. Relevant Coursework: Robot Design Essential, Computer Vision, Robotic
                                 Engineering, System Analysis and Control, Embedded Systems, ROS2, AI for Robotics.</p>
                         </div>
                         <div class="edu-logo">
-                            <img src="assets/images/reai_logo/logo_rgb.b9b14998.png" alt="REAI Logo">
+                            <img src="assets/images/reai_logo/logo_rgb.b9b14998.png"
+                                alt="Robotics Engineering and AI, Chiang Mai University logo">
                         </div>
                     </div>
                 </div>
@@ -85,8 +119,49 @@
 
     <section id="experience" class="section">
         <h2 class="section-title reveal">Experience & Activities</h2>
-        <div class="timeline-container reveal">
+        <div class="timeline-container">
             <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-panel">
+                        <h3>Technical Engineer (Robotics)</h3>
+                        <h4>Entech Industrial Solution Co., Ltd.</h4>
+                        <span class="date">Jul 2026 - Present</span>
+                        <div class="intern-details">
+                            <div class="detail-block">
+                                <h5><i class="fas fa-trophy"></i> Key Contributions</h5>
+                                <ul>
+                                    <li>Developed Python scripts and ROS2 packages to control supplier robots and
+                                        validated them in NVIDIA Isaac Sim</li>
+                                    <li>Built an internal task-tracking web app with Next.js and Supabase, deployed on
+                                        Vercel, using AI-assisted development (Claude) to shorten delivery time</li>
+                                </ul>
+                            </div>
+                            <div class="detail-block">
+                                <h5><i class="fas fa-layer-group"></i> Tech Stack</h5>
+                                <div class="tags">
+                                    <span>Python</span>
+                                    <span>ROS2</span>
+                                    <span>NVIDIA Isaac Sim</span>
+                                    <span>Next.js</span>
+                                    <span>Supabase</span>
+                                    <span>Vercel</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-panel">
+                        <h3>1st Place (Open Category)</h3>
+                        <h4>Physical AI Hackathon 2026 — Maker Faire Siam Square 2026</h4>
+                        <span class="date">Jun 2026</span>
+                        <p>Built an AI-powered CPR training kit that evaluates a trainee's chest compressions. Measured
+                            the compression rate with a pressure sensor and a free AI API, then sent the scored results
+                            to Telegram.</p>
+                    </div>
+                </div>
                 <div class="timeline-item">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content glass-panel">
@@ -96,9 +171,9 @@
                         <p>Inspected and verified middle school robots to ensure they met competition rules.</p>
                         <div class="event-gallery">
                             <img src="assets/images/second_mahout_game/597395249_122196935870547636_2221598870764349597_n.webp"
-                                alt="Mahout Game 2026 Event 1" class="zoom-img" width="1000" height="750" loading="lazy" decoding="async">
+                                alt="Participants and staff group photo at Mahout Game 2026" class="zoom-img" width="1000" height="750" loading="lazy" decoding="async">
                             <img src="assets/images/second_mahout_game/632953271_1443115267600212_6673706776475250536_n.webp"
-                                alt="Mahout Game 2026 Event 2" class="zoom-img" width="1000" height="386" loading="lazy" decoding="async">
+                                alt="Mahout Game 2026 teams and organizers on stage" class="zoom-img" width="1000" height="386" loading="lazy" decoding="async">
                         </div>
                     </div>
                 </div>
@@ -127,7 +202,7 @@
                                     <span>ROS2 Humble</span>
                                     <span>Intel NUC</span>
                                     <span>ESP32</span>
-                                    <span>CAN BUS Protocal</span>
+                                    <span>CAN Bus Protocol</span>
                                     <span>Hub Servo Motor</span>
                                     <span>Python</span>
                                     <span>C++</span>
@@ -141,6 +216,12 @@
                                     <li>Technical documentation and progress reporting</li>
                                 </ul>
                             </div>
+                        </div>
+
+                        <div class="event-gallery">
+                            <img src="assets/images/intern/amr300_tesr.webp"
+                                alt="The AMR300 high-payload mobile robot built during the TESR internship"
+                                class="zoom-img" width="1000" height="563" loading="lazy" decoding="async">
                         </div>
 
                         <div class="intern-media">
@@ -166,13 +247,17 @@
                         <p>Collaborated with CMU Student Development Division and Faculty of Dentistry to facilitate
                             dental checkups and treatments for disabled students. Promoted healthcare access, equality,
                             and mutual care within the university.</p>
+                        <div class="project-links" style="justify-content: flex-start; margin-top: 1rem;">
+                            <a href="assets/docs/certificate_peer_helping_peer_2025.pdf" target="_blank" rel="noopener"
+                                class="btn-small"><i class="fas fa-certificate"></i> Certificate</a>
+                        </div>
                         <div class="event-gallery">
                             <img src="assets/images/เพื่อนช่วยเพื่อน/486680447_1147599350498312_5829310320842614446_n.webp"
-                                alt="Peer Helping Peer 1" class="zoom-img" width="1000" height="750" loading="lazy" decoding="async">
+                                alt="Peer Helping Peer volunteers with CMU Disability Support Services" class="zoom-img" width="1000" height="750" loading="lazy" decoding="async">
                             <img src="assets/images/เพื่อนช่วยเพื่อน/486690109_1147599263831654_2956854883742740699_n.webp"
-                                alt="Peer Helping Peer 2" class="zoom-img" width="1000" height="750" loading="lazy" decoding="async">
+                                alt="Volunteers and the service robot during the dental checkup event" class="zoom-img" width="1000" height="750" loading="lazy" decoding="async">
                             <img src="assets/images/เพื่อนช่วยเพื่อน/487354063_1147599230498324_4010129904288465671_n.webp"
-                                alt="Peer Helping Peer 3" class="zoom-img" width="1000" height="750" loading="lazy" decoding="async">
+                                alt="Students guided by volunteers at the Faculty of Dentistry" class="zoom-img" width="1000" height="750" loading="lazy" decoding="async">
                         </div>
                     </div>
                 </div>
@@ -184,13 +269,13 @@
                         <span class="date">Feb 2025</span>
                         <p>Operated cameras for the event's live broadcast and media coverage.</p>
                         <div class="event-gallery">
-                            <img src="assets/images/first_mahout_game/DSC00411.webp" alt="Mahout Game 2025 Event 1"
+                            <img src="assets/images/first_mahout_game/DSC00411.webp" alt="Jirapat operating a video camera at Mahout Game 2025"
                                 class="zoom-img" width="1000" height="667" loading="lazy" decoding="async">
-                            <img src="assets/images/first_mahout_game/DSC00505.webp" alt="Mahout Game 2025 Event 2"
+                            <img src="assets/images/first_mahout_game/DSC00505.webp" alt="Filming the match beside the competition timer"
                                 class="zoom-img" width="1000" height="667" loading="lazy" decoding="async">
-                            <img src="assets/images/first_mahout_game/DSC00558.webp" alt="Mahout Game 2025 Event 3"
+                            <img src="assets/images/first_mahout_game/DSC00558.webp" alt="PR team camera operators at Mahout Game 2025"
                                 class="zoom-img" width="1000" height="667" loading="lazy" decoding="async">
-                            <img src="assets/images/first_mahout_game/DSC00586.webp" alt="Mahout Game 2025 Event 4"
+                            <img src="assets/images/first_mahout_game/DSC00586.webp" alt="Filming the Mahout Game 2025 live broadcast"
                                 class="zoom-img" width="1000" height="667" loading="lazy" decoding="async">
                         </div>
                     </div>
@@ -205,6 +290,11 @@
                             team, <strong>Angkaew-one</strong>, alongside Roboguard (TU), was selected to represent
                             Thailand in Stage 2 and Stage 3 (Tokyo, Japan). Honored to receive guidance from Dr. Zia
                             Ahmed and Assoc. Prof. Dr. Supavadee Aramvith.</p>
+                        <ul class="highlight-list">
+                            <li>Qualified as a Stage 2 Finalist in an international robotics competition</li>
+                            <li>Developed an Autonomous Surface Vehicle (ASV) to collect water-quality samples for
+                                environmental monitoring</li>
+                        </ul>
 
                         <div class="project-links"
                             style="justify-content: flex-start; margin-top: 1rem; margin-bottom: 1rem;">
@@ -223,11 +313,11 @@
 
                         <div class="event-gallery">
                             <img src="assets/images/IEEE2024/482261232_959986769651710_2103961112838608025_n.webp"
-                                alt="IEEE Event 1" class="zoom-img" width="1000" height="639" loading="lazy" decoding="async">
+                                alt="IEEE R10 Robotics Competition 2024 result: RoboGuard and Angkaew-one selected for the next stage" class="zoom-img" width="1000" height="639" loading="lazy" decoding="async">
                             <img src="assets/images/IEEE2024/440479677_975299400966946_6414736698600678656_n.webp"
-                                alt="IEEE Event 2" class="zoom-img" width="476" height="1000" loading="lazy" decoding="async">
+                                alt="Top view of the team Autonomous Surface Vehicle" class="zoom-img" width="476" height="1000" loading="lazy" decoding="async">
                             <img src="assets/images/IEEE2024/437339343_434120005769476_5324647565669808941_n.webp"
-                                alt="IEEE Event 3" class="zoom-img" width="1000" height="750" loading="lazy" decoding="async">
+                                alt="Team Angkaew-one members" class="zoom-img" width="1000" height="750" loading="lazy" decoding="async">
                         </div>
                     </div>
                 </div>
@@ -242,7 +332,10 @@
                             executives and pitched to judges from CMU Business School and Alumni Association.</p>
                         <div class="event-gallery">
                             <img src="assets/images/builds_hackathon/471744996_456433480837730_7518980023600342732_n.webp"
-                                alt="Builds Hackathon" class="zoom-img" width="1000" height="667" loading="lazy" decoding="async">
+                                alt="Teams brainstorming Smart Campus ideas at the 24-hour builds hackathon" class="zoom-img" width="1000" height="667" loading="lazy" decoding="async">
+                            <img src="assets/images/builds_hackathon/certificate.webp"
+                                alt="Certificate of participation, 24 Hrs. builds Hackathon Smart University"
+                                class="zoom-img" width="1000" height="707" loading="lazy" decoding="async">
                         </div>
                     </div>
                 </div>
@@ -264,67 +357,23 @@
         <h2 class="section-title reveal">Projects</h2>
         <div class="projects-grid">
             <div class="project-card glass-panel reveal">
-                <div class="project-img">
-                    <img src="assets/images/turtlebot.webp" alt="Turtlebot3: SLAM Navigation" width="350" height="350" loading="lazy" decoding="async">
+                <div class="project-img project-img--icon" aria-hidden="true">
+                    <i class="fas fa-book-open-reader"></i>
                 </div>
                 <div class="project-info">
-                    <h3>Turtlebot3: SLAM Navigation</h3>
-                    <span class="date">Jan 2024 - Feb 2024</span>
-                    <p>Deployed Lidar-based SLAM and Nav2 stack for autonomous environment mapping and path planning.
-                        Visualized transform trees (TF) and laser scan data via Rviz2 and Gazebo.</p>
-                    <div class="hover-media">
-                        <div class="video-container">
-                            <iframe loading="lazy" src="https://www.youtube.com/embed/C79EKSHk_xU"
-                                title="Turtlebot3 Navigation"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowfullscreen></iframe>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="project-card glass-panel reveal">
-                <div class="project-img">
-                    <img src="assets/images/orangebot.webp" alt="Orange Robot Platform" width="1200" height="511" loading="lazy" decoding="async">
-                </div>
-                <div class="project-info">
-                    <h3>Orange Robot Platform</h3>
-                    <span class="date">Feb 2024 - Mar 2024</span>
-                    <p>Developed a mobile robot platform integrated with a 5-DOF robotic arm for a Teleoperation system.
-                        Simulated kinematics in Gazebo using ROS2. Performed precise orange box pick-up tasks.</p>
-                    <div class="hover-media">
-                        <div class="video-container">
-                            <iframe loading="lazy" src="https://www.youtube.com/embed/gYg_JIb-rLA"
-                                title="Orange Robot Platform"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowfullscreen></iframe>
-                        </div>
+                    <h3>Tamra: Offline RAG Desktop App</h3>
+                    <span class="date">Oct 2026 - Present</span>
+                    <p>Open-source offline desktop app (Windows, Ubuntu) for cited Q&amp;A over local Thai, English,
+                        and Chinese documents. Hybrid search (SQLite FTS5 + sqlite-vec with bge-m3 embeddings) plus a
+                        reranker lifted hit@1 from 0.67 to 1.00 on a 24-question eval.</p>
+                    <div class="tags">
+                        <span>RAG</span>
+                        <span>bge-m3</span>
+                        <span>sqlite-vec</span>
+                        <span>Reranker</span>
                     </div>
                     <div class="project-links">
-                        <a href="https://github.com/EARTH157/Robot_ws" class="btn-small"><i class="fab fa-github"></i> Code</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="project-card glass-panel reveal">
-                <div class="project-img">
-                    <img src="assets/images/dental_robot.webp" alt="Service Robot for Dental Clinic" width="1200" height="900" loading="lazy" decoding="async">
-                </div>
-                <div class="project-info">
-                    <h3>Service Robot for Dental Clinic</h3>
-                    <span class="date">Jun 2024 - Oct 2024</span>
-                    <p>Designed a Service Robot prototype for dental clinics, integrated with a 5-DOF robotic arm. Built
-                        to transport dental trays from sterilization rooms to treatment rooms.</p>
-                    <div class="hover-media">
-                        <div class="video-container">
-                            <iframe loading="lazy" src="https://www.youtube.com/embed/oONf1Xhql2w"
-                                title="Service Robot for Dental Clinic" frameborder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                        </div>
-                    </div>
-                    <div class="project-links">
-                        <a href="https://github.com/EARTH157/Robot_Project1" class="btn-small"><i class="fab fa-github"></i> Code</a>
+                        <a href="https://github.com/EARTH157/Tamra" target="_blank" rel="noopener" class="btn-small"><i class="fab fa-github"></i> Code</a>
                     </div>
                 </div>
             </div>
@@ -336,9 +385,10 @@
                 <div class="project-info">
                     <h3>White Post: Document Delivery Robot</h3>
                     <span class="date">Jun 2025 - Mar 2026</span>
-                    <p>Implemented an automated delivery system with a multi-terrain tracked base. Features full
-                        Inverse/Forward Kinematics control for the 5-DOF arm, and a custom YOLOv8 model (OpenCV) to
-                        identify and track elevator buttons.</p>
+                    <p>Automated document delivery robot. Designed the custom chassis with a tracked and wheel drive
+                        system for multi-terrain mobility, wrote full Inverse/Forward Kinematics control for the 5-DOF
+                        arm to press elevator buttons, and deployed a custom YOLOv8 + OpenCV model that tracks elevator
+                        buttons and monitors door status (open/closed).</p>
                     <div class="hover-media">
                         <div class="model-viewer-container" id="whitepost-viewer"
                             style="height: 200px; margin-bottom: 1rem; border-radius: 8px;">
@@ -359,7 +409,7 @@
                         </div>
                     </div>
                     <div class="project-links">
-                        <a href="https://github.com/EARTH157/Senior_Project-WhitePost-Main_Arm" class="btn-small"><i class="fab fa-github"></i> Code</a>
+                        <a href="https://github.com/EARTH157/Senior_Project-WhitePost-Main_Arm" target="_blank" rel="noopener" class="btn-small"><i class="fab fa-github"></i> Code</a>
                     </div>
                 </div>
             </div>
@@ -382,7 +432,73 @@
                         </div>
                     </div>
                     <div class="project-links">
-                        <a href="https://github.com/EARTH157/autonomous-robot-rrt-star" class="btn-small"><i class="fab fa-github"></i> Code</a>
+                        <a href="https://github.com/EARTH157/autonomous-robot-rrt-star" target="_blank" rel="noopener" class="btn-small"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card glass-panel reveal">
+                <div class="project-img">
+                    <img src="assets/images/dental_robot.webp" alt="Service Robot for Dental Clinic" width="1200" height="900" loading="lazy" decoding="async">
+                </div>
+                <div class="project-info">
+                    <h3>Service Robot for Dental Clinic</h3>
+                    <span class="date">Jun 2024 - Oct 2024</span>
+                    <p>Designed a Service Robot prototype for dental clinics, integrated with a 5-DOF robotic arm. Built
+                        to transport dental trays from sterilization rooms to treatment rooms.</p>
+                    <div class="hover-media">
+                        <div class="video-container">
+                            <iframe loading="lazy" src="https://www.youtube.com/embed/oONf1Xhql2w"
+                                title="Service Robot for Dental Clinic" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/EARTH157/Robot_Project1" target="_blank" rel="noopener" class="btn-small"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card glass-panel reveal">
+                <div class="project-img">
+                    <img src="assets/images/orangebot.webp" alt="Orange Robot Platform" width="1200" height="511" loading="lazy" decoding="async">
+                </div>
+                <div class="project-info">
+                    <h3>Orange Robot Platform</h3>
+                    <span class="date">Feb 2024 - Mar 2024</span>
+                    <p>Developed a mobile robot platform integrated with a 5-DOF robotic arm for a Teleoperation system.
+                        Simulated kinematics in Gazebo using ROS2. Performed precise orange box pick-up tasks.</p>
+                    <div class="hover-media">
+                        <div class="video-container">
+                            <iframe loading="lazy" src="https://www.youtube.com/embed/gYg_JIb-rLA"
+                                title="Orange Robot Platform"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/EARTH157/Robot_ws" target="_blank" rel="noopener" class="btn-small"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card glass-panel reveal">
+                <div class="project-img">
+                    <img src="assets/images/turtlebot.webp" alt="Turtlebot3: SLAM Navigation" width="350" height="350" loading="lazy" decoding="async">
+                </div>
+                <div class="project-info">
+                    <h3>Turtlebot3: SLAM Navigation</h3>
+                    <span class="date">Jan 2024 - Feb 2024</span>
+                    <p>Deployed Lidar-based SLAM and Nav2 stack for autonomous environment mapping and path planning.
+                        Visualized transform trees (TF) and laser scan data via Rviz2 and Gazebo.</p>
+                    <div class="hover-media">
+                        <div class="video-container">
+                            <iframe loading="lazy" src="https://www.youtube.com/embed/C79EKSHk_xU"
+                                title="Turtlebot3 Navigation"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen></iframe>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -395,97 +511,122 @@
             <div class="skill-category glass-panel reveal">
                 <h3><i class="fas fa-code"></i> Programming</h3>
                 <div class="tags">
-                    <span><img class="skill-icon" src="assets/images/logo/Python-logo-notext.svg.png" alt="Python" width="64" height="64" loading="lazy" decoding="async">Python</span>
-                    <span><img class="skill-icon" src="assets/images/logo/ISO_C++_Logo.svg.png" alt="C++" width="57" height="64" loading="lazy" decoding="async">C++</span>
-                    <span><img class="skill-icon" src="assets/images/logo/C_Programming_Language.svg.png" alt="C" width="58" height="64" loading="lazy" decoding="async">C</span>
-                    <span><img class="skill-icon" src="assets/images/logo/Lua-Logo.svg.png" alt="Lua" width="64" height="64" loading="lazy" decoding="async">Lua</span>
+                    <span><img class="skill-icon" src="assets/images/logo/Python-logo-notext.svg.png" alt="" width="64" height="64" loading="lazy" decoding="async">Python</span>
+                    <span><img class="skill-icon" src="assets/images/logo/ISO_C++_Logo.svg.png" alt="" width="57" height="64" loading="lazy" decoding="async">C++</span>
+                    <span><img class="skill-icon" src="assets/images/logo/C_Programming_Language.svg.png" alt="" width="58" height="64" loading="lazy" decoding="async">C</span>
+                    <span><img class="skill-icon" src="assets/images/logo/Lua-Logo.svg.png" alt="" width="64" height="64" loading="lazy" decoding="async">Lua</span>
                 </div>
             </div>
             <div class="skill-category glass-panel reveal">
                 <h3><i class="fas fa-microchip"></i> Hardware</h3>
                 <div class="tags">
-                    <span><img class="skill-icon" src="assets/images/logo/Turtlebot3_logo.webp" alt="TurtleBot3" width="64" height="63" loading="lazy" decoding="async">TurtleBot3</span>
-                    <span><img class="skill-icon" src="assets/images/logo/LDS-E210-R-带盖-logo.497.webp" alt="2D LiDAR" width="64" height="64" loading="lazy" decoding="async">2D LiDAR</span>
-                    <span><img class="skill-icon" src="assets/images/logo/raspberrry_pi_logo.png" alt="Raspberry Pi" width="64" height="64" loading="lazy" decoding="async">Raspberry Pi</span>
-                    <span><img class="skill-icon" src="assets/images/logo/espressif-systems-logo-png_seeklogo-407805.png" alt="ESP32" width="64" height="64" loading="lazy" decoding="async">ESP32</span>
-                    <span><img class="skill-icon" src="assets/images/logo/Arduino_IDE_logo.svg.png" alt="Arduino" width="64" height="64" loading="lazy" decoding="async">Arduino Uno</span>
+                    <span><img class="skill-icon" src="assets/images/logo/Turtlebot3_logo.webp" alt="" width="64" height="63" loading="lazy" decoding="async">TurtleBot3 Burger/Waffle</span>
+                    <span><img class="skill-icon" src="assets/images/logo/LDS-E210-R-带盖-logo.497.webp" alt="" width="64" height="64" loading="lazy" decoding="async">2D LiDAR</span>
+                    <span>OpenCR</span>
+                    <span><img class="skill-icon" src="assets/images/logo/raspberrry_pi_logo.png" alt="" width="64" height="64" loading="lazy" decoding="async">Raspberry Pi 5 / Zero 2W</span>
+                    <span><img class="skill-icon" src="assets/images/logo/espressif-systems-logo-png_seeklogo-407805.png" alt="" width="64" height="64" loading="lazy" decoding="async">ESP32</span>
+                    <span><img class="skill-icon" src="assets/images/logo/Arduino_IDE_logo.svg.png" alt="" width="64" height="64" loading="lazy" decoding="async">Arduino Uno</span>
+                    <span>NVIDIA Jetson</span>
                 </div>
             </div>
             <div class="skill-category glass-panel reveal">
                 <h3><i class="fas fa-map-marked-alt"></i> Navigation & SLAM</h3>
                 <div class="tags">
                     <span>Lidar SLAM</span>
-                    <span><img class="skill-icon" src="assets/images/logo/781fa8ce870432b9682a95f855b315c454da87c7.png" alt="Nav2" width="35" height="64" loading="lazy" decoding="async">Nav2</span>
+                    <span><img class="skill-icon" src="assets/images/logo/781fa8ce870432b9682a95f855b315c454da87c7.png" alt="" width="35" height="64" loading="lazy" decoding="async">Nav2</span>
                     <span>RRT / RRT* / A*</span>
                 </div>
             </div>
             <div class="skill-category glass-panel reveal">
                 <h3><i class="fas fa-robot"></i> Frameworks & Tools</h3>
                 <div class="tags">
-                    <span><img class="skill-icon" src="assets/images/logo/hero-removebg-preview.png" alt="ROS2" width="64" height="16" loading="lazy" decoding="async">ROS2 (Foxy, Humble)</span>
-                    <span><img class="skill-icon" src="assets/images/logo/splash.png" alt="Rviz2" width="64" height="42" loading="lazy" decoding="async">Rviz2</span>
-                    <span><img class="skill-icon" src="assets/images/logo/gazebo_icon_pos-76b768ca51b0c24a5e5ddeb5a844baf3a3efc83e42affae355ed6ce9326707e4.svg" alt="Gazebo">Gazebo Classic</span>
-                    <span><img class="skill-icon" src="assets/images/logo/Visual_Studio_Code_1.35_icon.svg.png" alt="Visual Studio Code" width="64" height="64" loading="lazy" decoding="async">Visual Studio Code</span>
-                    <span><img class="skill-icon" src="assets/images/logo/25231.png" alt="GitHub" width="64" height="64" loading="lazy" decoding="async">GitHub</span>
-                    <span><img class="skill-icon" src="assets/images/logo/2221476.webp" alt="Solidwork" width="64" height="64" loading="lazy" decoding="async">Solidwork</span>
-                    <span><img class="skill-icon" src="assets/images/logo/easyeda-icon-filled-256.png" alt="EasyEDA" width="64" height="64" loading="lazy" decoding="async">EasyEDA</span>
-                    <span><img class="skill-icon" src="assets/images/logo/Arduino_IDE_logo.svg.png" alt="Arduino IDE" width="64" height="64" loading="lazy" decoding="async">Arduino IDE</span>
+                    <span><img class="skill-icon" src="assets/images/logo/hero-removebg-preview.png" alt="" width="64" height="16" loading="lazy" decoding="async">ROS2 (Foxy, Humble)</span>
+                    <span><img class="skill-icon" src="assets/images/logo/splash.png" alt="" width="64" height="42" loading="lazy" decoding="async">RViz2</span>
+                    <span><img class="skill-icon" src="assets/images/logo/gazebo_icon_pos-76b768ca51b0c24a5e5ddeb5a844baf3a3efc83e42affae355ed6ce9326707e4.svg" alt="">Gazebo Classic</span>
+                    <span>NVIDIA Isaac Sim</span>
+                    <span><img class="skill-icon" src="assets/images/logo/2221476.webp" alt="" width="64" height="64" loading="lazy" decoding="async">SolidWorks</span>
+                    <span><img class="skill-icon" src="assets/images/logo/easyeda-icon-filled-256.png" alt="" width="64" height="64" loading="lazy" decoding="async">EasyEDA</span>
+                    <span><img class="skill-icon" src="assets/images/logo/Arduino_IDE_logo.svg.png" alt="" width="64" height="64" loading="lazy" decoding="async">Arduino IDE</span>
                 </div>
             </div>
             <div class="skill-category glass-panel reveal">
                 <h3><i class="fas fa-eye"></i> Vision & AI</h3>
                 <div class="tags">
-                    <span><img class="skill-icon" src="assets/images/logo/opencv_logo_icon_170887.webp" alt="OpenCV" width="64" height="64" loading="lazy" decoding="async">OpenCV</span>
+                    <span><img class="skill-icon" src="assets/images/logo/opencv_logo_icon_170887.webp" alt="" width="64" height="64" loading="lazy" decoding="async">OpenCV</span>
                     <span>YOLOv8</span>
                     <span>Image Processing</span>
-                    <span><img class="skill-icon" src="assets/images/logo/images-removebg-preview.png" alt="Roboflow" width="64" height="64" loading="lazy" decoding="async">Roboflow</span>
-                    <span>LLMs (ChatGPT/Gemini)</span>
+                    <span><img class="skill-icon" src="assets/images/logo/images-removebg-preview.png" alt="" width="64" height="64" loading="lazy" decoding="async">Roboflow</span>
+                    <span>LLM Applications (RAG)</span>
+                    <span>AI-assisted Coding (Claude)</span>
+                </div>
+            </div>
+            <div class="skill-category glass-panel reveal">
+                <h3><i class="fas fa-laptop-code"></i> Software & Web</h3>
+                <div class="tags">
+                    <span><img class="skill-icon" src="assets/images/logo/25231.png" alt="" width="64" height="64" loading="lazy" decoding="async">Git / GitHub</span>
+                    <span><img class="skill-icon" src="assets/images/logo/UbuntuCoF.svg.png" alt="" width="64" height="64" loading="lazy" decoding="async">Linux / Ubuntu</span>
+                    <span><img class="skill-icon" src="assets/images/logo/Visual_Studio_Code_1.35_icon.svg.png" alt="" width="64" height="64" loading="lazy" decoding="async">VS Code</span>
+                    <span>Next.js</span>
+                    <span><i class="fab fa-react"></i> React</span>
+                    <span>FastAPI</span>
+                    <span>Supabase</span>
+                    <span>Vercel</span>
                 </div>
             </div>
             <div class="skill-category glass-panel reveal">
                 <h3><i class="fas fa-industry"></i> Industrial Automation</h3>
                 <div class="tags">
-                    <span><img class="skill-icon" src="assets/images/logo/Siemens-logo.svg.png" alt="Siemens" width="64" height="15" loading="lazy" decoding="async">Siemens PLC</span>
+                    <span><img class="skill-icon" src="assets/images/logo/Siemens-logo.svg.png" alt="" width="64" height="15" loading="lazy" decoding="async">Siemens PLC</span>
                     <span>HMI Design</span>
-                    <span><img class="skill-icon" src="assets/images/logo/images.jpg" alt="TIA Portal" width="64" height="64" loading="lazy" decoding="async">TIA Portal v16</span>
+                    <span><img class="skill-icon" src="assets/images/logo/images.jpg" alt="" width="64" height="64" loading="lazy" decoding="async">TIA Portal v16</span>
                     <span>Ladder Logic</span>
                 </div>
             </div>
             <div class="skill-category glass-panel reveal">
                 <h3><i class="fas fa-handshake"></i> Soft Skills & Work Style</h3>
                 <div class="tags">
-                    <span><i class="fas fa-users" style="color:#42A5F5"></i> Collaboration & Teamwork</span>
-                    <span><i class="fas fa-brain" style="color:#AB47BC"></i> Problem-Solving under Pressure</span>
-                    <span><i class="fas fa-tasks" style="color:#66BB6A"></i> Project Management</span>
-                    <span><i class="fab fa-git-alt" style="color:#F4511E"></i> Git Version Control</span>
+                    <span><i class="fas fa-brain" style="color:#AB47BC"></i> Logical Problem Solving</span>
                     <span><i class="fas fa-comments" style="color:#26C6DA"></i> Technical Communication</span>
+                    <span><i class="fas fa-users" style="color:#42A5F5"></i> Team Collaboration</span>
+                    <span><i class="fas fa-bolt" style="color:#F4511E"></i> Rapid Self-Learning</span>
+                    <span><i class="fas fa-tasks" style="color:#66BB6A"></i> Project Management</span>
                 </div>
             </div>
             <div class="skill-category glass-panel reveal">
                 <h3><i class="fas fa-language"></i> Languages</h3>
                 <div class="language-list">
-                    <div class="language-item">
-                        <div class="lang-header">
-                            <span class="lang-name">Thai</span>
-                            <span class="lang-level">Native</span>
-                        </div>
-                        <div class="lang-bar"><div class="lang-fill" style="width: 100%"></div></div>
+                    <div class="lang-header">
+                        <span class="lang-name">Thai</span>
+                        <span class="lang-level">Native</span>
                     </div>
-                    <div class="language-item">
-                        <div class="lang-header">
-                            <span class="lang-name">English</span>
-                            <span class="lang-level">EF SET 45/100 (Reading & Listening)</span>
-                        </div>
-                        <div class="lang-bar"><div class="lang-fill" style="width: 45%"></div></div>
+                    <div class="lang-header">
+                        <span class="lang-name">English</span>
+                        <span class="lang-level">Intermediate (CEFR B1)</span>
                     </div>
+                    <a class="cert-link" href="https://cert.efset.org/LLwup4" target="_blank" rel="noopener"><i
+                            class="fas fa-certificate"></i> EF SET certificate</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer>
-        <p>&copy; 2026 Jirapat Chaumaungphan. All rights reserved.</p>
+    <footer id="contact">
+        <div class="footer-cta reveal">
+            <h2>Let's build something together</h2>
+            <p>Interested in AI engineering and robotics roles. Email is the fastest way to reach me.</p>
+            <div class="footer-actions">
+                <a href="mailto:earthzz.jirapat@outlook.com" class="btn btn-primary"><i class="fas fa-envelope"></i>
+                    Email me</a>
+                <a href="https://www.linkedin.com/in/jirapat-chaumaungphan-9a0a66326/" target="_blank" rel="noopener"
+                    class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                <a href="https://github.com/EARTH157" target="_blank" rel="noopener" class="btn"><i
+                        class="fab fa-github"></i> GitHub</a>
+            </div>
+        </div>
+        <p class="copyright">&copy; 2026 Jirapat Chaumaungphan. All rights reserved.</p>
     </footer>
+
+    <button class="back-to-top" id="back-to-top" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
 
     <!-- Three.js for the 3D viewers is loaded on demand by script.js -->
     <script src="script.js"></script>

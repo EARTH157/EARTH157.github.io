@@ -57,34 +57,114 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Scroll reveal animation
-    const reveals = document.querySelectorAll(".reveal");
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const revealOnScroll = () => {
-        const windowHeight = window.innerHeight;
-        const elementVisible = 100;
+    // Timeline items reveal one by one (added here so they stay visible without JS)
+    document.querySelectorAll('.timeline-item').forEach(item => item.classList.add('reveal'));
 
-        reveals.forEach((reveal) => {
-            const elementTop = reveal.getBoundingClientRect().top;
-            if (elementTop < windowHeight - elementVisible) {
-                reveal.classList.add("active");
+    // Cards in the same grid row reveal with a small stagger
+    document.querySelectorAll('.projects-grid, .skills-container').forEach(grid => {
+        [...grid.children].forEach((card, i) => { card.dataset.stagger = i % 3; });
+    });
+
+    // Scroll reveal animation (smooth scrolling for nav links is handled by CSS scroll-behavior)
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const el = entry.target;
+                if (el.dataset.stagger && !reduceMotion) {
+                    el.style.transitionDelay = `${el.dataset.stagger * 120}ms`;
+                    // Clear the delay afterwards so hover transitions stay instant
+                    setTimeout(() => { el.style.transitionDelay = ''; }, 1200);
+                }
+                el.classList.add("active");
+                observer.unobserve(el);
             }
         });
-    };
+    }, { rootMargin: '0px 0px -100px 0px' });
 
-    window.addEventListener("scroll", revealOnScroll);
-    revealOnScroll(); // Trigger once on load
+    document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
 
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
+    // Scroll-driven UI: compact nav, reading progress, timeline fill, back-to-top
+    const nav = document.querySelector('nav');
+    const progressBar = document.querySelector('.scroll-progress');
+    const timelines = document.querySelectorAll('.timeline');
+    const backToTop = document.getElementById('back-to-top');
+    const navAnchors = [...document.querySelectorAll('.nav-links a[href^="#"]')];
+    const spySections = navAnchors.map(a => document.querySelector(a.getAttribute('href')));
+    let ticking = false;
 
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
+    // Highlight the nav link of the section currently in view (the last one at the very bottom)
+    function updateActiveLink(scrollY, maxScroll) {
+        let current = 0;
+        spySections.forEach((section, i) => {
+            if (section && section.getBoundingClientRect().top <= window.innerHeight * 0.45) current = i;
+        });
+        if (scrollY >= maxScroll - 4) current = spySections.length - 1;
+        navAnchors.forEach((a, i) => a.classList.toggle('active', i === current));
+    }
+
+    function onScroll() {
+        const scrollY = window.scrollY;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+
+        nav.classList.toggle('scrolled', scrollY > 40);
+        if (progressBar) progressBar.style.setProperty('--progress', maxScroll > 0 ? scrollY / maxScroll : 0);
+        if (backToTop) backToTop.classList.toggle('visible', scrollY > 700);
+        updateActiveLink(scrollY, maxScroll);
+
+        timelines.forEach(tl => {
+            const rect = tl.getBoundingClientRect();
+            const filled = (window.innerHeight * 0.65 - rect.top) / rect.height;
+            tl.style.setProperty('--progress', Math.min(Math.max(filled, 0), 1));
+        });
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(onScroll);
+        }
+    }, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    onScroll();
+
+    if (backToTop) {
+        backToTop.addEventListener('click', () => window.scrollTo({ top: 0 }));
+    }
+
+    // Hero: rotate through focus areas
+    const rotator = document.getElementById('rotator');
+    if (rotator && !reduceMotion) {
+        const words = ['Computer Vision', 'LLM & RAG', 'ROS2 Robotics', 'AI-assisted Full-stack'];
+        let index = 0;
+        setInterval(() => {
+            rotator.classList.add('is-out');
+            setTimeout(() => {
+                index = (index + 1) % words.length;
+                rotator.textContent = words[index];
+                rotator.classList.remove('is-out');
+                rotator.classList.add('is-in');
+                requestAnimationFrame(() => requestAnimationFrame(() => rotator.classList.remove('is-in')));
+            }, 350);
+        }, 2600);
+    }
+
+    // Cursor spotlight on cards (mouse/trackpad only)
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        document.querySelectorAll('.glass-panel').forEach(panel => {
+            panel.addEventListener('pointermove', e => {
+                const rect = panel.getBoundingClientRect();
+                panel.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+                panel.style.setProperty('--my', `${e.clientY - rect.top}px`);
+            });
+            panel.addEventListener('pointerleave', () => {
+                panel.style.removeProperty('--mx');
+                panel.style.removeProperty('--my');
             });
         });
-    });
+    }
 
     // 3D Model Viewers: three.js and the model are only downloaded once the viewer
     // becomes visible (its card is hovered/tapped open), not on page load
@@ -130,22 +210,37 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // Cards that hide videos/3D models until opened are also reachable by keyboard
+    const expandableCards = [...cardElements].filter(el => el.querySelector('.hover-media, .intern-media'));
+    expandableCards.forEach(el => el.setAttribute('tabindex', '0'));
+
+    function setCardActive(card) {
+        const isActive = card.classList.contains('touch-active');
+
+        // Remove active class from all card/timeline elements
+        cardElements.forEach(sibling => sibling.classList.remove('touch-active'));
+
+        // Toggle: if was active, stay collapsed; if not, expand
+        if (!isActive) {
+            card.classList.add('touch-active');
+        }
+    }
+
     // Handle cards and timeline items
     cardElements.forEach(el => {
         el.addEventListener('click', function(e) {
             // Ignore if clicking a link, video, or zoom image
             const tag = e.target.tagName.toLowerCase();
-            if (tag === 'a' || tag === 'iframe' || e.target.closest('.zoom-img')) return;
-            
-            const isActive = this.classList.contains('touch-active');
-            
-            // Remove active class from all card/timeline elements
-            cardElements.forEach(sibling => sibling.classList.remove('touch-active'));
-            
-            // Toggle: if was active, stay collapsed; if not, expand
-            if (!isActive) {
-                this.classList.add('touch-active');
-            }
+            if (tag === 'a' || tag === 'iframe' || e.target.closest('a, .zoom-img')) return;
+            setCardActive(this);
+        });
+    });
+
+    expandableCards.forEach(el => {
+        el.addEventListener('keydown', function(e) {
+            if (e.target !== this || (e.key !== 'Enter' && e.key !== ' ')) return;
+            e.preventDefault();
+            setCardActive(this);
         });
     });
 
@@ -162,28 +257,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const navLinks = document.querySelector('.nav-links');
     
     if (mobileMenu && navLinks) {
-        mobileMenu.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
+        const setMenuOpen = (open) => {
+            navLinks.classList.toggle('active', open);
+            mobileMenu.setAttribute('aria-expanded', String(open));
+            mobileMenu.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
             const icon = mobileMenu.querySelector('i');
-            if (navLinks.classList.contains('active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
+            if (icon) {
+                icon.classList.toggle('fa-bars', !open);
+                icon.classList.toggle('fa-times', open);
             }
+        };
+
+        mobileMenu.addEventListener('click', () => {
+            setMenuOpen(!navLinks.classList.contains('active'));
         });
 
         // Close menu when a link is clicked
         navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                const icon = mobileMenu.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            });
+            link.addEventListener('click', () => setMenuOpen(false));
         });
     }
 });
