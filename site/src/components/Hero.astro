@@ -1,13 +1,16 @@
 ---
+import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
 import RobotViewer from './RobotViewer.astro';
+import portrait from '../assets/profile.webp';
 import { profile, robots, stats } from '../data/site';
 
 const navLinks = [
   { n: '01', label: 'Work', href: '#work' },
-  { n: '02', label: 'Projects', href: '#projects' },
-  { n: '03', label: 'Experience', href: '#experience' },
-  { n: '04', label: 'Contact', href: '#contact' },
+  { n: '02', label: 'About', href: '#about' },
+  { n: '03', label: 'Projects', href: '#projects' },
+  { n: '04', label: 'Experience', href: '#experience' },
+  { n: '05', label: 'Contact', href: '#contact' },
 ];
 ---
 
@@ -31,12 +34,16 @@ const navLinks = [
 
   <div id="main" class="hero-grid container">
     <div class="hero-copy">
+      <a class="hello" href="#about">
+        <Image src={portrait} alt="" widths={[64, 128]} sizes="56px" class="hello-avatar" loading="eager" />
+        <span class="hello-text"><span>Hi, I'm</span> <strong>{profile.name}</strong></span>
+      </a>
       <div class="hero-meta">
         <span class="eyebrow">// {profile.role}</span>
         <span class="status"><span class="status-dot"></span>{profile.current}</span>
       </div>
       <h1>{profile.headline}</h1>
-      <p class="hero-intro">I'm <strong>{profile.name}</strong>. {profile.intro}</p>
+      <p class="hero-intro">{profile.intro}</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#work">View case studies <Icon name="arrow-right" size={16} /></a>
         <a class="icon-btn" href={profile.github} aria-label="GitHub"><Icon name="github" size={20} /></a>
@@ -154,9 +161,59 @@ const navLinks = [
     animation: rise 0.9s var(--ease) both;
   }
 
-  .hero-copy > :nth-child(2) { animation-delay: 0.1s; }
-  .hero-copy > :nth-child(3) { animation-delay: 0.2s; }
-  .hero-copy > :nth-child(4) { animation-delay: 0.3s; }
+  .hero-copy > :nth-child(2) { animation-delay: 0.08s; }
+  .hero-copy > :nth-child(3) { animation-delay: 0.16s; }
+  .hero-copy > :nth-child(4) { animation-delay: 0.24s; }
+  .hero-copy > :nth-child(5) { animation-delay: 0.32s; }
+
+  /* Who this is, before the headline: avatar + name, linking to the About section */
+  .hello {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 6px 18px 6px 6px;
+    border: 1px solid rgba(239, 233, 226, 0.16);
+    border-radius: 999px;
+    background: rgba(239, 233, 226, 0.04);
+    color: var(--on-ink);
+    text-decoration: none;
+    transition: border-color 0.2s;
+  }
+
+  .hello:hover {
+    border-color: var(--clay-bright);
+    color: var(--on-ink-strong);
+  }
+
+  .hello :global(.hello-avatar) {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top;
+    background: linear-gradient(180deg, #FBF9F6 0%, #EDE6DE 100%);
+    border: 2px solid var(--clay-bright);
+  }
+
+  .hello-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+  }
+
+  .hello-text span {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--on-ink-muted);
+  }
+
+  .hello-text strong {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--on-ink-strong);
+  }
 
   @keyframes rise {
     from { opacity: 0; transform: translateY(24px); }

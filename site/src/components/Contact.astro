@@ -1,17 +1,14 @@
 ---
-import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
-import portrait from '../assets/profile.webp';
 import { profile } from '../data/site';
 ---
 
 <footer id="contact" class="contact blueprint on-ink">
   <div class="container contact-grid">
     <div class="contact-copy" data-reveal>
-      <span class="eyebrow">04 / Contact</span>
+      <span class="eyebrow">05 / Contact</span>
       <h2>Let's build something together.</h2>
-      <p>{profile.about}</p>
-      <p>Email is the fastest way to reach me.</p>
+      <p>Interested in AI engineering and robotics roles. Email is the fastest way to reach me.</p>
       <a class="email" href={`mailto:${profile.email}`}>{profile.email}</a>
       <div class="contact-actions">
         <a class="btn btn-primary" href={`mailto:${profile.email}`}><Icon name="mail" size={18} /> Email me</a>
@@ -19,7 +16,6 @@ import { profile } from '../data/site';
       </div>
     </div>
     <div class="card-person" data-reveal="1">
-      <Image src={portrait} alt="Portrait of Jirapat Chaumaungphan" widths={[168, 336]} sizes="168px" class="portrait" />
       <div class="person-text">
         <span class="person-name">{profile.name}</span>
         <span class="mono person-role">{profile.role}</span>
@@ -87,21 +83,15 @@ import { profile } from '../data/site';
     gap: 12px;
   }
 
+  /* Sign-off card: name, role and social links in a framed block */
   .card-person {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    flex-wrap: wrap;
-  }
-
-  .portrait {
-    width: 168px;
-    height: 168px;
-    object-fit: cover;
-    object-position: top;
-    border-radius: 50%;
-    background: #EDE6DE;
-    border: 2px solid var(--clay-bright);
+    justify-self: end;
+    width: min(100%, 380px);
+    padding: 28px;
+    border: 1px solid var(--on-ink-line);
+    border-left: 3px solid var(--clay-bright);
+    border-radius: var(--radius);
+    background: rgba(239, 233, 226, 0.03);
   }
 
   .person-text {
@@ -145,13 +135,13 @@ import { profile } from '../data/site';
       padding-top: 56px;
     }
 
-    .portrait {
-      width: 96px;
-      height: 96px;
-    }
-
     .contact-actions .btn {
       flex: 1 1 100%;
+    }
+
+    .card-person {
+      justify-self: stretch;
+      width: auto;
     }
   }
 </style>
