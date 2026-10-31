@@ -1,0 +1,591 @@
+---
+// More projects, Experience, Toolkit and Events: the paper-coloured middle of the homepage
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import { moreProjects, work, awards, education, toolkit, languages, languageCert, events } from '../data/site';
+---
+
+<section id="projects" class="section">
+  <div class="container stack">
+    <span class="eyebrow">02 / More projects</span>
+    <ul class="project-list">
+      {moreProjects.map((p) => (
+        <li>
+          <a href={p.href}>
+            <span class="mono year">{p.year}</span>
+            <span class="project-text">
+              <span class="project-title">{p.title}</span>
+              <span class="project-note">{p.note}</span>
+            </span>
+            <Icon name="arrow-up-right" />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section id="experience" class="section">
+  <div class="container stack">
+    <div class="stack-tight">
+      <span class="eyebrow">03 / Experience</span>
+      <h2 class="section-title">Work, awards &amp; education</h2>
+    </div>
+    <div class="exp-grid">
+      <div class="card exp-card" data-reveal="0">
+        <h3 class="exp-head"><span>Work</span><span>{String(work.length).padStart(2, '0')}</span></h3>
+        <ol class="timeline">
+          {work.map((w, i) => (
+            <li class:list={{ current: i === 0 }}>
+              <span class="mono date">{w.period}</span>
+              <h4>{w.role}</h4>
+              <p class="org">{w.org}</p>
+              <p class="exp-text">{w.summary}</p>
+              {w.highlights.length > 0 && (
+                <ul class="highlights">
+                  {w.highlights.map((h) => (
+                    <li><span class="mono date">{h.date}</span><span>{h.text}</span></li>
+                  ))}
+                </ul>
+              )}
+              {w.links.length > 0 && (
+                <div class="exp-links">
+                  {w.links.map((l) => (
+                    <a class="mono" href={l.href}>{l.label} <Icon name="arrow-up-right" size={14} /></a>
+                  ))}
+                </div>
+              )}
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div class="card exp-card" data-reveal="1">
+        <h3 class="exp-head"><span>Awards &amp; competitions</span><span>{String(awards.length).padStart(2, '0')}</span></h3>
+        <ul class="awards">
+          {awards.map((a) => (
+            <li>
+              <span class="award-meta"><span class:list={['badge', `badge-${a.tone}`]}>{a.badge}</span><span class="mono date">{a.period}</span></span>
+              <h4>{a.title}</h4>
+              <p class="exp-text">{a.text}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="card exp-card" data-reveal="2">
+        <h3 class="exp-head"><span>Education</span><span>01</span></h3>
+        <div class="stack-tight">
+          <span class="mono date">{education.period}</span>
+          <h4>{education.degree}</h4>
+          <p class="org">{education.school}</p>
+        </div>
+        <p class="gpax"><span>{education.gpax}</span> <span class="mono">GPAX</span></p>
+        <div class="stack-tight">
+          <span class="mono label">Relevant coursework</span>
+          <ul class="chips">{education.coursework.map((c) => <li>{c}</li>)}</ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section toolkit">
+  <div class="container stack">
+    <span class="eyebrow">Toolkit / Spec sheet</span>
+    <div class="spec-sheet card">
+      {toolkit.map((group) => (
+        <div>
+          <h3 class="mono">{group.title}</h3>
+          <ul>{group.items.map((item) => <li>{item}</li>)}</ul>
+        </div>
+      ))}
+    </div>
+    <div class="languages card">
+      <h3 class="mono">Languages</h3>
+      {languages.map((l) => (
+        <p><strong>{l.name}</strong> · {l.level}</p>
+      ))}
+      <a class="mono cert-link" href={languageCert}>EF SET certificate <Icon name="arrow-up-right" size={14} /></a>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="events-title">
+  <div class="container stack">
+    <div class="events-head">
+      <div class="stack-tight">
+        <span class="eyebrow">Off the bench</span>
+        <h2 id="events-title" class="section-title">Community &amp; events</h2>
+      </div>
+      <div class="events-controls" role="group" aria-label="Scroll events">
+        <button class="icon-btn icon-btn--paper" type="button" data-scroll="-1" aria-label="Previous events"><Icon name="chevron-left" /></button>
+        <button class="icon-btn icon-btn--paper" type="button" data-scroll="1" aria-label="Next events"><Icon name="chevron-right" /></button>
+      </div>
+    </div>
+    <ul class="events-strip" tabindex="0" aria-label="Event photos, scroll sideways">
+      {events.map((e) => (
+        <li>
+          <figure>
+            <Image src={e.image} alt={e.alt} widths={[300, 600]} sizes="300px" style={e.position ? `object-position: ${e.position}` : undefined} />
+            <figcaption><strong>{e.title}</strong><span>{e.meta}</span></figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: 72px;
+    border-top: 1px solid rgba(22, 20, 18, 0.1);
+  }
+
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .stack-tight {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .date,
+  .label {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* More projects */
+  .project-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr));
+    column-gap: 56px;
+    border-top: 1px solid var(--line-strong);
+  }
+
+  .project-list li {
+    border-bottom: 1px solid var(--line-strong);
+  }
+
+  .project-list a {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr) 20px;
+    gap: 16px;
+    align-items: center;
+    padding: 20px 0;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .project-list a :global(svg) {
+    color: var(--clay);
+    transition: transform 0.2s var(--ease);
+  }
+
+  .project-list a:hover :global(svg) {
+    transform: translate(3px, -3px);
+  }
+
+  .year {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .project-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .project-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--heading);
+  }
+
+  .project-list a:hover .project-title {
+    color: var(--clay);
+  }
+
+  .project-note {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  /* Experience */
+  .exp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 24px;
+    align-items: start;
+  }
+
+  .exp-card {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .exp-head {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .exp-head span:last-child {
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  h4 {
+    font-size: 19px;
+    line-height: 1.3;
+  }
+
+  .org {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--clay);
+  }
+
+  .exp-text {
+    font-size: 14px;
+    color: var(--text-soft);
+  }
+
+  .timeline {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-left: 2px solid rgba(210, 125, 96, 0.35);
+  }
+
+  .timeline > li {
+    position: relative;
+    padding: 0 0 24px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .timeline > li:last-child {
+    padding-bottom: 0;
+  }
+
+  .timeline > li::before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--paper-card);
+    border: 2px solid var(--clay-bright);
+  }
+
+  .timeline > li.current::before {
+    background: var(--clay-bright);
+  }
+
+  .highlights {
+    margin: 8px 0 0;
+    padding: 12px 0 0;
+    list-style: none;
+    border-top: 1px dashed var(--line-strong);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-soft);
+  }
+
+  .highlights li {
+    display: grid;
+    grid-template-columns: 70px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .highlights .date {
+    font-size: 11px;
+    padding-top: 2px;
+  }
+
+  .exp-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 18px;
+  }
+
+  .exp-links a,
+  .cert-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .awards {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .awards li {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .awards li:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .award-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .badge {
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .badge-win {
+    background: var(--clay-bright);
+    color: var(--ink);
+  }
+
+  .badge-finalist {
+    border: 1px solid var(--clay);
+    color: var(--clay);
+  }
+
+  .badge-plain {
+    border: 1px solid rgba(22, 20, 18, 0.25);
+    color: var(--text-soft);
+  }
+
+  .gpax {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding-block: 16px;
+    border-block: 1px solid var(--line);
+  }
+
+  .gpax span:first-child {
+    font-family: var(--font-display);
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--heading);
+  }
+
+  .gpax .mono {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .chips {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 13px;
+  }
+
+  .chips li {
+    padding: 5px 10px;
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+  }
+
+  /* Toolkit */
+  .toolkit {
+    background: var(--paper-deep);
+  }
+
+  /* The deeper paper needs a darker clay to keep 4.5:1 */
+  .toolkit .eyebrow {
+    color: #93472E;
+  }
+
+  .spec-sheet {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    overflow: hidden;
+    border-radius: 16px;
+  }
+
+  .spec-sheet > div {
+    padding: 28px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    margin: 0 -1px -1px 0;
+  }
+
+  .spec-sheet h3,
+  .languages h3 {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .spec-sheet ul {
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 15px;
+    line-height: 1.9;
+    color: var(--text-soft);
+  }
+
+  .languages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 36px;
+    align-items: center;
+    padding: 16px 28px;
+    border-radius: 16px;
+    color: var(--text-soft);
+  }
+
+  .languages strong {
+    color: var(--heading);
+  }
+
+  /* Events */
+  .events-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+  }
+
+  .events-controls {
+    display: flex;
+    gap: 8px;
+  }
+
+  .events-controls .icon-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .events-strip {
+    margin: 0;
+    padding: 0 0 4px;
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+  }
+
+  .events-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .events-strip li {
+    flex: 0 0 300px;
+    scroll-snap-align: start;
+  }
+
+  .events-strip figure {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .events-strip img {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
+  .events-strip figcaption {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .events-strip strong {
+    color: var(--heading);
+  }
+
+  .events-strip figcaption span {
+    color: var(--muted);
+  }
+
+  @media (max-width: 640px) {
+    .section {
+      padding-block: 48px;
+    }
+
+    .exp-card {
+      padding: 22px;
+    }
+
+    .events-strip li {
+      flex-basis: 260px;
+    }
+
+    .events-strip img {
+      width: 260px;
+      height: 172px;
+    }
+
+    .events-controls {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const strip = document.querySelector<HTMLElement>('.events-strip');
+  document.querySelectorAll<HTMLButtonElement>('[data-scroll]').forEach((button) =>
+    button.addEventListener('click', () => strip?.scrollBy({ left: Number(button.dataset.scroll) * 320 })),
+  );
+</script>

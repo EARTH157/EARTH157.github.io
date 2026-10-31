@@ -1,0 +1,263 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import Contact from '../../components/Contact.astro';
+import VideoDialog from '../../components/VideoDialog.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('work');
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+const videos = JSON.stringify({ title: `${data.shortTitle} in action`, items: data.videos });
+---
+
+<Base title={`${data.shortTitle} | Jirapat Chaumaungphan`} description={data.summary}>
+  <header class="case-hero blueprint on-ink">
+    <nav class="container case-nav" aria-label="Breadcrumb">
+      <a href="/" class="back"><Icon name="chevron-left" size={16} /> All work</a>
+      <a href="/" class="logo">JC<span>.</span></a>
+    </nav>
+    <div id="main" class="container case-intro">
+      <span class="eyebrow">{data.kicker}</span>
+      <h1>{data.title}</h1>
+      <p>{data.summary}</p>
+      <div class="case-actions">
+        {data.videos.length > 0 && (
+          <button class="btn btn-primary" type="button" data-videos={videos}>
+            <Icon name="play" size={14} /> Watch demo{data.videos.length > 1 ? ` · ${data.videos.length} videos` : ''}
+          </button>
+        )}
+        {data.github && (
+          <a class="btn btn-ghost-ink" href={data.github}><Icon name="github" size={18} /> Code on GitHub</a>
+        )}
+      </div>
+    </div>
+  </header>
+
+  <main class="container case-body">
+    <figure class:list={['case-cover', `cover-${data.coverStyle}`, { blueprint: data.coverStyle === 'render' }]}>
+      <Image src={data.cover} alt={data.coverAlt} widths={[640, 960, 1280]} sizes="(min-width: 1280px) 1216px, 100vw" loading="eager" />
+    </figure>
+
+    <div class="case-grid">
+      <aside class="card case-specs" aria-label="Specifications">
+        <h2 class="mono">Spec sheet</h2>
+        <dl>
+          {data.specs.map((s) => (
+            <>
+              <dt>{s.label}</dt>
+              <dd>{s.value}</dd>
+            </>
+          ))}
+        </dl>
+        <ul class="tag-list">{data.tags.map((t) => <li>{t}</li>)}</ul>
+      </aside>
+      <article class="prose">
+        <Content />
+      </article>
+    </div>
+  </main>
+
+  <Contact />
+  <VideoDialog />
+</Base>
+
+<style>
+  .case-hero {
+    padding-bottom: 72px;
+  }
+
+  .case-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: 18px;
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: #D9D2CA;
+    text-decoration: none;
+  }
+
+  .back:hover {
+    color: var(--on-ink-strong);
+  }
+
+  .logo {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.06em;
+    color: var(--on-ink);
+    text-decoration: none;
+  }
+
+  .logo span {
+    color: var(--clay-bright);
+  }
+
+  .case-intro {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 40px;
+  }
+
+  .case-intro > * {
+    max-width: 900px;
+  }
+
+  h1 {
+    font-size: clamp(34px, 5vw, 60px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .case-intro p {
+    font-size: 18px;
+    color: var(--on-ink-soft);
+    max-width: 720px;
+  }
+
+  .case-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .case-body {
+    padding-block: 0 88px;
+  }
+
+  .case-cover {
+    margin: -40px 0 48px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    max-height: 640px;
+  }
+
+  .case-cover img {
+    width: 100%;
+    height: 100%;
+    max-height: 640px;
+    object-fit: cover;
+  }
+
+  .cover-render {
+    display: flex;
+    justify-content: center;
+    padding: 32px;
+  }
+
+  .cover-render img {
+    width: auto;
+    max-height: 520px;
+    object-fit: contain;
+  }
+
+  .cover-screen {
+    background: var(--ink);
+    padding: 28px 28px 0;
+  }
+
+  .cover-screen img {
+    object-position: left top;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .case-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    gap: 48px;
+    align-items: start;
+  }
+
+  .case-specs {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .case-specs h2 {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .case-specs dl {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 100px minmax(0, 1fr);
+    border-top: 1px solid var(--line);
+    font-size: 14px;
+  }
+
+  .case-specs dt,
+  .case-specs dd {
+    margin: 0;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .case-specs dt {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .prose {
+    grid-column: span 2;
+    max-width: 720px;
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--text-soft);
+  }
+
+  .prose :global(h2) {
+    font-size: 28px;
+    margin: 40px 0 14px;
+  }
+
+  .prose :global(h2:first-child) {
+    margin-top: 0;
+  }
+
+  .prose :global(p),
+  .prose :global(ul) {
+    margin: 0 0 16px;
+  }
+
+  .prose :global(li) {
+    margin-bottom: 8px;
+  }
+
+  .prose :global(strong) {
+    color: var(--heading);
+  }
+
+  @media (max-width: 760px) {
+    .prose {
+      grid-column: auto;
+    }
+
+    .case-cover {
+      margin-top: -24px;
+    }
+  }
+</style>

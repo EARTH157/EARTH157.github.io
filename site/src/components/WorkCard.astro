@@ -1,0 +1,234 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+
+interface Props {
+  entry: CollectionEntry<'work'>;
+  featured?: boolean;
+}
+
+const { entry, featured = false } = Astro.props;
+const { data } = entry;
+const href = `/work/${entry.id}/`;
+const videos = JSON.stringify({ title: `${data.shortTitle} in action`, items: data.videos });
+---
+
+<article class:list={['work-card card', `cover-${data.coverStyle}`, { featured }]} data-reveal>
+  <div class:list={['work-media', { blueprint: data.coverStyle === 'render' }]}>
+    <Image
+      src={data.cover}
+      alt={data.coverAlt}
+      widths={featured ? [480, 720, 1080] : [400, 640, 900]}
+      sizes={featured ? '(min-width: 980px) 600px, 100vw' : '(min-width: 980px) 600px, 100vw'}
+    />
+  </div>
+  <div class="work-body">
+    <span class="eyebrow">{data.kicker}</span>
+    <h3><a href={href}>{data.title}</a></h3>
+    <p class="work-summary">{data.summary}</p>
+
+    {data.metric && (
+      <div class="metric" role="img" aria-label={`${data.metric.label}: ${data.metric.baselineLabel} ${data.metric.baseline.toFixed(2)}, ${data.metric.finalLabel} ${data.metric.final.toFixed(2)}`}>
+        <span class="metric-title mono">{data.metric.label}</span>
+        <div class="metric-rows mono" aria-hidden="true">
+          <span>{data.metric.baselineLabel}</span>
+          <span class="bar"><span style={`width: ${data.metric.baseline * 100}%`}></span></span>
+          <b>{data.metric.baseline.toFixed(2)}</b>
+          <span>{data.metric.finalLabel}</span>
+          <span class="bar bar-final"><span style={`width: ${data.metric.final * 100}%`}></span></span>
+          <b>{data.metric.final.toFixed(2)}</b>
+        </div>
+      </div>
+    )}
+
+    {featured ? (
+      <dl class="specs">
+        {data.specs.map((s) => (
+          <>
+            <dt>{s.label}</dt>
+            <dd>{s.value}</dd>
+          </>
+        ))}
+      </dl>
+    ) : (
+      <ul class="tag-list">{data.tags.map((t) => <li>{t}</li>)}</ul>
+    )}
+
+    <div class="work-actions">
+      {data.videos.length > 0 && (
+        <button class="btn btn-dark" type="button" data-videos={videos}>
+          <span class="play"><Icon name="play" size={12} /></span>
+          Watch demo{data.videos.length > 1 ? ` · ${data.videos.length} videos` : ''}
+        </button>
+      )}
+      <a class="text-link" href={href}>Read the case study <Icon name="arrow-right" size={16} /></a>
+    </div>
+  </div>
+</article>
+
+<style>
+  .work-card {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .work-card.featured {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  }
+
+  .work-media {
+    height: 300px;
+    overflow: hidden;
+  }
+
+  .featured .work-media {
+    height: auto;
+    min-height: 360px;
+  }
+
+  .work-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s var(--ease);
+  }
+
+  .work-card:hover .work-media img {
+    transform: scale(1.03);
+  }
+
+  .cover-render .work-media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .cover-render .work-media img {
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .cover-screen .work-media {
+    background: var(--ink);
+    padding: 20px 20px 0;
+  }
+
+  .cover-screen .work-media img {
+    object-position: left top;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .work-body {
+    padding: clamp(22px, 3vw, 36px);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex-grow: 1;
+    min-width: 0;
+  }
+
+  h3 {
+    font-size: clamp(22px, 2.4vw, 30px);
+    line-height: 1.2;
+  }
+
+  h3 a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  h3 a:hover {
+    color: var(--clay);
+  }
+
+  .work-summary {
+    color: var(--text-soft);
+  }
+
+  .specs {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr);
+    border-top: 1px solid var(--line);
+    font-size: 14px;
+  }
+
+  .specs dt,
+  .specs dd {
+    margin: 0;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .specs dt {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .metric {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--paper);
+  }
+
+  .metric-title {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .metric-rows {
+    display: grid;
+    grid-template-columns: minmax(96px, auto) minmax(0, 1fr) 40px;
+    gap: 10px;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-soft);
+  }
+
+  .metric-rows b {
+    color: var(--heading);
+  }
+
+  .bar {
+    height: 12px;
+    border-radius: 4px;
+    background: rgba(22, 20, 18, 0.08);
+  }
+
+  .bar span {
+    display: block;
+    height: 100%;
+    border-radius: 4px;
+    background: #9C938A;
+  }
+
+  .bar-final span {
+    background: var(--clay-bright);
+  }
+
+  .work-actions {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    align-items: center;
+  }
+
+  .btn-dark {
+    font-size: 14px;
+    min-height: 46px;
+  }
+</style>

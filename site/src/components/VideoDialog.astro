@@ -1,0 +1,128 @@
+---
+import Icon from './Icon.astro';
+---
+
+<!-- Opened by any [data-videos] button; the YouTube iframes are only created while it is open -->
+<dialog class="video-dialog on-ink" aria-labelledby="video-title">
+  <div class="video-panel">
+    <div class="video-head">
+      <div>
+        <span class="eyebrow">Demo</span>
+        <h2 id="video-title"></h2>
+      </div>
+      <button class="icon-btn" type="button" data-close aria-label="Close video"><Icon name="close" /></button>
+    </div>
+    <div class="video-list"></div>
+  </div>
+</dialog>
+
+<style>
+  .video-dialog {
+    width: min(960px, calc(100% - 32px));
+    max-height: 90vh;
+    padding: 0;
+    border: 1px solid rgba(239, 233, 226, 0.15);
+    border-radius: var(--radius);
+    background: var(--ink);
+  }
+
+  .video-dialog::backdrop {
+    background: rgba(22, 20, 18, 0.82);
+  }
+
+  .video-panel {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .video-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  .video-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+    gap: 20px;
+  }
+
+  .video-list :global(figure) {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .video-list :global(iframe) {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    border-radius: 12px;
+    background: #000;
+  }
+
+  .video-list :global(figcaption) {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--on-ink-muted);
+  }
+
+  @media (max-width: 640px) {
+    .video-dialog {
+      width: 100%;
+      max-width: none;
+      margin: auto 0 0;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+  }
+</style>
+
+<script>
+  interface VideoSet {
+    title: string;
+    items: { label: string; youtubeId: string }[];
+  }
+
+  const dialog = document.querySelector<HTMLDialogElement>('.video-dialog')!;
+  const title = dialog.querySelector<HTMLElement>('#video-title')!;
+  const list = dialog.querySelector<HTMLElement>('.video-list')!;
+
+  function open(set: VideoSet) {
+    title.textContent = set.title;
+    list.replaceChildren(
+      ...set.items.map((v, i) => {
+        const figure = document.createElement('figure');
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(v.youtubeId)}?rel=0${i === 0 ? '&autoplay=1' : ''}`;
+        iframe.title = v.label;
+        iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.allowFullscreen = true;
+        const caption = document.createElement('figcaption');
+        caption.textContent = v.label;
+        figure.append(iframe, caption);
+        return figure;
+      }),
+    );
+    dialog.showModal();
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-videos]').forEach((button) =>
+    button.addEventListener('click', () => open(JSON.parse(button.dataset.videos!))),
+  );
+
+  dialog.querySelector('[data-close]')!.addEventListener('click', () => dialog.close());
+  // Clicking the backdrop closes it; Escape is handled by <dialog>
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog) dialog.close();
+  });
+  // Stop playback by removing the iframes
+  dialog.addEventListener('close', () => list.replaceChildren());
+</script>

@@ -1,0 +1,82 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import WorkCard from '../components/WorkCard.astro';
+import Sections from '../components/Sections.astro';
+import Contact from '../components/Contact.astro';
+import VideoDialog from '../components/VideoDialog.astro';
+
+const cases = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+const [featured, ...rest] = cases;
+---
+
+<Base>
+  <Hero />
+  <main>
+    <section id="work" class="work paper-grid" aria-labelledby="work-title">
+      <div class="container">
+        <div class="work-head">
+          <div>
+            <span class="eyebrow">01 / Selected work</span>
+            <h2 id="work-title" class="section-title">Case studies</h2>
+          </div>
+          <p>Three projects told end to end: what the problem was, what I built, and what it achieved.</p>
+        </div>
+        <div class="work-list">
+          {featured && <WorkCard entry={featured} featured />}
+          <div class="work-pair">
+            {rest.map((entry) => <WorkCard entry={entry} />)}
+          </div>
+        </div>
+      </div>
+    </section>
+    <Sections />
+  </main>
+  <Contact />
+  <VideoDialog />
+</Base>
+
+<style>
+  .work {
+    padding-block: 96px 72px;
+  }
+
+  .work-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .work-head > div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .work-head p {
+    max-width: 420px;
+    color: var(--muted);
+  }
+
+  .work-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .work-pair {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
+    gap: 24px;
+  }
+
+  @media (max-width: 640px) {
+    .work {
+      padding-block: 56px;
+    }
+  }
+</style>

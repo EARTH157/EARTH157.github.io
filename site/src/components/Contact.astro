@@ -1,0 +1,157 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import portrait from '../assets/profile.webp';
+import { profile } from '../data/site';
+---
+
+<footer id="contact" class="contact blueprint on-ink">
+  <div class="container contact-grid">
+    <div class="contact-copy" data-reveal>
+      <span class="eyebrow">04 / Contact</span>
+      <h2>Let's build something together.</h2>
+      <p>{profile.about}</p>
+      <p>Email is the fastest way to reach me.</p>
+      <a class="email" href={`mailto:${profile.email}`}>{profile.email}</a>
+      <div class="contact-actions">
+        <a class="btn btn-primary" href={`mailto:${profile.email}`}><Icon name="mail" size={18} /> Email me</a>
+        <a class="btn btn-ghost-ink" href={profile.cv} download><Icon name="download" size={16} /> Download CV</a>
+      </div>
+    </div>
+    <div class="card-person" data-reveal="1">
+      <Image src={portrait} alt="Portrait of Jirapat Chaumaungphan" widths={[168, 336]} sizes="168px" class="portrait" />
+      <div class="person-text">
+        <span class="person-name">{profile.name}</span>
+        <span class="mono person-role">{profile.role}</span>
+        <div class="person-links">
+          <a class="icon-btn" href={profile.github} aria-label="GitHub"><Icon name="github" size={20} /></a>
+          <a class="icon-btn" href={profile.linkedin} aria-label="LinkedIn"><Icon name="linkedin" size={20} /></a>
+          <a class="icon-btn" href={profile.youtube} aria-label="YouTube"><Icon name="youtube" size={20} /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container legal mono">
+    <span>© {new Date().getFullYear()} {profile.name}</span>
+    <span>earth157.github.io</span>
+  </div>
+</footer>
+
+<style>
+  .contact {
+    padding: 88px 0 32px;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 48px;
+    align-items: center;
+  }
+
+  .contact-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-width: 0;
+  }
+
+  h2 {
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.05;
+  }
+
+  .contact-copy p {
+    color: var(--on-ink-soft);
+    max-width: 540px;
+    line-height: 1.7;
+  }
+
+  .email {
+    font-family: var(--font-display);
+    font-size: clamp(20px, 2.4vw, 28px);
+    color: var(--on-ink-strong);
+    text-decoration: underline;
+    text-decoration-color: var(--clay-bright);
+    text-underline-offset: 6px;
+    overflow-wrap: anywhere;
+  }
+
+  .email:hover {
+    color: var(--clay-light);
+  }
+
+  .contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .card-person {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .portrait {
+    width: 168px;
+    height: 168px;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 50%;
+    background: #EDE6DE;
+    border: 2px solid var(--clay-bright);
+  }
+
+  .person-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .person-name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--on-ink-strong);
+  }
+
+  .person-role {
+    font-size: 12px;
+    color: var(--on-ink-muted);
+  }
+
+  .person-links {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .legal {
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--on-ink-line);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 12px;
+    color: #9C938A;
+  }
+
+  @media (max-width: 640px) {
+    .contact {
+      padding-top: 56px;
+    }
+
+    .portrait {
+      width: 96px;
+      height: 96px;
+    }
+
+    .contact-actions .btn {
+      flex: 1 1 100%;
+    }
+  }
+</style>
