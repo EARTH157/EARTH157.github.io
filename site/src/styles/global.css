@@ -195,6 +195,13 @@ footer[id] {
   transform: translateY(-2px);
 }
 
+/* Press feedback: buttons give a little under the finger */
+.btn:active,
+.icon-btn:active {
+  transform: translateY(0) scale(0.96);
+  transition-duration: 0.08s;
+}
+
 .btn-primary {
   background: var(--clay-bright);
   color: var(--ink);
@@ -329,7 +336,66 @@ footer[id] {
   transform: none;
 }
 
+/*
+  Page transitions between the home page and the case studies (cross-document
+  View Transitions; browsers without support just navigate normally).
+  The outgoing page lifts away, the new one settles in, the "JC." logo stays put
+  and a case study's cover grows out of its card on the home page.
+*/
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: vt-out 0.28s cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+::view-transition-new(root) {
+  animation: vt-in 0.5s var(--ease) 0.08s both;
+}
+
+::view-transition-group(*) {
+  animation-duration: 0.55s;
+  animation-timing-function: var(--ease);
+}
+
+.vt-logo {
+  view-transition-name: logo;
+}
+
+/* Named elements that exist on only one side (the other cards) leave and arrive with the page */
+::view-transition-old(*):only-child {
+  animation: vt-out 0.28s cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+::view-transition-new(*):only-child {
+  animation: vt-in 0.5s var(--ease) 0.08s both;
+}
+
+/* Keep the cover's crop while it morphs between card and case study */
+::view-transition-image-pair(*) {
+  overflow: hidden;
+}
+
+::view-transition-old(*),
+::view-transition-new(*) {
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes vt-out {
+  to { opacity: 0; transform: translateY(-16px); }
+}
+
+@keyframes vt-in {
+  from { opacity: 0; transform: translateY(20px); }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+
   html {
     scroll-behavior: auto;
   }

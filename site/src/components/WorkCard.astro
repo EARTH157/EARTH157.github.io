@@ -15,7 +15,7 @@ const videos = JSON.stringify({ title: `${data.shortTitle} in action`, items: da
 ---
 
 <article class:list={['work-card card', `cover-${data.coverStyle}`, { featured }]} data-reveal>
-  <div class:list={['work-media', { blueprint: data.coverStyle === 'render' }]}>
+  <div class:list={['work-media', { blueprint: data.coverStyle === 'render' }]} style={`view-transition-name: cover-${entry.id}`}>
     <Image
       src={data.cover}
       alt={data.coverAlt}

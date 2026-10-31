@@ -30,6 +30,45 @@ import Icon from './Icon.astro';
     background: rgba(22, 20, 18, 0.82);
   }
 
+  /* Rises in on open and sinks away on close (the close half needs a browser with allow-discrete) */
+  .video-dialog,
+  .video-dialog::backdrop {
+    transition:
+      opacity 0.28s var(--ease),
+      transform 0.36s var(--ease),
+      overlay 0.36s allow-discrete,
+      display 0.36s allow-discrete;
+  }
+
+  .video-dialog {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+  }
+
+  .video-dialog::backdrop {
+    opacity: 0;
+  }
+
+  .video-dialog[open] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .video-dialog[open]::backdrop {
+    opacity: 1;
+  }
+
+  @starting-style {
+    .video-dialog[open] {
+      opacity: 0;
+      transform: translateY(24px) scale(0.98);
+    }
+
+    .video-dialog[open]::backdrop {
+      opacity: 0;
+    }
+  }
+
   .video-panel {
     padding: 24px;
     display: flex;
@@ -123,6 +162,10 @@ import Icon from './Icon.astro';
   dialog.addEventListener('click', (e) => {
     if (e.target === dialog) dialog.close();
   });
-  // Stop playback by removing the iframes
-  dialog.addEventListener('close', () => list.replaceChildren());
+  // Stop playback by removing the iframes, once the closing animation has finished
+  dialog.addEventListener('close', () =>
+    setTimeout(() => {
+      if (!dialog.open) list.replaceChildren();
+    }, 360),
+  );
 </script>
