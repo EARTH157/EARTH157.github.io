@@ -32,6 +32,9 @@ export const stats = [
 ];
 
 // Robots shown in the hero. Only robots with a real 3D model belong here.
+// anchor: the point a callout's leader line follows, as fractions (x, y, z) of the model's
+// bounding box in its own Y-up coordinates (0 = min side, 1 = max side), snapped to real
+// surface points of the original STL. Callout 0 sits top-right, 1 left, 2 bottom-right.
 export const robots = [
   {
     id: 'whitepost',
@@ -42,9 +45,9 @@ export const robots = [
     poster: whitepostRender,
     alt: '3D model of the White Post delivery robot: tracked base, electronics box and 5-DOF arm',
     callouts: [
-      { title: '01 · VISION', lines: ['YOLOv8 + OpenCV', 'buttons + door state'] },
-      { title: '02 · 5-DOF ARM', lines: ['full IK / FK control', 'presses elevator buttons'] },
-      { title: '03 · DRIVE', lines: ['tracked + wheel', 'multi-terrain base'] },
+      { title: '01 · 5-DOF ARM', lines: ['full IK / FK control', 'presses elevator buttons'], anchor: [0.664, 1.0, 0.05] },
+      { title: '02 · VISION', lines: ['YOLOv8 + OpenCV', 'buttons + door state'], anchor: [0.567, 0.791, 0.779] },
+      { title: '03 · DRIVE', lines: ['tracked + wheel', 'multi-terrain base'], anchor: [0.869, 0.101, 0.493] },
     ],
   },
   {
@@ -56,9 +59,9 @@ export const robots = [
     poster: amr300Render,
     alt: '3D model of the AMR300 high-payload autonomous mobile robot',
     callouts: [
-      { title: '01 · PAYLOAD', lines: ['up to 300 kg', 'tested in real conditions'] },
-      { title: '02 · COMPUTE', lines: ['ROS2 Humble', 'on an Intel NUC'] },
-      { title: '03 · DRIVE', lines: ['hub servo motors', 'ESP32 over serial'] },
+      { title: '01 · PAYLOAD', lines: ['up to 300 kg', 'tested in real conditions'], anchor: [0.5, 0.604, 0.5] },
+      { title: '02 · COMPUTE', lines: ['ROS2 Humble', 'on an Intel NUC'], anchor: [0.5, 0.482, 0.925] },
+      { title: '03 · DRIVE', lines: ['hub servo motors', 'ESP32 over serial'], anchor: [0.891, 0.05, 0.872] },
     ],
   },
 ];
