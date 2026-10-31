@@ -8,17 +8,15 @@ Live site: https://earth157.github.io/
 
 | Path | What it is |
 |---|---|
-| `site/` | The redesigned site, built with [Astro](https://astro.build/). This is what gets deployed once Pages uses GitHub Actions. |
-| `index.html`, `style.css`, `script.js`, `assets/` | The previous plain-HTML site. GitHub Pages still serves it while Pages is set to "Deploy from a branch". |
-| `.github/workflows/deploy.yml` | Builds `site/` on every pull request, and builds + deploys it on every push to `main`. |
+| `site/` | The site, built with [Astro](https://astro.build/). |
+| `.github/workflows/deploy.yml` | Builds `site/` on every pull request, and builds + deploys it to GitHub Pages on every push to `main`. |
 
-## Switching the live site to the new version
+The previous plain-HTML site was removed from the repository root; it is still in the git history.
 
-1. Merge the pull request that adds `site/`.
-2. In the repository go to **Settings → Pages → Build and deployment → Source** and choose **GitHub Actions**.
-3. Re-run the latest **Build and deploy site** workflow (Actions tab), or push any commit to `main`.
+## Deployment
 
-Until step 2, the old site keeps working, and the deploy job fails harmlessly.
+Pages should be set to **Settings → Pages → Build and deployment → Source → GitHub Actions**.
+While it is still on "Deploy from a branch", GitHub also runs its own Jekyll build on every push. That build fails (it reads the `---` blocks in `.astro` files as YAML front matter) but deploys nothing, so the live site still comes from the workflow above. Switching the source stops it.
 
 ## Working on the new site
 

@@ -1,3 +1,4 @@
-assets/videos/*.webm
+# Large source files that should not be committed (convert to WebP / Draco GLB first)
 *.CR2
 *.STL
+.DS_Store
