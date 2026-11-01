@@ -7,10 +7,10 @@ import { moreProjects, work, awards, education, toolkit, languages, languageCert
 
 <section id="projects" class="section">
   <div class="container stack">
-    <span class="eyebrow">03 / More projects</span>
+    <span class="eyebrow" data-reveal>03 / More projects</span>
     <ul class="project-list">
-      {moreProjects.map((p) => (
-        <li>
+      {moreProjects.map((p, i) => (
+        <li data-reveal={i % 2}>
           <a href={p.href}>
             <span class="mono year">{p.year}</span>
             <span class="project-text">
@@ -27,7 +27,7 @@ import { moreProjects, work, awards, education, toolkit, languages, languageCert
 
 <section id="experience" class="section">
   <div class="container stack">
-    <div class="stack-tight">
+    <div class="stack-tight" data-reveal>
       <span class="eyebrow">04 / Experience</span>
       <h2 class="section-title">Work, awards &amp; education</h2>
     </div>
@@ -97,16 +97,16 @@ import { moreProjects, work, awards, education, toolkit, languages, languageCert
 
 <section class="section toolkit">
   <div class="container stack">
-    <span class="eyebrow">Toolkit / Spec sheet</span>
+    <span class="eyebrow" data-reveal>Toolkit / Spec sheet</span>
     <div class="spec-sheet card">
-      {toolkit.map((group) => (
-        <div>
+      {toolkit.map((group, i) => (
+        <div data-reveal={i}>
           <h3 class="mono">{group.title}</h3>
           <ul>{group.items.map((item) => <li>{item}</li>)}</ul>
         </div>
       ))}
     </div>
-    <div class="languages card">
+    <div class="languages card" data-reveal>
       <h3 class="mono">Languages</h3>
       {languages.map((l) => (
         <p><strong>{l.name}</strong> · {l.level}</p>
@@ -118,7 +118,7 @@ import { moreProjects, work, awards, education, toolkit, languages, languageCert
 
 <section class="section" aria-labelledby="events-title">
   <div class="container stack">
-    <div class="events-head">
+    <div class="events-head" data-reveal>
       <div class="stack-tight">
         <span class="eyebrow">Off the bench</span>
         <h2 id="events-title" class="section-title">Community &amp; events</h2>
@@ -128,7 +128,7 @@ import { moreProjects, work, awards, education, toolkit, languages, languageCert
         <button class="icon-btn icon-btn--paper" type="button" data-scroll="1" aria-label="Next events"><Icon name="chevron-right" /></button>
       </div>
     </div>
-    <ul class="events-strip" tabindex="0" aria-label="Event photos, scroll sideways">
+    <ul class="events-strip" data-reveal tabindex="0" aria-label="Event photos, scroll sideways">
       {events.map((e) => (
         <li>
           <figure>
@@ -335,6 +335,40 @@ import { moreProjects, work, awards, education, toolkit, languages, languageCert
     background: var(--clay-bright);
   }
 
+  /* Once the card is in view the dots pop in down the line, and the current job pings a few times */
+  .exp-card:global(.is-visible) .timeline > li::before {
+    animation: dot-in 0.45s var(--ease) both;
+  }
+
+  .exp-card:global(.is-visible) .timeline > li:nth-child(2)::before { animation-delay: 0.15s; }
+  .exp-card:global(.is-visible) .timeline > li:nth-child(3)::before { animation-delay: 0.3s; }
+  .exp-card:global(.is-visible) .timeline > li:nth-child(n + 4)::before { animation-delay: 0.45s; }
+
+  .timeline > li.current::after {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--clay-bright);
+    opacity: 0;
+  }
+
+  .exp-card:global(.is-visible) .timeline > li.current::after {
+    animation: ring 1.8s cubic-bezier(0, 0, 0.2, 1) 0.6s 3;
+  }
+
+  @keyframes dot-in {
+    from { transform: scale(0); }
+  }
+
+  @keyframes ring {
+    from { opacity: 0.8; transform: scale(1); }
+    to { opacity: 0; transform: scale(2.6); }
+  }
+
   .highlights {
     margin: 8px 0 0;
     padding: 12px 0 0;
@@ -471,9 +505,8 @@ import { moreProjects, work, awards, education, toolkit, languages, languageCert
     background: var(--paper-deep);
   }
 
-  /* The deeper paper needs a darker clay to keep 4.5:1 */
   .toolkit .eyebrow {
-    color: #93472E;
+    color: var(--clay-deep);
   }
 
   .spec-sheet {

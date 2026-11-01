@@ -212,11 +212,25 @@ const videos = JSON.stringify({ title: `${data.shortTitle} in action`, items: da
     display: block;
     height: 100%;
     border-radius: 4px;
-    background: #9C938A;
+    background: var(--stone);
   }
 
   .bar-final span {
     background: var(--clay-bright);
+  }
+
+  /* Bars fill from zero once the card scrolls in, the final score after the baseline */
+  .work-card:global(.is-visible) .bar span {
+    transform-origin: left;
+    animation: bar-grow 1s var(--ease) 0.45s both;
+  }
+
+  .work-card:global(.is-visible) .bar-final span {
+    animation-delay: 0.75s;
+  }
+
+  @keyframes bar-grow {
+    from { transform: scaleX(0); }
   }
 
   .work-actions {
