@@ -15,6 +15,12 @@
   --clay-hover: #7E3F2A;
   --clay-bright: #D27D60;
   --clay-light: #E8957A;
+  /* Darker clay for text on --paper-deep (4.5:1) */
+  --clay-deep: #93472E;
+
+  /* Neutral for legal text on ink and the baseline bars on paper */
+  --stone: #9C938A;
+  --status-ok: #3FB950;
 
   --on-ink: #EFE9E2;
   --on-ink-strong: #F7F2EC;
@@ -334,6 +340,28 @@ footer[id] {
 .js [data-reveal].is-visible {
   opacity: 1;
   transform: none;
+}
+
+/* Reading progress: a clay drafting line along the top edge, driven by scroll (no JS; skipped where unsupported) */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 90;
+      height: 2px;
+      background: var(--clay-bright);
+      transform-origin: left;
+      pointer-events: none;
+      animation: progress linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+
+@keyframes progress {
+  from { transform: scaleX(0); }
 }
 
 /*

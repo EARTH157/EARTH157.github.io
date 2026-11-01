@@ -144,7 +144,7 @@ const navLinks = [
     display: inline-flex;
     align-items: center;
     min-height: 44px;
-    color: #D9D2CA;
+    color: var(--on-ink-soft);
     text-decoration: none;
   }
 
@@ -441,9 +441,10 @@ const navLinks = [
     from { transform: translateY(105%); }
   }
 
+  /* Negative top/bottom insets: line-height 0.95 is shorter than the glyphs, so a 0 inset clips g/p descenders */
   @keyframes draw {
-    from { clip-path: inset(0 100% 0 0); }
-    to { clip-path: inset(0 0 0 0); }
+    from { clip-path: inset(-0.3em 100% -0.3em 0); }
+    to { clip-path: inset(-0.3em 0 -0.3em 0); }
   }
 
   @keyframes type {
@@ -502,7 +503,7 @@ const navLinks = [
     border: 1px solid rgba(239, 233, 226, 0.18);
     font-family: var(--font-mono);
     font-size: 12px;
-    color: #D9D2CA;
+    color: var(--on-ink-soft);
   }
 
   .status-dot {
@@ -510,7 +511,7 @@ const navLinks = [
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #3FB950;
+    background: var(--status-ok);
   }
 
   .status-dot::after {
@@ -518,7 +519,7 @@ const navLinks = [
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    background: #3FB950;
+    background: var(--status-ok);
     animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
   }
 
